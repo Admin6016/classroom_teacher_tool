@@ -36,7 +36,7 @@
           ref="password"
           v-model="loginForm.password"
           :type="passwordType"
-          placeholder="输入密码"
+          placeholder="请输入密码"
           name="password"
           tabindex="2"
           auto-complete="on"
