@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-calendar v-model="value"> </el-calendar>
+    <el-calendar v-model="value" />
   </div>
 </template>
 
@@ -8,8 +8,11 @@
 export default {
   data() {
     return {
-      value: new Date(),
-    };
-  },
-};
+      value: new Date()
+    }
+  }
+}
 </script>
+<style scoped>
+/*balabla*/
+</style>
