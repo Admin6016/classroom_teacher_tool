@@ -3,19 +3,19 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">课堂互动工具</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="uid">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
-          placeholder="Username"
-          name="username"
-          type="text"
+          ref="uid"
+          v-model="loginForm.uid"
+          placeholder="用户ID"
+          name="uid"
+          type="number"
           tabindex="1"
           auto-complete="on"
         />
@@ -41,12 +41,12 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">登录</el-button>
 
-      <div class="tips">
-        <span style="margin-right:20px;">username: admin</span>
-        <span> password: any</span>
-      </div>
+<!--      <div class="tips">-->
+<!--        <span style="margin-right:20px;">用户ID</span>-->
+<!--        <span> 密码</span>-->
+<!--      </div>-->
 
     </el-form>
   </div>
@@ -60,25 +60,25 @@ export default {
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error('Please enter the correct user name'))
+        callback(new Error('请输入合适的ID'))
       } else {
         callback()
       }
     }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error('The password can not be less than 6 digits'))
+        callback(new Error('密码应该至少为6位'))
       } else {
         callback()
       }
     }
     return {
       loginForm: {
-        username: 'admin',
+        uid: '1',
         password: '111111'
       },
       loginRules: {
-        username: [{ required: true, trigger: 'blur', validator: validateUsername }],
+        uid: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [{ required: true, trigger: 'blur', validator: validatePassword }]
       },
       loading: false,
@@ -180,7 +180,9 @@ $light_gray:#eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  //background-color: $bg;
+  background: url("https://vkceyugu.cdn.bspapp.com/VKCEYUGU-student-data/b8a3b770-2a41-11eb-b680-7980c8a877b8.jpg");
+  background-size: cover;
   overflow: hidden;
 
   .login-form {
