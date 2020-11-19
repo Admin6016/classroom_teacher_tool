@@ -3,7 +3,7 @@
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">课堂互动工具</h3>
+        <h3 class="title">{{ defaultSettings.title }}</h3>
       </div>
 
       <el-form-item prop="uid">
@@ -54,7 +54,7 @@
 
 <script>
 import { validUsername } from '@/utils/validate'
-
+const defaultSettings = require('@/settings')
 export default {
   name: 'Login',
   data() {
@@ -73,6 +73,7 @@ export default {
       }
     }
     return {
+      defaultSettings,
       loginForm: {
         uid: '1',
         password: '111111'
