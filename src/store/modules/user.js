@@ -4,10 +4,10 @@ import { resetRouter } from '@/router'
 
 const getDefaultState = () => {
   return {
+    uid: '',
     token: getToken(),
     name: '',
-    avatar: '',
-    uid: ''
+    avatar: ''
   }
 }
 
@@ -36,14 +36,14 @@ const actions = {
   login({ commit }, userInfo) {
     const { uid, password } = userInfo
     return new Promise((resolve, reject) => {
-      login({ uid: uid.trim(), password: password }).then(response => {
+      login({ uid: uid, password: password }).then(response => {
         const { data } = response
         console.log(data)
         commit('SET_TOKEN', data.token)
-        // commit('SET_UID', data.uid)
         setToken(data.token)
         resolve()
       }).catch(error => {
+        console.log('err', error)
         reject(error)
       })
     })
@@ -60,9 +60,10 @@ const actions = {
         }
 
         const { name, avatar, uid } = data
-        commit('SET_UID', uid)
+
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
+        commit('SET_UID', uid)
         resolve(data)
       }).catch(error => {
         reject(error)
