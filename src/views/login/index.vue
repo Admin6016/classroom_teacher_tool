@@ -9,19 +9,19 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">登录</h3>
+        <h3 class="title">{{ title }}</h3>
       </div>
 
-      <el-form-item prop="username">
+      <el-form-item prop="uid">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
         <el-input
-          ref="username"
-          v-model="loginForm.username"
+          ref="uid"
+          v-model="loginForm.uid"
           placeholder="请输入账号"
-          name="username"
-          type="text"
+          name="uid"
+          type="Number"
           tabindex="1"
           auto-complete="on"
         />
@@ -62,33 +62,33 @@
 
 <script>
 import { validUsername } from "@/utils/validate";
+import { title } from "@/settings";
 
 export default {
   name: "Login",
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
+        callback(new Error("请输入正确的id"));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
+        callback(new Error("密码最少为6位"));
       } else {
         callback();
       }
     };
     return {
+      title,
       loginForm: {
-        username: "admin",
+        uid: "1",
         password: "111111",
       },
       loginRules: {
-        username: [
-          { required: true, trigger: "blur", validator: validateUsername },
-        ],
+        uid: [{ required: true, trigger: "blur", validator: validateUsername }],
         password: [
           { required: true, trigger: "blur", validator: validatePassword },
         ],
@@ -192,7 +192,8 @@ $light_gray: #eee;
 .login-container {
   min-height: 100%;
   width: 100%;
-  background-color: $bg;
+  background: url("https://vkceyugu.cdn.bspapp.com/VKCEYUGU-student-data/b8a3b770-2a41-11eb-b680-7980c8a877b8.jpg");
+  background-size: cover;
   overflow: hidden;
 
   .login-form {

@@ -1,3 +1,6 @@
+
+//cookie模块
+
 import Cookies from 'js-cookie'
 
 const TokenKey = 'vue_admin_template_token'
