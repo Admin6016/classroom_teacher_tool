@@ -169,7 +169,7 @@ export const constantRoutes = [
     children: [
       {
         path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'gitee', icon: 'link' }
+        meta: { title: 'Gitee', icon: 'link' }
       }
     ]
   },
