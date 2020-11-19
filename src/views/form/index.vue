@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="rili-container">
     <el-calendar v-model="value"> </el-calendar>
   </div>
 </template>
@@ -13,3 +13,6 @@ export default {
   },
 };
 </script>
+
+<style scoped lang="scss">
+</style>
