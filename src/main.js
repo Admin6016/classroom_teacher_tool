@@ -11,13 +11,15 @@ import '@/styles/index.scss' // global css
 import App from './App'
 import store from './store'
 import router from './router'
-import { Card, Icon, List, Spin, Empty } from 'ant-design-vue'
+import { Card, Icon, List, Spin, Empty, Descriptions, Avatar } from 'ant-design-vue'
 import 'ant-design-vue/dist/antd.css'
 Vue.use(Card)
 Vue.use(Icon)
 Vue.use(List)
 Vue.use(Spin)
 Vue.use(Empty)
+Vue.use(Descriptions)
+Vue.use(Avatar)
 // 导入card组件
 
 import '@/icons' // icon
