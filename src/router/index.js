@@ -53,7 +53,7 @@ export const constantRoutes = [
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: '个人主页', icon: 'dashboard' }
+      meta: { title: '个人面板', icon: 'dashboard' }
     }]
   },
 
@@ -87,23 +87,44 @@ export const constantRoutes = [
         path: 'index',
         name: 'Form',
         component: () => import('@/views/form/index'),
-        meta: { title: '个人日历', icon: 'form' }
+        meta: { title: '个人日历', icon: 'el-icon-date' }
       }
     ]
   },
   {
     path: '/course',
+    redirect: '/course/index',
     component: Layout,
+    meta: { title: '课程管理', icon: 'el-icon-notebook-2' },
     children: [
       {
         path: 'index',
-        name: 'Form',
+        name: 'Course',
         component: () => import('@/views/course/index'),
-        meta: { title: '课程管理', icon: 'form' }
+        meta: { title: '课程主页', icon: 'el-icon-reading' },
+      },
+      {
+        path: 'add',
+        name: 'Course2',
+        component: () => import('@/views/course/add'),
+        meta: { title: '添加课程', icon: 'el-icon-plus' }
+      },
+      {
+        path: 'detail/:cid',
+        hidden: true,
+        component: () => import('@/courselayout/index'),
+        redirect: '/course/detail/:cid/index',
+        children: [
+          {
+            meta: { title: '课程详情' },
+            hidden: true,
+            path: 'index',
+            component: () => import('@/views/coursex/index')
+          }
+        ]
       }
     ]
   },
-
   // {
   //   path: '/nested',
   //   component: Layout,
