@@ -78,7 +78,18 @@ export const constantRoutes = [
   //     }
   //   ]
   // },
-
+  {
+    path: '/group',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Group',
+        component: () => import('@/views/group/index'),
+        meta: { title: '群组管理', icon: 'el-icon-date' }
+      }
+    ]
+  },
   {
     path: '/form',
     component: Layout,

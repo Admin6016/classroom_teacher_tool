@@ -1,10 +1,134 @@
 <template>
-  <div>群组管理</div>
+  <div class="group-container">
+    <!-- 卡片视图区域 -->
+    <el-card class="group-card">
+      <div style="margin-top: 15px; margin-bottom: 15px">
+        <el-row :gutter="20">
+          <el-col :span="8">
+            <el-input placeholder="请输入群组名称 " class="input-with-select">
+              <el-button slot="append" icon="el-icon-search"></el-button>
+            </el-input>
+          </el-col>
+
+          <el-col :span="2" :offset="12">
+            <el-button type="success" @click="addGroupFormVisable"
+              >+添加群组</el-button
+            >
+          </el-col>
+        </el-row>
+      </div>
+
+      <el-table :data="groupList">
+        <el-table-column type="index"> </el-table-column>
+        <el-table-column label="群组名称" prop="name"></el-table-column>
+        <el-table-column label="群组描述" prop="description"></el-table-column>
+
+        <el-table-column label="群组操作">
+          <template slot-scope="scope">
+            <el-button type="primary" size="small">成员管理</el-button>
+            <el-button
+              type="danger"
+              size="mini"
+              @click="removeById(scope.row.seid)"
+              >删除群组</el-button
+            >
+            <el-button type="info" size="mini">查看详情</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </el-card>
+
+    <!-- 添加群组的dialog -->
+    <el-dialog
+      title="添加群组"
+      :visible.sync="DialogVisible"
+      width="30%"
+      center
+      @close="addDialogClosed"
+    >
+      <el-form :model="addGroupForm" label-width="80px" ref="addGroupRef">
+        <el-form-item label="群组名称" prop="name">
+          <el-input v-model="addGroupForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="群组描述" prop="description">
+          <el-input v-model="addGroupForm.description"></el-input>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="DialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="addGroupTrue">确 定</el-button>
+      </span>
+    </el-dialog>
+    <!-- 显示删除用户的dialog -->
+  </div>
 </template>
 
 <script>
-export default {};
+import { mapGetters } from "vuex";
+import { getGroup, addGroup, deleteGroup } from "@/api/group";
+import { MessageBox } from "element-ui";
+export default {
+  name: "Group",
+  data() {
+    return {
+      groupList: [],
+      DialogVisible: false,
+
+      addGroupForm: {
+        name: "",
+        description: "",
+        uid: 0,
+      },
+    };
+  },
+  methods: {
+    async getGroupList() {
+      const { data } = await getGroup();
+      // console.log(data);
+      this.groupList = data.content;
+      // console.log(this.groupList);
+    },
+
+    addGroupFormVisable() {
+      this.DialogVisible = true;
+    },
+
+    async addGroupTrue() {
+      this.addGroupForm.uid = this.uid;
+      const { data } = await addGroup(this.addGroupForm);
+      console.log(data);
+      this.DialogVisible = false;
+      this.getGroupList();
+    },
+    async removeById(id) {
+      const data = await this.$confirm(
+        "此操作将永久删除该群组, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      // console.log(data);
+      if (data !== "confirm") {
+        return this.$message.info("已取消删除");
+      }
+      await deleteGroup(id);
+      this.getGroupList();
+    },
+    addDialogClosed() {
+      this.$refs.addGroupRef.resetFields();
+    },
+  },
+  created() {
+    this.getGroupList();
+  },
+  computed: {
+    ...mapGetters(["uid"]),
+  },
+};
 </script>
 
-<style scoped>
+<style  lang="scss" scoped>
 </style>

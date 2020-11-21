@@ -239,7 +239,7 @@ export default {
   &-container {
     margin: 30px;
     width: 100%;
-    background: #ececec;
+    background-color: #ececec;
     .top-item {
       // height: 72px;
       background-color: #fff;
