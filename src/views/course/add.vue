@@ -6,10 +6,14 @@
           <el-input clearable v-model="addCourseForm.name"></el-input>
         </el-form-item>
         <el-form-item label="课程容量" required>
-          <el-input clearable v-model="addCourseForm.capacity"></el-input>
+          <el-input clearable type="number" v-model="addCourseForm.capacity">
+            <template slot="append">人</template>
+          </el-input>
         </el-form-item>
         <el-form-item label="学分" required>
-          <el-input clearable type="number" v-model="addCourseForm.point"></el-input>
+          <el-input clearable type="number" v-model="addCourseForm.point">
+            <template slot="append">分</template>
+          </el-input>
         </el-form-item>
         <el-form-item label="课程描述" required>
           <el-input type="textarea" rows="3" clearable v-model="addCourseForm.description"></el-input>
