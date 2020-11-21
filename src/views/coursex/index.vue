@@ -1,13 +1,12 @@
 <template>
-  <div>我<br>是<br>主<br>页</div>
+  <div>公告管理</div>
 </template>
 
 <script>
 export default {
-  name: 'Index'
-}
+  name: "Index",
+};
 </script>
 
 <style scoped>
-
 </style>

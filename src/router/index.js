@@ -119,7 +119,7 @@ export const constantRoutes = [
             meta: { title: '课程详情' },
             hidden: true,
             path: 'index',
-            component: () => import('@/views/coursex/index')
+            // component: () => import('@/views/coursex/index')
           }
         ]
       }
