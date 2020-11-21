@@ -11,7 +11,7 @@
             />
           </div>
           <div class="top-item-2">
-            <div class="dashboard-text">下午好， {{ name }}</div>
+          <div class="dashboard-text">下午好， {{ name }}</div>
             <div class="dashboard-text1">中原工学院||彼得堡航空学院</div>
           </div>
         </div>
@@ -72,7 +72,7 @@
     </el-row>
   </div>
 </template>
-   
+
 
 <script>
 import { Chart, registerShape } from "@antv/g2";

@@ -3,16 +3,16 @@
     <el-card class="box-card">
       <el-form :model="addCourseForm" label-width="80px">
         <el-form-item label="课程名称" required>
-          <el-input v-model="addCourseForm.name"></el-input>
+          <el-input clearable v-model="addCourseForm.name"></el-input>
         </el-form-item>
         <el-form-item label="课程容量" required>
-          <el-input v-model="addCourseForm.capacity"></el-input>
+          <el-input clearable v-model="addCourseForm.capacity"></el-input>
         </el-form-item>
         <el-form-item label="学分" required>
-          <el-input v-model="addCourseForm.point"></el-input>
+          <el-input clearable type="number" v-model="addCourseForm.point"></el-input>
         </el-form-item>
         <el-form-item label="课程描述" required>
-          <el-input v-model="addCourseForm.description"></el-input>
+          <el-input type="textarea" rows="3" clearable v-model="addCourseForm.description"></el-input>
         </el-form-item>
         <div class="btn-form">
           <el-button type="primary" @click="addCourseSubmit"
