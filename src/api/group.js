@@ -1,9 +1,12 @@
 import request from '@/utils/request'
 
-export const getGroup = () => {
+export const getGroup = (data) => {
     return request({
         method: 'GET',
-        url: '/section'
+        url: '/section',
+        params: { name: data }
+
+
     })
 }
 export const addGroup = (data) => {

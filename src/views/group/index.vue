@@ -5,8 +5,18 @@
       <div style="margin-top: 15px; margin-bottom: 15px">
         <el-row :gutter="20">
           <el-col :span="8">
-            <el-input placeholder="请输入群组名称 " class="input-with-select">
-              <el-button slot="append" icon="el-icon-search"></el-button>
+            <el-input
+              placeholder="请输入群组名称 "
+              class="input-with-select"
+              v-model="searchForm"
+              clearable
+              @clear="getGroupList"
+            >
+              <el-button
+                slot="append"
+                icon="el-icon-search"
+                @click="searchGroup"
+              ></el-button>
             </el-input>
           </el-col>
 
@@ -59,7 +69,6 @@
         <el-button type="primary" @click="addGroupTrue">确 定</el-button>
       </span>
     </el-dialog>
-    <!-- 显示删除用户的dialog -->
   </div>
 </template>
 
@@ -73,7 +82,7 @@ export default {
     return {
       groupList: [],
       DialogVisible: false,
-
+      searchForm: "",
       addGroupForm: {
         name: "",
         description: "",
@@ -82,6 +91,12 @@ export default {
     };
   },
   methods: {
+    //搜索群组
+    async searchGroup() {
+      const data = await getGroup(this.searchForm);
+      console.log(data);
+      this.groupList = data.data.content;
+    },
     async getGroupList() {
       const { data } = await getGroup();
       // console.log(data);
