@@ -75,8 +75,8 @@ export default {
     return {
       defaultSettings,
       loginForm: {
-        uid: '1',
-        password: '111111'
+        uid: '',
+        password: ''
       },
       loginRules: {
         uid: [{ required: true, trigger: 'blur', validator: validateUsername }],
