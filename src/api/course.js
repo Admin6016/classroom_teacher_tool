@@ -7,3 +7,15 @@ export function getCourse() {
     // params: { token }
   })
 }
+
+export const addCourse = (data) => {
+  return request({
+    url: '/course',
+    method: 'POST',
+    data
+
+  })
+}
+
+
+
