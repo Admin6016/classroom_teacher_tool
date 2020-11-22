@@ -36,13 +36,14 @@
         <el-table-column label="群组操作">
           <template slot-scope="scope">
             <el-button type="primary" size="small">成员管理</el-button>
+            <el-button type="info" size="mini">查看详情</el-button>
             <el-button
               type="danger"
               size="mini"
               @click="removeById(scope.row.seid)"
-              >删除群组</el-button
+            >删除群组
+            </el-button
             >
-            <el-button type="info" size="mini">查看详情</el-button>
           </template>
         </el-table-column>
       </el-table>

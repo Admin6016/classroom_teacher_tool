@@ -86,7 +86,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Group',
         component: () => import('@/views/group/index'),
-        meta: { title: '群组管理', icon: 'el-icon-date' }
+        meta: { title: '群组管理', icon: 'el-icon-chat-line-square' }
       }
     ]
   },
