@@ -35,7 +35,12 @@
 
         <el-table-column label="群组操作">
           <template slot-scope="scope">
-            <el-button type="primary" size="small">成员管理</el-button>
+            <el-button
+              type="primary"
+              size="small"
+              @click="showUserDialogVisiable"
+              >成员管理</el-button
+            >
             <el-button
               type="danger"
               size="mini"
@@ -69,6 +74,24 @@
         <el-button type="primary" @click="addGroupTrue">确 定</el-button>
       </span>
     </el-dialog>
+
+    <!-- 用户管理的dialog -->
+    <el-dialog
+      title="群组成员管理"
+      :visible.sync="userdialogVisible"
+      width="50%"
+    >
+      <el-tabs>
+        <el-tab-pane label="单个导入"><addoneuser></addoneuser></el-tab-pane>
+        <el-tab-pane label="批量导入"><addmanyuser></addmanyuser></el-tab-pane>
+      </el-tabs>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="userdialogVisible = false">取 消</el-button>
+        <el-button type="primary" @click="userdialogVisible = false"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -76,8 +99,17 @@
 import { mapGetters } from "vuex";
 import { getGroup, addGroup, deleteGroup } from "@/api/group";
 import { MessageBox } from "element-ui";
+
+import addoneuser from "@/views/group/addoneuser";
+import addmanyuser from "@/views/group/addmanyuser";
+
 export default {
   name: "Group",
+  components: {
+    addmanyuser,
+    addoneuser,
+  },
+
   data() {
     return {
       groupList: [],
@@ -88,6 +120,7 @@ export default {
         description: "",
         uid: 0,
       },
+      userdialogVisible: false,
     };
   },
   methods: {
@@ -134,6 +167,10 @@ export default {
     },
     addDialogClosed() {
       this.$refs.addGroupRef.resetFields();
+    },
+    // 控制用户管理dialog的显示与隐藏
+    showUserDialogVisiable() {
+      this.userdialogVisible = true;
     },
   },
   created() {

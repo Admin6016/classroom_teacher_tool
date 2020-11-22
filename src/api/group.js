@@ -4,7 +4,10 @@ export const getGroup = (data) => {
     return request({
         method: 'GET',
         url: '/section',
-        params: { name: data }
+        params: {
+            name:
+                data
+        }
 
 
     })
