@@ -28,29 +28,32 @@
         </el-row>
       </div>
 
-      <el-table :data="groupList">
-        <el-table-column type="index"> </el-table-column>
-        <el-table-column label="群组名称" prop="name"></el-table-column>
-        <el-table-column label="群组描述" prop="description"></el-table-column>
-
-        <el-table-column label="群组操作">
-          <template slot-scope="scope">
-            <el-button
-              type="primary"
-              size="small"
-              @click="showUserDialogVisiable"
-              >成员管理</el-button
-            >
-            <el-button
-              type="danger"
-              size="mini"
-              @click="removeById(scope.row.seid)"
-              >删除群组</el-button
-            >
-            <el-button type="info" size="mini">查看详情</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
+      <a-spin :spinning="spinning" tip="加载中...">
+        <el-table :data="groupList">
+          <el-table-column type="index"></el-table-column>
+          <el-table-column label="群组名称" prop="name"></el-table-column>
+          <el-table-column label="群组描述" prop="description"></el-table-column>
+          <el-table-column label="群组操作">
+            <template slot-scope="scope">
+              <el-button
+                type="primary"
+                size="small"
+                @click="showUserDialogVisiable(scope.row.seid)"
+              >成员导入
+              </el-button
+              >
+              <el-button type="info" size="mini">成员详情</el-button>
+              <el-button
+                type="danger"
+                size="mini"
+                @click="removeById(scope.row.seid)"
+              >删除群组
+              </el-button
+              >
+            </template>
+          </el-table-column>
+        </el-table>
+      </a-spin>
     </el-card>
 
     <!-- 添加群组的dialog -->
@@ -58,7 +61,6 @@
       title="添加群组"
       :visible.sync="DialogVisible"
       width="30%"
-      center
       @close="addDialogClosed"
     >
       <el-form :model="addGroupForm" label-width="80px" ref="addGroupRef">
@@ -77,18 +79,19 @@
 
     <!-- 用户管理的dialog -->
     <el-dialog
-      title="群组成员管理"
+      title="群组成员导入"
       :visible.sync="userdialogVisible"
       width="50%"
     >
       <el-tabs>
-        <el-tab-pane label="单个导入"><addoneuser></addoneuser></el-tab-pane>
+        <el-tab-pane label="单个导入">
+          <addoneuser :seid="seid_selected"></addoneuser>
+        </el-tab-pane>
         <el-tab-pane label="批量导入"><addmanyuser></addmanyuser></el-tab-pane>
       </el-tabs>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="userdialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="userdialogVisible = false"
-          >确 定</el-button
+        >关闭</el-button
         >
       </span>
     </el-dialog>
@@ -112,15 +115,17 @@ export default {
 
   data() {
     return {
+      seid_selected: 0,
+      spinning: false,
       groupList: [],
       DialogVisible: false,
-      searchForm: "",
+      searchForm: '',
       addGroupForm: {
-        name: "",
-        description: "",
-        uid: 0,
+        name: '',
+        description: '',
+        uid: 0
       },
-      userdialogVisible: false,
+      userdialogVisible: false
     };
   },
   methods: {
@@ -131,9 +136,11 @@ export default {
       this.groupList = data.data.content;
     },
     async getGroupList() {
+      this.spinning = true
       const { data } = await getGroup();
       // console.log(data);
-      this.groupList = data.content;
+      this.groupList = data.content
+      this.spinning = false
       // console.log(this.groupList);
     },
 
@@ -159,19 +166,20 @@ export default {
         }
       ).catch((err) => err);
       // console.log(data);
-      if (data !== "confirm") {
-        return this.$message.info("已取消删除");
+      if (data !== 'confirm') {
+        return this.$message.info('已取消删除')
       }
-      await deleteGroup(id);
-      this.getGroupList();
+      await deleteGroup(id)
+      this.getGroupList()
     },
     addDialogClosed() {
-      this.$refs.addGroupRef.resetFields();
+      this.$refs.addGroupRef.resetFields()
     },
     // 控制用户管理dialog的显示与隐藏
-    showUserDialogVisiable() {
-      this.userdialogVisible = true;
-    },
+    showUserDialogVisiable(seid) {
+      this.seid_selected = seid
+      this.userdialogVisible = true
+    }
   },
   created() {
     this.getGroupList();

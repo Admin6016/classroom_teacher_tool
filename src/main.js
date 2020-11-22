@@ -15,6 +15,7 @@ import { Card, Icon, List, Spin, Empty, Descriptions, Avatar } from 'ant-design-
 import 'ant-design-vue/dist/antd.css'
 // import '@/styles/global.css'
 Vue.use(Card)
+
 Vue.use(Icon)
 Vue.use(List)
 Vue.use(Spin)
