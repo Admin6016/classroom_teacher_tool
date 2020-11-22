@@ -16,7 +16,12 @@
           </el-input>
         </el-form-item>
         <el-form-item label="课程描述" required>
-          <el-input type="textarea" rows="3" clearable v-model="addCourseForm.description"></el-input>
+          <el-input
+            type="textarea"
+            rows="3"
+            clearable
+            v-model="addCourseForm.description"
+          ></el-input>
         </el-form-item>
         <div class="btn-form">
           <el-button type="primary" @click="addCourseSubmit"
@@ -54,6 +59,8 @@ export default {
       this.addCourseForm.uid = this.uid;
       const { data } = await addCourse(this.addCourseForm);
       console.log(data);
+      this.$message.success("添加成功");
+      this.$router.push("/course/index");
     },
   },
 };

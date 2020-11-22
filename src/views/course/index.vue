@@ -12,8 +12,12 @@
                 @click="handleclick(item.cid)"
               />
               <template slot="actions" class="ant-card-actions">
-                <a-icon key="setting" type="setting" />
-                <a-icon key="edit" type="edit" />
+                <a-icon
+                  key="setting"
+                  type="edit"
+                  @click="showEditCourseVisiable(item.cid)"
+                />
+                <a-icon key="edit" type="delete" @click="removeCourseTrue(item.cid)" />
               </template>
               <a-card-meta
                 @click="handleclick(item.cid)"
@@ -30,17 +34,69 @@
         </a-list>
       </div>
     </a-spin>
+    <!-- 展示修改课程的dialog -->
+    <el-dialog title="修改课程" :visible.sync="EditCourseVisiable" width="30%">
+      <el-form :model="EditCourseForm" label-width="80px">
+        <el-form-item label="课程名称">
+          <el-input v-model="EditCourseForm.name"></el-input>
+        </el-form-item>
+        <el-form-item label="课程描述">
+          <el-input v-model="EditCourseForm.description"></el-input>
+        </el-form-item>
+        <el-form-item label="课程容量">
+          <el-input-number
+            v-model="EditCourseForm.capacity"
+            :min="1"
+            :max="10"
+            label="描述文字"
+          ></el-input-number
+           </el-input
+          >
+        </el-form-item>
+        <el-form-item label="课程学分">
+          <el-input-number
+            v-model="EditCourseForm.point"
+            :min="1"
+            :max="100"
+            label="描述文字"
+          >
+            </el-input-number
+          >
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="EditCourseVisiable = false">取 消</el-button>
+        <el-button type="primary" @click="editCourseTrue"
+          >确 定</el-button
+        >
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
 import { mapGetters } from "vuex";
-import { getCourse } from "@/api/course";
+import {
+  getCourse,
+  editCourse,
+  removeCourse,
+  findCourseById,
+} from "@/api/course";
+import { MessageBox } from "element-ui";
 
 export default {
   data() {
     return {
       courseList: [],
       spinning: false,
+      EditCourseVisiable: false,
+      EditCourseForm: {
+        name: "",
+        description: "",
+        point: 0,
+        capacity: 0,
+        cid: 0,
+      },
+      ccid: 0,
     };
   },
   computed: {
@@ -57,6 +113,59 @@ export default {
   methods: {
     handleclick(cid) {
       this.$router.push("/course/detail/" + cid + "/index");
+    },
+    // 控制修改课程的dialog的显示与隐藏
+    async showEditCourseVisiable(id) {
+      this.EditCourseVisiable = true;
+      // console.log(id);
+      this.ccid = id;
+      // console.log(this.ccid);
+      const data = await findCourseById(id);
+      // console.log(data);
+      this.EditCourseForm = data.data.content[0];
+      // console.log(this.EditCourseForm);
+    },
+
+    // 修改课程信息
+    async editCourseTrue() {
+      this.EditCourseForm.cid = this.ccid;
+      const data = await editCourse(this.EditCourseForm);
+      console.log(data);
+      if (data.code < 0) {
+        return this.$message.error("修改失败，请重试");
+      }
+      this.$message.success("修改成功");
+      this.EditCourseVisiable = false;
+      getCourse().then((res) => {
+        console.log(res);
+        this.courseList = res.data.content;
+      });
+    },
+    // 删除课程
+    async removeCourseTrue(id) {
+      const data = await this.$confirm(
+        "此操作将永久删除该课程, 是否继续?",
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning",
+        }
+      ).catch((err) => err);
+      // console.log(data);
+      if (data !== "confirm") {
+        return this.$message.info("已取消删除");
+      }
+      const res = await removeCourse(id);
+      console.log(res);
+      if (res.code < 0) {
+        return this.$message.error("删除失败，请重试");
+      }
+      this.$message.success("删除成功");
+      getCourse().then((res) => {
+        console.log(res);
+        this.courseList = res.data.content;
+      });
     },
   },
 };
