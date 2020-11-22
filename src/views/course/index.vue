@@ -36,34 +36,36 @@
     </a-spin>
     <!-- 展示修改课程的dialog -->
     <el-dialog title="修改课程" :visible.sync="EditCourseVisiable" width="30%">
-      <el-form :model="EditCourseForm" label-width="80px">
-        <el-form-item label="课程名称">
-          <el-input v-model="EditCourseForm.name"></el-input>
-        </el-form-item>
-        <el-form-item label="课程描述">
-          <el-input v-model="EditCourseForm.description"></el-input>
-        </el-form-item>
-        <el-form-item label="课程容量">
-          <el-input-number
-            v-model="EditCourseForm.capacity"
-            :min="1"
-            :max="10"
-            label="描述文字"
-          ></el-input-number
-           </el-input
-          >
-        </el-form-item>
-        <el-form-item label="课程学分">
-          <el-input-number
-            v-model="EditCourseForm.point"
-            :min="1"
-            :max="100"
-            label="描述文字"
-          >
+      <a-spin tip="数据马上就来" :spinning="spinning2">
+        <el-form :model="EditCourseForm" label-width="80px">
+          <el-form-item label="课程名称">
+            <el-input v-model="EditCourseForm.name"></el-input>
+          </el-form-item>
+          <el-form-item label="课程描述">
+            <el-input v-model="EditCourseForm.description"></el-input>
+          </el-form-item>
+          <el-form-item label="课程容量">
+            <el-input-number
+              v-model="EditCourseForm.capacity"
+              :min="1"
+              :max="10"
+              label="描述文字"
+            ></el-input-number
+            </el-input
+              >
+          </el-form-item>
+          <el-form-item label="课程学分">
+            <el-input-number
+              v-model="EditCourseForm.point"
+              :min="1"
+              :max="100"
+              label="描述文字"
+            >
             </el-input-number
-          >
-        </el-form-item>
-      </el-form>
+            >
+          </el-form-item>
+        </el-form>
+      </a-spin>
       <span slot="footer" class="dialog-footer">
         <el-button @click="EditCourseVisiable = false">取 消</el-button>
         <el-button type="primary" @click="editCourseTrue"
@@ -88,15 +90,16 @@ export default {
     return {
       courseList: [],
       spinning: false,
+      spinning2: false,
       EditCourseVisiable: false,
       EditCourseForm: {
-        name: "",
-        description: "",
+        name: '',
+        description: '',
         point: 0,
         capacity: 0,
-        cid: 0,
+        cid: 0
       },
-      ccid: 0,
+      ccid: 0
     };
   },
   computed: {
@@ -116,13 +119,15 @@ export default {
     },
     // 控制修改课程的dialog的显示与隐藏
     async showEditCourseVisiable(id) {
-      this.EditCourseVisiable = true;
+      this.spinning2 = true
+      this.EditCourseVisiable = true
       // console.log(id);
       this.ccid = id;
       // console.log(this.ccid);
       const data = await findCourseById(id);
       // console.log(data);
-      this.EditCourseForm = data.data.content[0];
+      this.EditCourseForm = data.data.content[0]
+      this.spinning2 = false
       // console.log(this.EditCourseForm);
     },
 
