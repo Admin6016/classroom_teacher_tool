@@ -182,7 +182,8 @@ $light_gray:#eee;
   min-height: 100%;
   width: 100%;
   //background-color: $bg;
-  background: url("https://vkceyugu.cdn.bspapp.com/VKCEYUGU-student-data/b8a3b770-2a41-11eb-b680-7980c8a877b8.jpg");
+  //background: url("https://vkceyugu.cdn.bspapp.com/VKCEYUGU-student-data/b8a3b770-2a41-11eb-b680-7980c8a877b8.jpg");
+  background: url("https://v1.alapi.cn/api/bing");
   background-size: cover;
   overflow: hidden;
 
