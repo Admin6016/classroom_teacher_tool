@@ -200,7 +200,7 @@ export const constantRoutes = [
     component: Layout,
     children: [
       {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+        path: 'https://gitee.com/hanyuhao/classroom-interaction-tools-mobile',
         meta: { title: 'Gitee', icon: 'link' }
       }
     ]

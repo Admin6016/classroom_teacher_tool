@@ -1,12 +1,23 @@
 <template>
   <div>
-    <el-tabs :tab-position="tabPosition" style="height: 800px">
-      <el-tab-pane label="公告管理"><coursex></coursex></el-tab-pane>
+    <div class="border">
+      <!--   不太好看 暂时取消了    style="height: 800px"-->
+      <el-tabs :tab-position="tabPosition">
+        <el-tab-pane label="公告管理">
+          <coursex></coursex>
+        </el-tab-pane>
 
-      <el-tab-pane label="人员管理"><people /></el-tab-pane>
-      <el-tab-pane label="签到管理"><sign /></el-tab-pane>
-      <el-tab-pane label="作业管理"><homework /></el-tab-pane>
-    </el-tabs>
+        <el-tab-pane label="人员管理">
+          <people/>
+        </el-tab-pane>
+        <el-tab-pane label="签到管理">
+          <sign/>
+        </el-tab-pane>
+        <el-tab-pane label="作业管理">
+          <homework/>
+        </el-tab-pane>
+      </el-tabs>
+    </div>
   </div>
 </template>
 <script>
@@ -21,13 +32,18 @@ export default {
 
     people,
     sign,
-    homework,
+    homework
   },
   data() {
     return {
-      tabPosition: "right",
-    };
-  },
+      tabPosition: 'right'
+    }
+  }
 };
 </script>
+<style scoped>
+.border {
+  padding: 30px;
+}
+</style>
 

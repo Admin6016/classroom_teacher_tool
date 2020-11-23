@@ -6,20 +6,32 @@
       >
     </el-row>
 
-    <el-divider></el-divider>
     <div style="margin-left: 11%; margin-right: 11%; padding-top: 30px">
-      <a-list :grid="{ gutter: 20, column: 4 }" :data-source="noticeData">
+      <a-empty v-if="noticeData.length === 0"/>
+      <a-list v-if="noticeData.length !== 0" :grid="{ gutter: 20, column: 4 }" :data-source="noticeData">
         <a-list-item slot="renderItem" slot-scope="item, index">
-          <a-card :title="item.title" hoverable
-            ><el-tooltip
+          <a-card hoverable
+          >
+            <template slot="title">
+              <el-tag type="info">标题</el-tag>
+              {{ ' ' + item.title }}
+            </template>
+            <el-tooltip
               class="item"
               effect="dark"
               content="查看公告详情"
               placement="top"
-              ><div @click="lookNotice(item.nid)">
-                <h3>作者：{{ item.author }}</h3>
+            >
+              <div @click="lookNotice(item.nid)">
+                <h3>
+                  <el-tag>作者</el-tag>
+                  {{ ' ' + item.author }}
+                </h3>
                 <!-- <h3>内容：{{ item.context }}</h3> -->
-                <h4>创建时间：{{ item.createTime.substr(0, 10) }}</h4>
+                <h4>
+                  <el-tag type="warning">创建日期</el-tag>
+                  {{ ' ' + item.createTime.substr(0, 10) }}
+                </h4>
               </div>
             </el-tooltip>
             <template slot="actions" class="ant-card-actions">
@@ -43,17 +55,16 @@
     <el-dialog
       title="修改公告"
       :visible.sync="editNoticedialogVisible"
-      width="30%"
+      width="650px"
     >
-      <el-form :model="editNotice" label-width="80px">
-        <el-form-item label="公告内容" required>
-          <el-input
-            type="textarea"
-            rows="3"
-            clearable
-            v-model="editNotice.context"
-          ></el-input>
-        </el-form-item>
+      <el-form :model="editNotice">
+        <tinymce v-model="editNotice.context"/>
+        <!--          <el-input-->
+        <!--            type="textarea"-->
+        <!--            rows="3"-->
+        <!--            clearable-->
+        <!--            v-model="editNotice.context"-->
+        <!--          ></el-input>-->
       </el-form>
       <span slot="footer" class="dialog-footer">
         <el-button @click="editNoticedialogVisible = false">取 消</el-button>
@@ -62,24 +73,24 @@
     </el-dialog>
     <!-- 展示公告详情的页面 -->
     <el-dialog
-      title="公告详情"
+      title="公告预览"
       :visible.sync="looNoticedialogVisible"
       width="30%"
     >
-      <el-card class="box-card">
-        <div slot="header">
-          <span>公告详情</span>
-        </div>
-        <div>作者：{{ noticeData[0].author }}</div>
-        <div>标题：{{ noticeData[0].title }}</div>
-        <div>内容：{{ noticeData[0].context }}</div>
-        <div>创建时间：{{ noticeData[0].createTime }}</div>
-        <div>修改时间：{{ noticeData[0].updateTime }}</div>
-      </el-card>
+      <!--      <el-card class="box-card">-->
+      <!--        <div slot="header">-->
+      <!--          <span>公告详情</span>-->
+      <!--        </div>-->
+      <!--        <div>作者：{{ noticeData[0].author }}</div>-->
+      <!--        <div>标题：{{ noticeData[0].title }}</div>-->
+      <div v-html="`${noticeData[0].context}`"></div>
+      <!--        <div>创建时间：{{ noticeData[0].createTime }}</div>-->
+      <!--        <div>修改时间：{{ noticeData[0].updateTime }}</div>-->
+      <!--      </el-card>-->
       <span slot="footer" class="dialog-footer">
         <el-button @click="looNoticedialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="looNoticedialogVisible = false"
-          >确 定</el-button
+        >确 定</el-button
         >
       </span>
     </el-dialog>
@@ -87,17 +98,19 @@
 </template>
 
 <script>
-import { getNotice, FindNoticeById, editNotice } from "@/api/notice";
+import Tinymce from '@/components/Tinymce'
+import { getNotice, FindNoticeById, editNotice } from '@/api/notice'
 export default {
-  name: "Index",
+  name: 'Index',
+  components: { Tinymce },
   data() {
     return {
       noticeData: [],
       cid: 0,
       editNoticedialogVisible: false,
       editNotice: {},
-      looNoticedialogVisible: false,
-    };
+      looNoticedialogVisible: false
+    }
   },
   created() {
     this.getNoticeList();
@@ -105,10 +118,19 @@ export default {
   methods: {
     // 获取所有公告列表 生成一个数组  给列表
     async getNoticeList() {
-      this.cid = this.$route.params.cid;
-      const data = await getNotice(this.cid);
-      console.log(data);
-      this.noticeData = data.data.content;
+      const loading = this.$loading({
+        lock: true,
+        text: '公告加载中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      this.cid = this.$route.params.cid
+      const data = await getNotice(this.cid)
+      console.log(data)
+      if (data.data.content.length > 0) {
+        this.noticeData = data.data.content
+      }
+      loading.close()
     },
     // 按需查询公告 并且生成一个对象 赋值给form
     async showEditNoticeVisiable(id) {

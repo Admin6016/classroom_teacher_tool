@@ -22,23 +22,29 @@
         <div class="xiangqing">
           <div>
             <a-card title="资料" :bordered="true" style="width: 100%;">
-              <a-descriptions title="用户信息">
-                <a-descriptions-item label="姓名">
-                  {{ name }}
-                </a-descriptions-item>
-                <a-descriptions-item label="手机号">
-                  1810000000
-                </a-descriptions-item>
-                <a-descriptions-item label="位置">
-                  Hangzhou, Zhejiang
-                </a-descriptions-item>
-                <a-descriptions-item label="性别">
-                  empty
-                </a-descriptions-item>
-                <a-descriptions-item label="备注">
-                  No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
-                </a-descriptions-item>
-              </a-descriptions>
+              <a-spin :spinning="spinning_c" tip="用户信息加载中">
+                <a-descriptions title="用户信息">
+                  <a-descriptions-item label="用户名">
+                    {{ user.username }}
+                    <el-button icon="el-icon-edit" circle size="mini"></el-button>
+                  </a-descriptions-item>
+                  <a-descriptions-item label="手机号">
+                    {{ user.telephone }}
+                    <el-button icon="el-icon-edit" circle size="mini"></el-button>
+                  </a-descriptions-item>
+                  <a-descriptions-item label="位置">
+                    {{ user.location }}
+                    <el-button icon="el-icon-edit" circle size="mini"></el-button>
+                  </a-descriptions-item>
+                  <a-descriptions-item label="性别">
+                    {{ user.sex }}
+                  </a-descriptions-item>
+                  <a-descriptions-item label="备注">
+                    No. 18, Wantang Road, Xihu District, Hangzhou, Zhejiang, China
+                    <el-button icon="el-icon-edit" circle size="mini"></el-button>
+                  </a-descriptions-item>
+                </a-descriptions>
+              </a-spin>
             </a-card>
           </div>
         </div>
@@ -49,9 +55,9 @@
             <a-list item-layout="horizontal" :data-source="data">
               <a-list-item slot="renderItem" slot-scope="item, index">
                 <a-list-item-meta
-                  description="Ant Design, a design language for background applications, is refined by Ant UED Team"
+                  description="language for background applications, is refined by Ant UED Team"
                 >
-                  <a slot="title" href="https://www.antdv.com/">{{
+                  <a slot="title" href="https://www.baidu.com/">{{
                       item.title
                     }}</a>
                   <a-avatar
@@ -79,20 +85,20 @@
 import { Chart, registerShape } from '@antv/g2'
 const data = [
   {
-    title: 'Ant Design Title 1'
+    title: 'Title 1'
   },
   {
-    title: 'Ant Design Title 2'
+    title: 'Title 2'
   },
   {
-    title: 'Ant Design Title 3'
+    title: 'Title 3'
   },
   {
-    title: 'Ant Design Title 4'
+    title: 'Title 4'
   }
 ]
 import { mapGetters } from 'vuex'
-
+import { getUserById } from '@/api/user'
 export default {
   name: 'Dashboard',
   computed: {
@@ -122,10 +128,13 @@ export default {
   },
   data() {
     return {
-      data
+      data,
+      user: {},
+      spinning_c: false
     }
   },
   mounted() {
+
     registerShape('point', 'pointer', {
       draw(cfg, container) {
         const group = container.addGroup()
@@ -255,9 +264,16 @@ export default {
     chart.render()
   },
   methods: {
-    sayHello() {
-      console.log('hello')
+    renderUser() {
+      this.spinning_c = true
+      getUserById(this.uid).then((res) => {
+        this.user = res.data.content[0]
+        this.spinning_c = false
+      })
     }
+  },
+  created() {
+    this.renderUser()
   }
 
 }

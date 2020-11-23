@@ -8,6 +8,13 @@ export function login(data) {
   })
 }
 
+export function getUserById(id) {
+  return request({
+    url: '/user?uid=' + id,
+    method: 'get'
+  })
+}
+
 export function getInfo(token) {
   return request({
     url: '/user/info',

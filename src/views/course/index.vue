@@ -7,8 +7,8 @@
             <a-card hoverable style="width: 80%">
               <img
                 slot="cover"
-                :alt="item.src"
-                :src="item.src"
+                alt="http://lorempixel.com/"
+                src="http://lorempixel.com/400/200/abstract"
                 @click="handleclick(item.cid)"
               >
               <template slot="actions" class="ant-card-actions">
@@ -48,7 +48,7 @@
             <el-input-number
               v-model="EditCourseForm.capacity"
               :min="1"
-              :max="10"
+              :max="500"
               label="描述文字"
             />
           </el-form-item>
@@ -56,7 +56,7 @@
             <el-input-number
               v-model="EditCourseForm.point"
               :min="1"
-              :max="100"
+              :max="10"
               label="描述文字"
             />
           </el-form-item>
@@ -106,9 +106,6 @@ export default {
     this.spinning = true
     getCourse().then((res) => {
       console.log(res)
-      for (const data_ of res.data.content) {
-        data_.src = 'http://lorempixel.com/400/200' + '/abstract'
-      }
       this.courseList = res.data.content
 
       this.spinning = false
