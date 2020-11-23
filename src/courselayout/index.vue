@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-tabs :tab-position="tabPosition" style="height: 200px">
+    <el-tabs :tab-position="tabPosition" style="height: 800px">
       <el-tab-pane label="公告管理"><coursex></coursex></el-tab-pane>
 
       <el-tab-pane label="人员管理"><people /></el-tab-pane>
