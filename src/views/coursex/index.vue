@@ -4,7 +4,10 @@
 
 <script>
 export default {
-  name: "Index",
+  name: 'Index',
+  mounted() {
+    console.log(this.$route)
+  }
 };
 </script>
 

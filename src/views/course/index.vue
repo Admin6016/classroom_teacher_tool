@@ -2,15 +2,15 @@
   <div>
     <a-spin :spinning="spinning" tip="加载中...">
       <div style="margin-left: 11%; margin-right: 11%; padding-top: 30px">
-        <a-list :grid="{ gutter: 3, column: 3 }" :data-source="courseList">
+        <a-list :grid="{ gutter: 12, column: 4 }" :data-source="courseList">
           <a-list-item slot="renderItem" slot-scope="item">
             <a-card hoverable style="width: 80%">
               <img
                 slot="cover"
-                alt="example"
-                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
+                :alt="item.src"
+                :src="item.src"
                 @click="handleclick(item.cid)"
-              />
+              >
               <template slot="actions" class="ant-card-actions">
                 <a-icon
                   key="setting"
@@ -20,14 +20,14 @@
                 <a-icon key="edit" type="delete" @click="removeCourseTrue(item.cid)" />
               </template>
               <a-card-meta
-                @click="handleclick(item.cid)"
                 :title="item.name"
                 :description="item.description"
+                @click="handleclick(item.cid)"
               >
-                <a-avatar
-                  slot="avatar"
-                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                />
+                <!--                <a-avatar-->
+                <!--                  slot="avatar"-->
+                <!--                  src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"-->
+                <!--                />-->
               </a-card-meta>
             </a-card>
           </a-list-item>
@@ -39,10 +39,10 @@
       <a-spin tip="数据马上就来" :spinning="spinning2">
         <el-form :model="EditCourseForm" label-width="80px">
           <el-form-item label="课程名称">
-            <el-input v-model="EditCourseForm.name"></el-input>
+            <el-input v-model="EditCourseForm.name"/>
           </el-form-item>
           <el-form-item label="课程描述">
-            <el-input v-model="EditCourseForm.description"></el-input>
+            <el-input v-model="EditCourseForm.description"/>
           </el-form-item>
           <el-form-item label="课程容量">
             <el-input-number
@@ -50,9 +50,7 @@
               :min="1"
               :max="10"
               label="描述文字"
-            ></el-input-number
-            </el-input
-              >
+            />
           </el-form-item>
           <el-form-item label="课程学分">
             <el-input-number
@@ -60,30 +58,29 @@
               :min="1"
               :max="100"
               label="描述文字"
-            >
-            </el-input-number
-            >
+            />
           </el-form-item>
         </el-form>
       </a-spin>
       <span slot="footer" class="dialog-footer">
         <el-button @click="EditCourseVisiable = false">取 消</el-button>
-        <el-button type="primary" @click="editCourseTrue"
-          >确 定</el-button
-        >
+        <el-button
+          type="primary"
+          @click="editCourseTrue"
+        >确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
 import {
   getCourse,
   editCourse,
   removeCourse,
-  findCourseById,
-} from "@/api/course";
-import { MessageBox } from "element-ui";
+  findCourseById
+} from '@/api/course'
+// import { getSrc } from '@/api/other'
 
 export default {
   data() {
@@ -100,31 +97,35 @@ export default {
         cid: 0
       },
       ccid: 0
-    };
+    }
   },
   computed: {
-    ...mapGetters(["name", "uid"]),
+    ...mapGetters(['name', 'uid'])
   },
   created() {
-    this.spinning = true;
+    this.spinning = true
     getCourse().then((res) => {
-      console.log(res);
-      this.courseList = res.data.content;
-      this.spinning = false;
-    });
+      console.log(res)
+      for (const data_ of res.data.content) {
+        data_.src = 'http://lorempixel.com/400/200' + '/abstract'
+      }
+      this.courseList = res.data.content
+
+      this.spinning = false
+    })
   },
   methods: {
     handleclick(cid) {
-      this.$router.push("/course/detail/" + cid + "/index");
+      this.$router.push('/course/detail/' + cid + '/index')
     },
     // 控制修改课程的dialog的显示与隐藏
     async showEditCourseVisiable(id) {
       this.spinning2 = true
       this.EditCourseVisiable = true
       // console.log(id);
-      this.ccid = id;
+      this.ccid = id
       // console.log(this.ccid);
-      const data = await findCourseById(id);
+      const data = await findCourseById(id)
       // console.log(data);
       this.EditCourseForm = data.data.content[0]
       this.spinning2 = false
@@ -133,47 +134,47 @@ export default {
 
     // 修改课程信息
     async editCourseTrue() {
-      this.EditCourseForm.cid = this.ccid;
-      const data = await editCourse(this.EditCourseForm);
-      console.log(data);
+      this.EditCourseForm.cid = this.ccid
+      const data = await editCourse(this.EditCourseForm)
+      console.log(data)
       if (data.code < 0) {
-        return this.$message.error("修改失败，请重试");
+        return this.$message.error('修改失败，请重试')
       }
-      this.$message.success("修改成功");
-      this.EditCourseVisiable = false;
+      this.$message.success('修改成功')
+      this.EditCourseVisiable = false
       getCourse().then((res) => {
-        console.log(res);
-        this.courseList = res.data.content;
-      });
+        console.log(res)
+        this.courseList = res.data.content
+      })
     },
     // 删除课程
     async removeCourseTrue(id) {
       const data = await this.$confirm(
-        "此操作将永久删除该课程, 是否继续?",
-        "提示",
+        '此操作将永久删除该课程, 是否继续?',
+        '提示',
         {
-          confirmButtonText: "确定",
-          cancelButtonText: "取消",
-          type: "warning",
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
         }
-      ).catch((err) => err);
+      ).catch((err) => err)
       // console.log(data);
-      if (data !== "confirm") {
-        return this.$message.info("已取消删除");
+      if (data !== 'confirm') {
+        return this.$message.info('已取消删除')
       }
-      const res = await removeCourse(id);
-      console.log(res);
+      const res = await removeCourse(id)
+      console.log(res)
       if (res.code < 0) {
-        return this.$message.error("删除失败，请重试");
+        return this.$message.error('删除失败，请重试')
       }
-      this.$message.success("删除成功");
+      this.$message.success('删除成功')
       getCourse().then((res) => {
-        console.log(res);
-        this.courseList = res.data.content;
-      });
-    },
-  },
-};
+        console.log(res)
+        this.courseList = res.data.content
+      })
+    }
+  }
+}
 </script>
 
 <style scoped>
