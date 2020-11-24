@@ -1,10 +1,10 @@
 <template>
   <div>
     <a-spin :spinning="spinning" tip="加载中...">
-      <div style="margin-left: 11%; margin-right: 11%; padding-top: 30px">
+      <div style="padding: 30px">
         <a-list :grid="{ gutter: 12, column: 3 }" :data-source="courseList">
           <a-list-item slot="renderItem" slot-scope="item">
-            <a-card hoverable style="width: 80%">
+            <a-card hoverable style="width: 90%">
               <img
                 slot="cover"
                 alt="http://lorempixel.com/"
