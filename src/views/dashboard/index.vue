@@ -26,7 +26,19 @@
                 <a-descriptions title="用户信息">
                   <a-descriptions-item label="用户名">
                     {{ user.username }}
-                    <el-button icon="el-icon-edit" circle size="mini"></el-button>
+                    <el-popover
+                      placement="top"
+                      width="160"
+                      v-model="visible">
+                      <p>这是一段内容这是一段内容确定删除吗？</p>
+                      <div style="text-align: right; margin: 0">
+                        <el-button size="mini" type="text" @click="visible = false">取消</el-button>
+                        <el-button type="primary" size="mini" @click="visible = false">确定</el-button>
+                      </div>
+                      <el-button slot="reference" @click="visible = true" icon="el-icon-edit" circle
+                                 size="mini"></el-button>
+                    </el-popover>
+
                   </a-descriptions-item>
                   <a-descriptions-item label="手机号">
                     {{ user.telephone }}
@@ -78,6 +90,8 @@
         </div>
       </el-col>
     </el-row>
+
+
   </div>
 </template>
 
@@ -128,6 +142,7 @@ export default {
   },
   data() {
     return {
+      visible: false,
       data,
       user: {},
       spinning_c: false
@@ -264,6 +279,7 @@ export default {
     chart.render()
   },
   methods: {
+
     renderUser() {
       this.spinning_c = true
       getUserById(this.uid).then((res) => {

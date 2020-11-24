@@ -15,7 +15,7 @@
       <a-empty v-if="noticeData.length === 0" />
       <a-list
         v-if="noticeData.length !== 0"
-        :grid="{ gutter: 20, column: 4 }"
+        :grid="{ gutter: 24, column: 3 }"
         :data-source="noticeData"
       >
         <a-list-item slot="renderItem" slot-scope="item, index">
@@ -203,7 +203,6 @@ export default {
       // console.log(item);
 
       this.editNotice = item;
-
       console.log(this.editNotice);
       this.editNoticedialogVisible = true;
     },
