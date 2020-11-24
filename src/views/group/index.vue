@@ -63,12 +63,24 @@
               />
 
             </el-input>
-            <el-button
-              type="success"
-              icon="el-icon-plus"
-              @click="addGroupFormVisable"
-            >添加群组
-            </el-button>
+            <el-dropdown @command="handleCommand">
+              <el-button type="primary">
+                更多操作<i class="el-icon-arrow-down el-icon--right"/>
+              </el-button>
+              <el-dropdown-menu slot="dropdown">
+                <el-dropdown-item command="a">添加群组</el-dropdown-item>
+                <!--                <el-dropdown-item>狮子头</el-dropdown-item>-->
+                <!--                <el-dropdown-item>螺蛳粉</el-dropdown-item>-->
+                <!--                <el-dropdown-item>双皮奶</el-dropdown-item>-->
+                <!--                <el-dropdown-item>蚵仔煎</el-dropdown-item>-->
+              </el-dropdown-menu>
+            </el-dropdown>
+            <!--            <el-button-->
+            <!--              type="success"-->
+            <!--              icon="el-icon-plus"-->
+            <!--              @click="addGroupFormVisable"-->
+            <!--            >添加群组-->
+            <!--            </el-button>-->
           </template>
         </el-table-column>
       </el-table>
@@ -130,32 +142,37 @@
           <el-table
             stripe
             :data="draw_user_data"
-            style="width: 100%">
+            style="width: 100%"
+          >
             <el-table-column
               prop="uid"
               label="学号"
               sortable
-              width="120"/>
+              width="120"
+            />
             <el-table-column
               label="姓名"
               sortable
-              width="100">
+              width="100"
+            >
               <template slot-scope="scope">
                 <el-tag><span>{{ scope.row.name }}</span></el-tag>
               </template>
             </el-table-column>
-            </el-table-column>
             <el-table-column
               prop="sex"
               label="性别"
-              width="60"/>
+              width="60"
+            />
             <el-table-column
               prop="telephone"
               label="联系方式"
-              width="160"/>
+              width="160"
+            />
             <el-table-column
               label="操作"
-              width="100">
+              width="100"
+            >
               <template slot-scope="scope">
                 <el-button type="text" size="small" @click="console.log(scope.row)">踢出</el-button>
               </template>
@@ -189,7 +206,6 @@
 <script>
 import { mapGetters } from 'vuex'
 import { getGroup, addGroup, deleteGroup } from '@/api/group'
-import { MessageBox } from 'element-ui'
 
 import addoneuser from '@/views/group/addoneuser'
 import addmanyuser from '@/views/group/addmanyuser'
@@ -225,6 +241,11 @@ export default {
     this.getGroupList()
   },
   methods: {
+    handleCommand(command) {
+      if (command === 'a') {
+        this.addGroupFormVisable()
+      }
+    },
     handleSizeChange(val) {
       console.log(`每页 ${val} 条`)
     },
