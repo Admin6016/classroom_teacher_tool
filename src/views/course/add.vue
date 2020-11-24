@@ -25,6 +25,7 @@
         </el-form-item>
         <div class="btn-form">
           <el-button type="primary" @click="addCourseSubmit"
+                     :loading="load11"
             >立即创建</el-button
           >
           <el-button>取消</el-button>
@@ -42,13 +43,14 @@ export default {
   name: "add",
   data() {
     return {
+      load11: false,
       addCourseForm: {
-        capacity: "",
-        description: "",
-        name: "",
-        point: "",
-        uid: 0,
-      },
+        capacity: '',
+        description: '',
+        name: '',
+        point: '',
+        uid: 0
+      }
     };
   },
   computed: {
@@ -56,11 +58,13 @@ export default {
   },
   methods: {
     async addCourseSubmit() {
-      this.addCourseForm.uid = this.uid;
+      this.load11 = true
+      this.addCourseForm.uid = this.uid
       const { data } = await addCourse(this.addCourseForm);
       console.log(data);
-      this.$message.success("添加成功");
-      this.$router.push("/course/index");
+      this.$message.success('添加成功')
+      this.load11 = false
+      this.$router.push('/course/index')
     },
   },
 };
