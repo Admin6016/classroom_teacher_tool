@@ -197,11 +197,9 @@ import { getGroupMember } from "@/api/groupdata";
 
 export default {
   name: "Group",
-  name: "Group",
-  name: "Group",
+
   components: {
     addmanyuser,
-    addoneuser,
     addoneuser,
   },
 
