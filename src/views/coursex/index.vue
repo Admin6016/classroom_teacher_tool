@@ -30,7 +30,7 @@
               content="查看公告详情"
               placement="top"
             >
-              <div @click="lookNotice(item.nid)">
+              <div @click="lookNotice(index)">
                 <h3>
                   <el-tag>作者</el-tag>
                   {{ " " + item.author }}
@@ -93,7 +93,7 @@
       <!--        </div>-->
       <!--        <div>作者：{{ noticeData[0].author }}</div>-->
       <!--        <div>标题：{{ noticeData[0].title }}</div>-->
-      <div v-html="`${noticeData[0].context}`"></div>
+      <div v-html="`${noticeData[item_id].context}`"></div>
       <!--        <div>创建时间：{{ noticeData[0].createTime }}</div>-->
       <!--        <div>修改时间：{{ noticeData[0].updateTime }}</div>-->
       <!--      </el-card>-->
@@ -148,6 +148,7 @@ export default {
   components: { Tinymce },
   data() {
     return {
+      item_id: 0,
       noticeData: [],
       cid: 0,
       editNoticedialogVisible: false,
@@ -230,7 +231,7 @@ export default {
     },
     // 查看详情
     lookNotice(id) {
-      console.log(id);
+      this.item_id = id;
       this.looNoticedialogVisible = true;
     },
     // 添加公告对话框的显示与隐藏
