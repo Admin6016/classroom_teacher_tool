@@ -41,7 +41,7 @@
             <template slot="header">
               <el-input
                 placeholder="请输入群组名称"
-                style="width: 250px;margin-right: 20px"
+                style="width: 200px;margin-right: 10px"
                 v-model="searchForm"
                 clearable
                 @clear="getGroupList"
