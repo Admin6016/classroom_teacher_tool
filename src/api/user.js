@@ -29,3 +29,12 @@ export function logout() {
     method: 'post'
   })
 }
+
+// 修改用户名
+export const editUser = (data) => {
+  return request({
+    url: '/user',
+    method: 'PUT',
+    data
+  })
+}
