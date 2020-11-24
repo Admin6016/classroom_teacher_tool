@@ -2,68 +2,59 @@
   <div class="group-container">
     <!-- 卡片视图区域 -->
     <!--    <el-card class="group-card">-->
-      <div style="margin-top: 15px; margin-bottom: 15px">
-        <el-row :gutter="20">
-          <el-col :span="8">
+    <div style="margin-top: 15px; margin-bottom: 15px">
+      <el-row :gutter="20">
+        <el-col :span="8"> </el-col>
 
+        <el-col :span="4" :offset="12"> </el-col>
+      </el-row>
+    </div>
 
-          </el-col>
-
-          <el-col :span="4" :offset="12">
-
-          </el-col>
-        </el-row>
-      </div>
-
-      <a-spin :spinning="spinning" tip="加载中...">
-        <el-table :data="groupList">
-          <el-table-column type="index"></el-table-column>
-          <el-table-column label="群组名称" prop="name"></el-table-column>
-          <el-table-column label="群组描述" prop="description"></el-table-column>
-          <el-table-column label="群组操作" align="right">
-            <template slot-scope="scope">
-              <el-button
-                type="primary"
-                size="small"
-                @click="showUserDialogVisiable(scope.row.seid)"
+    <a-spin :spinning="spinning" tip="加载中...">
+      <el-table :data="groupList">
+        <el-table-column type="index"></el-table-column>
+        <el-table-column label="群组名称" prop="name"></el-table-column>
+        <el-table-column label="群组描述" prop="description"></el-table-column>
+        <el-table-column label="群组操作" align="right">
+          <template slot-scope="scope">
+            <el-button
+              type="primary"
+              size="small"
+              @click="showUserDialogVisiable(scope.row.seid)"
               >成员导入
-              </el-button
-              >
-              <el-button type="info" size="mini">成员详情</el-button>
-              <el-button
-                type="danger"
-                size="mini"
-                @click="removeById(scope.row.seid)"
+            </el-button>
+            <el-button type="info" size="mini">成员详情</el-button>
+            <el-button
+              type="danger"
+              size="mini"
+              @click="removeById(scope.row.seid)"
               >删除群组
-              </el-button
-              >
-            </template>
-            <template slot="header">
-              <el-input
-                placeholder="请输入群组名称"
-                style="width: 250px;margin-right: 20px"
-                v-model="searchForm"
-                clearable
-                @clear="getGroupList"
-              >
-
-                <el-button
-                  slot="append"
-                  icon="el-icon-search"
-                  @click="searchGroup"
-                ></el-button>
-
-
-              </el-input>
-              <el-button type="success" @click="addGroupFormVisable"
-                         icon="el-icon-plus"
+            </el-button>
+          </template>
+          <template slot="header">
+            <el-input
+              placeholder="请输入群组名称"
+              style="width: 250px; margin-right: 20px"
+              v-model="searchForm"
+              clearable
+              @clear="getGroupList"
+            >
+              <el-button
+                slot="append"
+                icon="el-icon-search"
+                @click="searchGroup"
+              ></el-button>
+            </el-input>
+            <el-button
+              type="success"
+              @click="addGroupFormVisable"
+              icon="el-icon-plus"
               >添加群组
-              </el-button
-              >
-            </template>
-          </el-table-column>
-        </el-table>
-      </a-spin>
+            </el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+    </a-spin>
     <!--    </el-card>-->
 
     <!-- 添加群组的dialog -->
@@ -103,20 +94,21 @@
       </el-tabs>
       <span slot="footer" class="dialog-footer">
         <el-button type="primary" @click="userdialogVisible = false"
-        >关闭</el-button
+          >关闭</el-button
         >
       </span>
     </el-dialog>
 
     <el-pagination
-      style="margin-left: 35%;margin-right: 35%;margin-top:20px"
+      style="margin-left: 35%; margin-right: 35%; margin-top: 20px"
       @size-change="handleSizeChange"
       @current-change="handleCurrentChange"
       :current-page.sync="currentPage"
       :page-sizes="[100, 200, 300, 400]"
       :page-size="100"
       layout="sizes, prev, pager, next"
-      :total="1000">
+      :total="1000"
+    >
     </el-pagination>
   </div>
 </template>
@@ -143,34 +135,34 @@ export default {
       spinning: false,
       groupList: [],
       DialogVisible: false,
-      searchForm: '',
+      searchForm: "",
       addGroupForm: {
-        name: '',
-        description: '',
-        uid: 0
+        name: "",
+        description: "",
+        uid: 0,
       },
-      userdialogVisible: false
+      userdialogVisible: false,
     };
   },
   methods: {
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`)
+      console.log(`每页 ${val} 条`);
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`)
+      console.log(`当前页: ${val}`);
     },
     //搜索群组
     async searchGroup() {
-      const data = await getGroup(this.searchForm)
-      console.log(data)
-      this.groupList = data.data.content
+      const data = await getGroup(this.searchForm);
+      console.log(data);
+      this.groupList = data.data.content;
     },
     async getGroupList() {
-      this.spinning = true
-      const { data } = await getGroup()
+      this.spinning = true;
+      const { data } = await getGroup();
       // console.log(data);
-      this.groupList = data.content
-      this.spinning = false
+      this.groupList = data.content;
+      this.spinning = false;
       // console.log(this.groupList);
     },
 
@@ -196,20 +188,20 @@ export default {
         }
       ).catch((err) => err);
       // console.log(data);
-      if (data !== 'confirm') {
-        return this.$message.info('已取消删除')
+      if (data !== "confirm") {
+        return this.$message.info("已取消删除");
       }
-      await deleteGroup(id)
-      this.getGroupList()
+      await deleteGroup(id);
+      this.getGroupList();
     },
     addDialogClosed() {
-      this.$refs.addGroupRef.resetFields()
+      this.$refs.addGroupRef.resetFields();
     },
     // 控制用户管理dialog的显示与隐藏
     showUserDialogVisiable(seid) {
-      this.seid_selected = seid
-      this.userdialogVisible = true
-    }
+      this.seid_selected = seid;
+      this.userdialogVisible = true;
+    },
   },
   created() {
     this.getGroupList();

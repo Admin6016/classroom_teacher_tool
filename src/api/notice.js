@@ -24,3 +24,19 @@ export const editNotice = (data) => {
         data
     })
 }
+// 添加公告
+export const addNotice = (data) => {
+    return request({
+        url: '/notice',
+        method: 'POST',
+        data
+    })
+}
+
+// 删除公告
+export const removeNotice = (id) => {
+    return request({
+        url: '/notice?id=' + id,
+        method: 'DELETE'
+    })
+}

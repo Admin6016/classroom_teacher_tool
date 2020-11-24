@@ -2,19 +2,27 @@
   <div class="coursex-container">
     <el-row style="margin-top: 24px">
       <el-col :offset="12">
-        <el-button type="primary" class="btn-top">+添加公告</el-button></el-col
+        <el-button
+          type="primary"
+          class="btn-top"
+          @click="showaddNoticeDialogVisiable"
+          >+添加公告</el-button
+        ></el-col
       >
     </el-row>
 
     <div style="margin-left: 11%; margin-right: 11%; padding-top: 30px">
-      <a-empty v-if="noticeData.length === 0"/>
-      <a-list v-if="noticeData.length !== 0" :grid="{ gutter: 20, column: 4 }" :data-source="noticeData">
+      <a-empty v-if="noticeData.length === 0" />
+      <a-list
+        v-if="noticeData.length !== 0"
+        :grid="{ gutter: 20, column: 4 }"
+        :data-source="noticeData"
+      >
         <a-list-item slot="renderItem" slot-scope="item, index">
-          <a-card hoverable
-          >
+          <a-card hoverable>
             <template slot="title">
               <el-tag type="info">标题</el-tag>
-              {{ ' ' + item.title }}
+              {{ " " + item.title }}
             </template>
             <el-tooltip
               class="item"
@@ -25,12 +33,12 @@
               <div @click="lookNotice(item.nid)">
                 <h3>
                   <el-tag>作者</el-tag>
-                  {{ ' ' + item.author }}
+                  {{ " " + item.author }}
                 </h3>
                 <!-- <h3>内容：{{ item.context }}</h3> -->
                 <h4>
                   <el-tag type="warning">创建日期</el-tag>
-                  {{ ' ' + item.createTime.substr(0, 10) }}
+                  {{ " " + item.createTime.substr(0, 10) }}
                 </h4>
               </div>
             </el-tooltip>
@@ -38,13 +46,16 @@
               <a-icon
                 key="setting"
                 type="edit"
-                @click="showEditNoticeVisiable(item.nid)"
+                @click="showEditNoticeVisiable(item)"
               ></a-icon>
-              <a-icon
-                key="edit"
-                type="delete"
-                @click="removeNoticeTrue(item.nid)"
-              />
+              <el-popconfirm title="这是一段内容确定删除吗？">
+                <a-icon
+                  slot="reference"
+                  key="edit"
+                  type="delete"
+                  @click="removeNoticeTrue(item.nid)"
+                />
+              </el-popconfirm>
             </template>
           </a-card>
         </a-list-item>
@@ -57,15 +68,14 @@
       :visible.sync="editNoticedialogVisible"
       width="650px"
     >
-      <el-form :model="editNotice">
-        <tinymce v-model="editNotice.context"/>
-        <!--          <el-input-->
-        <!--            type="textarea"-->
-        <!--            rows="3"-->
-        <!--            clearable-->
-        <!--            v-model="editNotice.context"-->
-        <!--          ></el-input>-->
-      </el-form>
+      <tinymce v-model="editNotice.context" />
+      <!--          <el-input-->
+      <!--            type="textarea"-->
+      <!--            rows="3"-->
+      <!--            clearable-->
+      <!--            v-model="editNotice.context"-->
+      <!--          ></el-input>-->
+
       <span slot="footer" class="dialog-footer">
         <el-button @click="editNoticedialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="editNoticeTrue">确 定</el-button>
@@ -90,59 +100,122 @@
       <span slot="footer" class="dialog-footer">
         <el-button @click="looNoticedialogVisible = false">取 消</el-button>
         <el-button type="primary" @click="looNoticedialogVisible = false"
-        >确 定</el-button
+          >确 定</el-button
         >
+      </span>
+    </el-dialog>
+    <!-- 展示添加公告的页面 -->
+    <el-dialog
+      title="添加公告"
+      :visible.sync="addNoticeDialogVisiable"
+      width="650px"
+    >
+      <el-form ref="form" :model="addNoticeForm" label-width="80px">
+        <div style="margin-left: 15%; margin-right: 20%">
+          <el-form-item label="作者">
+            <el-input v-model="addNoticeForm.notice.author"></el-input>
+          </el-form-item>
+          <el-form-item label="标题">
+            <el-input v-model="addNoticeForm.notice.title"></el-input>
+          </el-form-item>
+        </div>
+
+        <tinymce v-model="addNoticeForm.notice.context" />
+        <el-form-item label="绑定课程">
+          <el-switch v-model="addNoticeForm.bindCourse"></el-switch>
+        </el-form-item>
+      </el-form>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="addNoticeDialogVisiable = false">取 消</el-button>
+        <el-button type="primary" @click="addNoticeTrue">确 定</el-button>
       </span>
     </el-dialog>
   </div>
 </template>
 
 <script>
-import Tinymce from '@/components/Tinymce'
-import { getNotice, FindNoticeById, editNotice } from '@/api/notice'
+import Tinymce from "@/components/Tinymce";
+import { mapGetters } from "vuex";
+import {
+  getNotice,
+  FindNoticeById,
+  editNotice,
+  addNotice,
+  removeNotice,
+} from "@/api/notice";
 export default {
-  name: 'Index',
+  name: "Index",
   components: { Tinymce },
   data() {
     return {
       noticeData: [],
       cid: 0,
       editNoticedialogVisible: false,
-      editNotice: {},
-      looNoticedialogVisible: false
-    }
+      editNotice: {
+        context: "",
+      },
+      looNoticedialogVisible: false,
+      addNoticeDialogVisiable: false,
+      addNoticeForm: {
+        notice: {
+          author: "",
+          context: "",
+          isSystem: false,
+        },
+
+        bindCourse: true,
+
+        cid: 0,
+      },
+    };
   },
   created() {
     this.getNoticeList();
+  },
+  computed: {
+    ...mapGetters(["name"]),
   },
   methods: {
     // 获取所有公告列表 生成一个数组  给列表
     async getNoticeList() {
       const loading = this.$loading({
         lock: true,
-        text: '公告加载中',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
-      this.cid = this.$route.params.cid
-      const data = await getNotice(this.cid)
-      console.log(data)
+        text: "公告加载中",
+        spinner: "el-icon-loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
+      this.cid = this.$route.params.cid;
+      const data = await getNotice(this.cid);
+      console.log(data);
       if (data.data.content.length > 0) {
-        this.noticeData = data.data.content
+        this.noticeData = data.data.content;
+        // console.log(this.noticeData);
+        loading.close();
       }
-      loading.close()
+      setTimeout(() => {
+        loading.close();
+      }, 10000);
     },
     // 按需查询公告 并且生成一个对象 赋值给form
-    async showEditNoticeVisiable(id) {
+    showEditNoticeVisiable(item) {
+      // this.editNotice = {};
+      // console.log(item);
+
+      this.editNotice = item;
+
+      console.log(this.editNotice);
       this.editNoticedialogVisible = true;
-      console.log(id);
-      const data = await FindNoticeById(id);
-      console.log(data);
-      this.editNotice = data.data.content[0];
     },
     //删除公告
-    removeNoticeTrue() {
-      console.log(3);
+    async removeNoticeTrue(id) {
+      console.log(id);
+      const data = await removeNotice(id);
+      console.log(data);
+      if (data.code < 0) {
+        return this.$message.error("删除失败，请稍后重试");
+      }
+      this.$message.success("删除成功");
+      this.getNoticeList();
     },
     // 修改公告
     async editNoticeTrue() {
@@ -160,17 +233,23 @@ export default {
       console.log(id);
       this.looNoticedialogVisible = true;
     },
+    // 添加公告对话框的显示与隐藏
+    showaddNoticeDialogVisiable() {
+      this.addNoticeForm.notice.author = this.name;
+      this.addNoticeDialogVisiable = true;
+      // console.log(this.$route.params.cid);
+    },
+    //添加公告
+    async addNoticeTrue() {
+      this.addNoticeForm.cid = this.$route.params.cid;
+      const data = await addNotice(this.addNoticeForm);
+      console.log(data);
+      this.addNoticeDialogVisiable = false;
+      this.getNoticeList();
+    },
   },
 };
 </script>
 
 <style scoped lang="scss">
-// .coursex-container {
-//   position: relative;
-//   .btn-top {
-//     position: absolute;
-//     left: 50%;
-//     top: 50%;
-//   }
-// }
 </style>
