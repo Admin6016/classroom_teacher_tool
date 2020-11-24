@@ -5,11 +5,8 @@ export const getGroup = (data) => {
         method: 'GET',
         url: '/section',
         params: {
-            name:
-                data
+            name: data
         }
-
-
     })
 }
 export const addGroup = (data) => {

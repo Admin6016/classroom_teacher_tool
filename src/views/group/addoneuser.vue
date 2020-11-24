@@ -14,7 +14,7 @@
       type="number"
       prefix-icon="el-icon-user"
     >
-      <el-button slot="append" icon="el-icon-plus" @click="addOne">添加到群组</el-button>
+      <el-button slot="append" :loading="load1" icon="el-icon-plus" @click="addOne">添加到群组</el-button>
     </el-input>
     <el-alert
       :closable="false"
@@ -36,6 +36,7 @@ export default {
   },
   data() {
     return {
+      load1: false,
       number: ''
     }
   },
@@ -44,8 +45,13 @@ export default {
   },
   methods: {
     addOne() {
+      this.load1 = true
+      setTimeout(() => {
+        this.load1 = false
+      }, 5000)
       const data = { seid: this.seid, uid: this.number }
       addMember(data).then((res) => {
+        this.load1 = false
         this.$message({
           showClose: true,
           message: res.description,
