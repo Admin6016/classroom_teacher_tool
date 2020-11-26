@@ -1,8 +1,9 @@
 <template>
   <div class="upload-container">
     <el-button :style="{background:color,borderColor:color}" icon="el-icon-upload" size="mini" type="primary"
+               disabled
                @click=" dialogVisible=true">
-      upload
+      云端上传
     </el-button>
     <el-dialog :visible.sync="dialogVisible">
       <el-upload

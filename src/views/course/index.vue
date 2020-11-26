@@ -2,13 +2,13 @@
   <div>
     <a-spin :spinning="spinning" tip="加载中...">
       <div style="padding: 30px">
-        <a-list :grid="{ gutter: 12, column: 3 }" :data-source="courseList">
+        <a-list :grid="{ gutter: 10, column: 3 }" :data-source="courseList">
           <a-list-item slot="renderItem" slot-scope="item">
             <a-card hoverable style="width: 90%">
               <img
                 slot="cover"
-                alt="http://lorempixel.com/"
-                src="http://lorempixel.com/400/200/abstract"
+                alt="picture"
+                src="https://gw.alipayobjects.com/zos/rmsportal/JiqGstEfoWAOHiTxclqi.png"
                 @click="handleclick(item.cid)"
               >
               <template slot="actions" class="ant-card-actions">

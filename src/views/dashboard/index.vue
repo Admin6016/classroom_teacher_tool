@@ -33,17 +33,21 @@
                       >
                         <div>
                           <el-input
+                            prefix-icon="el-icon-s-data"
+                            size="mini"
                             v-model="user.username"
                             placeholder="输入要修改的值"
                           ></el-input>
-                          <div style="text-align: right; margin: 5px">
+                          <div style="margin-top: 10px;">
                             <el-button
                               size="mini"
                               type="info"
                               @click="visible = false"
-                              >取消</el-button
+                            >取消
+                            </el-button
                             >
                             <el-button
+                              style="margin-left: 21px"
                               type="primary"
                               size="mini"
                               @click="editUserTrue"
@@ -71,21 +75,26 @@
                       >
                         <div>
                           <el-input
+                            prefix-icon="el-icon-s-data"
+                            size="mini"
                             v-model="user.telephone"
                             placeholder="输入要修改的值"
                           ></el-input>
-                          <div style="text-align: right; margin: 5px">
+                          <div style="margin-top: 10px;">
                             <el-button
                               size="mini"
                               type="info"
                               @click="visible1 = false"
-                              >取消</el-button
+                            >取消
+                            </el-button
                             >
                             <el-button
+                              style="margin-left: 21px"
                               type="primary"
                               size="mini"
                               @click="editUserTrue"
-                              >确定</el-button
+                            >确定
+                            </el-button
                             >
                           </div>
                         </div>
@@ -109,21 +118,26 @@
                       >
                         <div>
                           <el-input
+                            prefix-icon="el-icon-s-data"
+                            size="mini"
                             v-model="user.location"
                             placeholder="输入要修改的值"
                           ></el-input>
-                          <div style="text-align: right; margin: 5px">
+                          <div style="margin-top: 10px;">
                             <el-button
                               size="mini"
                               type="info"
                               @click="visible2 = false"
-                              >取消</el-button
+                            >取消
+                            </el-button
                             >
                             <el-button
+                              style="margin-left: 21px"
                               type="primary"
                               size="mini"
                               @click="editUserTrue"
-                              >确定</el-button
+                            >确定
+                            </el-button
                             >
                           </div>
                         </div>
@@ -150,21 +164,26 @@
                       >
                         <div>
                           <el-input
+                            prefix-icon="el-icon-s-data"
+                            size="mini"
+                            v-model="user.note"
                             placeholder="输入要修改的值"
-                            v-model="input"
                           ></el-input>
-                          <div style="text-align: right; margin: 5px">
+                          <div style="margin-top: 10px;">
                             <el-button
                               size="mini"
                               type="info"
                               @click="visible3 = false"
-                              >取消</el-button
+                            >取消
+                            </el-button
                             >
                             <el-button
+                              style="margin-left: 21px"
                               type="primary"
                               size="mini"
-                              @click="visible3 = false"
-                              >确定</el-button
+
+                            >确定
+                            </el-button
                             >
                           </div>
                         </div>

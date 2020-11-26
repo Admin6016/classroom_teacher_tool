@@ -148,12 +148,13 @@ export default {
   components: { Tinymce },
   data() {
     return {
+      content_garbage: '',
       item_id: 0,
       noticeData: [],
       cid: 0,
       editNoticedialogVisible: false,
       editNotice: {
-        context: "",
+        context: ''
       },
       looNoticedialogVisible: false,
       addNoticeDialogVisiable: false,
