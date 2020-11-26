@@ -8,7 +8,7 @@
               class="top-item-icon"
               src="https://gw.alipayobjects.com/zos/antfincdn/XAosXuNZyF/BiazfanxmamNRoxxVxka.png"
               alt=""
-            />
+            >
           </div>
           <div class="top-item-2">
             <div class="dashboard-text">{{ words_time }}{{ name }}</div>
@@ -26,129 +26,124 @@
                     <a-descriptions-item label="用户名">
                       {{ user.username }}
                       <el-popover
+                        v-model="visible"
                         placement="right-end"
                         width="160"
-                        v-model="visible"
                         trigger="manual"
                       >
                         <div>
                           <el-input
+                            v-model="user.username"
                             prefix-icon="el-icon-s-data"
                             size="mini"
-                            v-model="user.username"
                             placeholder="输入要修改的值"
-                          ></el-input>
+                          />
                           <div style="margin-top: 10px;">
                             <el-button
                               size="mini"
                               type="info"
                               @click="visible = false"
                             >取消
-                            </el-button
-                            >
+                            </el-button>
                             <el-button
                               style="margin-left: 21px"
                               type="primary"
                               size="mini"
                               @click="editUserTrue"
-                              >确定</el-button
-                            >
+                            >确定
+                            </el-button>
                           </div>
                         </div>
 
                         <el-button
                           slot="reference"
-                          @click="visible = true"
                           icon="el-icon-edit"
                           circle
                           size="mini"
-                        ></el-button>
+                          @click="visible = true"
+                        />
                       </el-popover>
                     </a-descriptions-item>
                     <a-descriptions-item label="手机号">
                       {{ user.telephone }}
                       <el-popover
+                        v-model="visible1"
                         placement="right-end"
                         width="160"
-                        v-model="visible1"
                         trigger="manual"
                       >
                         <div>
                           <el-input
+                            v-model="user.telephone"
                             prefix-icon="el-icon-s-data"
                             size="mini"
-                            v-model="user.telephone"
                             placeholder="输入要修改的值"
-                          ></el-input>
+                          />
                           <div style="margin-top: 10px;">
                             <el-button
                               size="mini"
                               type="info"
                               @click="visible1 = false"
                             >取消
-                            </el-button
-                            >
+                            </el-button>
                             <el-button
                               style="margin-left: 21px"
                               type="primary"
                               size="mini"
                               @click="editUserTrue"
                             >确定
-                            </el-button
-                            >
+                            </el-button>
                           </div>
                         </div>
 
                         <el-button
                           slot="reference"
-                          @click="visible1 = true"
                           icon="el-icon-edit"
                           circle
                           size="mini"
-                        ></el-button>
+                          @click="visible1 = true"
+                        />
                       </el-popover>
                     </a-descriptions-item>
                     <a-descriptions-item label="位置">
                       {{ user.location }}
                       <el-popover
+                        v-model="visible2"
                         placement="right-end"
                         width="160"
-                        v-model="visible2"
                         trigger="manual"
                       >
                         <div>
                           <el-input
+                            v-model="user.location"
                             prefix-icon="el-icon-s-data"
                             size="mini"
-                            v-model="user.location"
                             placeholder="输入要修改的值"
-                          ></el-input>
+                          />
                           <div style="margin-top: 10px;">
                             <el-button
                               size="mini"
                               type="info"
                               @click="visible2 = false"
                             >取消
-                            </el-button
-                            >
+                            </el-button>
                             <el-button
                               style="margin-left: 21px"
                               type="primary"
                               size="mini"
                               @click="editUserTrue"
                             >确定
-                            </el-button
-                            >
+                            </el-button>
                           </div>
                         </div>
 
                         <el-button
                           slot="reference"
-                          @click="visible2 = true"
                           icon="el-icon-edit"
                           circle
                           size="mini"
-                        ></el-button>
+                          @click="visible2 = true"
+                        />
                       </el-popover>
                     </a-descriptions-item>
                     <a-descriptions-item label="性别">
@@ -157,44 +152,41 @@
                     <a-descriptions-item label="备注">
                       {{ input }}
                       <el-popover
+                        v-model="visible3"
                         placement="right-end"
                         width="160"
-                        v-model="visible3"
                         trigger="manual"
                       >
                         <div>
                           <el-input
+                            v-model="user.note"
                             prefix-icon="el-icon-s-data"
                             size="mini"
-                            v-model="user.note"
                             placeholder="输入要修改的值"
-                          ></el-input>
+                          />
                           <div style="margin-top: 10px;">
                             <el-button
                               size="mini"
                               type="info"
                               @click="visible3 = false"
                             >取消
-                            </el-button
-                            >
+                            </el-button>
                             <el-button
                               style="margin-left: 21px"
                               type="primary"
                               size="mini"
-
                             >确定
-                            </el-button
-                            >
+                            </el-button>
                           </div>
                         </div>
 
                         <el-button
                           slot="reference"
-                          @click="visible3 = true"
                           icon="el-icon-edit"
                           circle
                           size="mini"
-                        ></el-button>
+                          @click="visible3 = true"
+                        />
                       </el-popover>
                     </a-descriptions-item>
                   </a-descriptions>
@@ -207,14 +199,14 @@
       <el-col :span="12">
         <div style="padding: 30px">
           <a-card title="消息" :bordered="true" style="width: 100%">
-            <a-list item-layout="horizontal" :data-source="data">
+            <a-list item-layout="horizontal" :data-source="this.data_title">
               <a-list-item slot="renderItem" slot-scope="item, index">
                 <a-list-item-meta
                   description="language for background applications, is refined by Ant UED Team"
                 >
                   <a slot="title" href="https://www.baidu.com/">{{
-                    item.title
-                  }}</a>
+                      item.title
+                    }}</a>
                   <a-avatar
                     slot="avatar"
                     src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -227,8 +219,10 @@
       </el-col>
       <el-col :span="12">
         <div style="padding: 30px">
-          <a-card title="考勤率" :bordered="false" style="width: 100%">
-            <div id="container" />
+          <a-card title="课程分数" :bordered="false" style="width: 100%">
+
+            <div id="container"/>
+
           </a-card>
         </div>
       </el-col>
@@ -237,49 +231,39 @@
 </template>
 
 <script>
-import { Chart, registerShape } from "@antv/g2";
-const data = [
-  {
-    title: "Title 1",
-  },
-  {
-    title: "Title 2",
-  },
-  {
-    title: "Title 3",
-  },
-  {
-    title: "Title 4",
-  },
-];
-import { mapGetters } from "vuex";
-import { getUserById, editUsername, editUser } from "@/api/user";
+// import { _deepClone } from 'lodash'
+// eslint-disable-next-line no-unused-vars
+import { Chart, getTheme } from '@antv/g2'
+import { mapGetters } from 'vuex'
+import { getUserById, editUser } from '@/api/user'
+import { getCourse } from '@/api/course'
+
 export default {
-  name: "Dashboard",
+  name: 'Dashboard',
   computed: {
-    ...mapGetters(["name", "uid"]),
+    ...mapGetters(['name', 'uid']),
     words_time() {
-      const hour = new Date().getHours();
+      const hour = new Date().getHours()
       if (hour < 3) {
-        return "夜深了，";
+        return '夜深了，'
       }
       if (hour < 6) {
-        return "凌晨了，";
+        return '凌晨了，'
       }
       if (hour < 11) {
-        return "上午好，";
+        return '上午好，'
       }
       if (hour < 14) {
-        return "中午好，";
+        return '中午好，'
       }
       if (hour < 17) {
-        return "下午好，";
+        return '下午好，'
       }
       if (hour < 20) {
-        return "傍晚了，";
+        return '傍晚了，'
       }
-      return "晚上好，";
-    },
+      return '晚上好，'
+    }
   },
   data() {
     return {
@@ -287,171 +271,86 @@ export default {
       visible1: false,
       visible2: false,
       visible3: false,
-      input: "",
-      data,
+      input: '',
+      course_data: [],
+      data_title: [
+        {
+          title: 'title1'
+        },
+        {
+          title: 'title2'
+        }
+      ],
       user: {},
       spinning_c: false,
-      spinning: false,
-    };
+      spinning: false
+    }
   },
   mounted() {
-    registerShape("point", "pointer", {
-      draw(cfg, container) {
-        const group = container.addGroup();
-        const center = this.parsePoint({ x: 0, y: 0 }); // 获取极坐标系下画布中心点
-        // 绘制指针
-        group.addShape("line", {
-          attrs: {
-            x1: center.x,
-            y1: center.y,
-            x2: cfg.x,
-            y2: cfg.y,
-            stroke: cfg.color,
-            lineWidth: 5,
-            lineCap: "round",
-          },
-        });
-        group.addShape("circle", {
-          attrs: {
-            x: center.x,
-            y: center.y,
-            r: 9.75,
-            stroke: cfg.color,
-            lineWidth: 4.5,
-            fill: "#fff",
-          },
-        });
+    this.renderUser()
 
-        return group;
-      },
-    });
-
-    const data = [{ value: 5.6 }];
-    const chart = new Chart({
-      container: "container",
-      autoFit: true,
-      height: 290,
-      padding: [0, 0, 30, 0],
-    });
-    chart.data(data);
-    chart.scale("value", {
-      min: 0,
-      max: 9,
-      tickInterval: 1,
-    });
-    chart.coordinate("polar", {
-      startAngle: (-9 / 8) * Math.PI,
-      endAngle: (1 / 8) * Math.PI,
-      radius: 0.75,
-    });
-
-    chart.axis("1", false);
-    chart.axis("value", {
-      line: null,
-      label: {
-        offset: -36,
-        style: {
-          fontSize: 18,
-          textAlign: "center",
-          textBaseline: "middle",
-        },
-      },
-      subTickLine: {
-        count: 4,
-        length: -15,
-      },
-      tickLine: {
-        length: -24,
-      },
-      grid: null,
-    });
-    chart.legend(false);
-    chart
-      .point()
-      .position("value*1")
-      .shape("pointer")
-      .color("#1890FF")
-      .animate({
-        appear: {
-          animation: "fade-in",
-        },
-      });
-
-    // 绘制仪表盘背景
-    chart.annotation().arc({
-      top: false,
-      start: [0, 1],
-      end: [9, 1],
-      style: {
-        // 底灰色
-        stroke: "#CBCBCB",
-        lineWidth: 18,
-        lineDash: null,
-      },
-    });
-
-    // 绘制指标
-    chart.annotation().arc({
-      start: [0, 1],
-      end: [data[0].value, 1],
-      style: {
-        stroke: "#1890FF",
-        lineWidth: 18,
-        lineDash: null,
-      },
-    });
-    // 绘制指标数字
-    chart.annotation().text({
-      position: ["50%", "85%"],
-      content: "合格率",
-      style: {
-        fontSize: 20,
-        fill: "#545454",
-        textAlign: "center",
-      },
-    });
-    chart.annotation().text({
-      position: ["50%", "90%"],
-      content: `${data[0].value * 10} %`,
-      style: {
-        fontSize: 36,
-        fill: "#545454",
-        textAlign: "center",
-      },
-      offsetY: 15,
-    });
-
-    chart.render();
+    getCourse().then((res) => {
+      this.course_data = res.data.content
+      this.renderPic()
+      // this.course_data = res.data.content;
+    })
   },
   methods: {
+    renderPic() {
+
+      const chart = new Chart({
+        container: 'container',
+        autoFit: true,
+        height: 300
+      })
+      chart.data(this.course_data)
+      chart.coordinate('polar')
+      chart.legend('name', {
+        position: 'right'
+
+      })
+      chart.axis(false)
+      chart.tooltip({
+        showMarkers: false
+        // showTitle: true,
+      })
+      chart.interaction('element-highlight')
+      chart
+        .interval()
+        .position('name*point')
+        .color('name')
+        .style({
+          lineWidth: 1,
+          stroke: '#fff'
+        })
+      chart.render()
+    },
+    // 渲染用户信息
     renderUser() {
-      this.spinning_c = true;
+      this.spinning_c = true
       getUserById(this.uid).then((res) => {
-        this.user = res.data.content[0];
-        this.spinning_c = false;
-      });
+        this.user = res.data.content[0]
+        this.spinning_c = false
+      })
     },
     // 修改用户
     async editUserTrue() {
-      this.spinning = true;
-      this.visible = false;
-      this.visible1 = false;
-      this.visible2 = false;
-      this.visible3 = false;
+      this.spinning = true
+      this.visible = false
+      this.visible1 = false
+      this.visible2 = false
+      this.visible3 = false
 
-      const data = await editUser(this.user);
+      const data = await editUser(this.user)
       // console.log(data);
       if (data.code < 0) {
-        return this.$message.error("修改失败");
+        return this.$message.error('修改失败')
       }
-      this.spinning = false;
-      this.$message.success("修改成功");
-    },
-  },
-  created() {
-    this.renderUser();
-  },
-};
+      this.spinning = false
+      this.$message.success('修改成功')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
