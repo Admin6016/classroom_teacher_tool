@@ -16,7 +16,8 @@ export const getGroupMember = (data) => {
     method: 'GET',
     url: '/section/data',
     params: {
-      seid: data
+      seid: data,
+      cid: null
     }
   })
 }

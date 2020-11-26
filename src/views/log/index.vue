@@ -1,13 +1,13 @@
 <template>
-  <div>
+  <div style="padding: 20px;">
     <a-spin :spinning="spinning1">
       <el-table :data="logList" stripe style="width: 100%; margin-top: 50px">
         <el-table-column type="index" label="#"></el-table-column>
-        <el-table-column prop="time" label="data" width="200">
+        <el-table-column prop="time" label="日期" width="200">
         </el-table-column>
         <el-table-column
           prop="type"
-          label="type"
+          label="类型"
           width="80"
           :filters="[
             { text: '系统日志', value: '2' },
@@ -15,17 +15,19 @@
           ]"
         >
         </el-table-column>
-        <el-table-column prop="description" label="message" width="1000">
+        <el-table-column prop="description" label="内容" width="1000">
         </el-table-column>
-        <el-table-column label="More">
+        <el-table-column label="更多">
           <template slot-scope="scope">
             <el-button
               type="primary"
               icon="el-icon-view"
               size="mini"
               @click="open1(scope.row.opid)"
-            ></el-button> </template
-        ></el-table-column>
+            ></el-button>
+          </template
+          >
+        </el-table-column>
       </el-table>
 
       <!-- 分页 -->

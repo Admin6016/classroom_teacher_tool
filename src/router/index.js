@@ -39,27 +39,6 @@ export const constantRoutes = [
 
   },
   {
-    path: '/log',
-    component: Layout,
-    redirect: '/log/index',
-    meta: { title: '日志管理', icon: 'el-icon-fork-spoon' },
-    children: [
-      {
-        path: 'index',
-        name: 'LogIndex',
-        component: () => import('@/views/log/index'),
-        meta: { title: '前端日志', icon: 'el-icon-s-help' }
-      },
-      {
-        path: '/record',
-        name: 'Record',
-        component: () => import('@/views/log/record'),
-        meta: { title: '日志记录', icon: 'el-icon-circle-plus-outline' }
-      }
-    ]
-  },
-
-  {
     path: '/404',
     component: () => import('@/views/404'),
     hidden: true
@@ -149,11 +128,31 @@ export const constantRoutes = [
           {
             meta: { title: '课程详情' },
             hidden: true,
-            path: 'index',
+            path: 'index'
             // component: () => import('@/views/coursex/index')
           }
         ]
       }
+    ]
+  },
+  {
+    path: '/log',
+    component: Layout,
+    redirect: '/log/index',
+    meta: { title: '日志管理', icon: 'el-icon-fork-spoon' },
+    children: [
+      {
+        path: 'index',
+        name: 'LogIndex',
+        component: () => import('@/views/log/index'),
+        meta: { title: '操作日志', icon: 'el-icon-s-help' }
+      }
+      // {
+      //   path: 'record',
+      //   name: 'Record',
+      //   component: () => import('@/views/log/record'),
+      //   meta: { title: '日志记录', icon: 'el-icon-circle-plus-outline' }
+      // }
     ]
   },
   // {

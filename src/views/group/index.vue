@@ -145,7 +145,7 @@
             style="width: 100%"
           >
             <el-table-column
-              prop="uid"
+              prop="number"
               label="学号"
               sortable
               width="120"
