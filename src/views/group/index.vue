@@ -119,7 +119,7 @@
           <addoneuser :seid="seid_selected"/>
         </el-tab-pane>
         <el-tab-pane label="批量导入">
-          <addmanyuser/>
+          <addmanyuser :seid="seid_selected"/>
         </el-tab-pane>
       </el-tabs>
       <span slot="footer" class="dialog-footer">

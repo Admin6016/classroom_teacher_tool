@@ -8,9 +8,24 @@ export function login(data) {
   })
 }
 
+export function addUser(data) {
+  return request({
+    url: '/user',
+    method: 'post',
+    data
+  })
+}
+
 export function getUserById(id) {
   return request({
     url: '/user?uid=' + id,
+    method: 'get'
+  })
+}
+
+export function getUserByNumber(number) {
+  return request({
+    url: '/user?number=' + number,
     method: 'get'
   })
 }

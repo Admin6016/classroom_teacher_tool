@@ -26,6 +26,7 @@
 </template>
 <script>
 import { addMember } from '@/api/groupdata'
+import { getUserByNumber } from '@/api/user'
 
 export default {
   props: {
@@ -44,12 +45,15 @@ export default {
     // TODO
   },
   methods: {
-    addOne() {
+    async addOne() {
       this.load1 = true
+
+      const res2 = await getUserByNumber(this.number)
+      this.number = res2.data.content[0].uid
+      const data = { seid: this.seid, uid: this.number }
       setTimeout(() => {
         this.load1 = false
       }, 5000)
-      const data = { seid: this.seid, uid: this.number }
       addMember(data).then((res) => {
         this.load1 = false
         this.$message({
