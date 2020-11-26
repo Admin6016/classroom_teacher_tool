@@ -68,7 +68,7 @@
       :visible.sync="editNoticedialogVisible"
       width="650px"
     >
-      <tinymce v-model="editNotice.context" />
+      <quill-editor v-model="editNotice.context" />
       <!--          <el-input-->
       <!--            type="textarea"-->
       <!--            rows="3"-->
@@ -93,7 +93,10 @@
       <!--        </div>-->
       <!--        <div>作者：{{ noticeData[0].author }}</div>-->
       <!--        <div>标题：{{ noticeData[0].title }}</div>-->
-      <div v-html="`${noticeData[item_id].context}`"></div>
+      <div
+        v-if="noticeData[item_id]"
+        v-html="`${noticeData[item_id].context}`"
+      ></div>
       <!--        <div>创建时间：{{ noticeData[0].createTime }}</div>-->
       <!--        <div>修改时间：{{ noticeData[0].updateTime }}</div>-->
       <!--      </el-card>-->
@@ -120,7 +123,13 @@
           </el-form-item>
         </div>
 
-        <tinymce v-model="addNoticeForm.notice.context" />
+        <quill-editor
+          v-model="addNoticeForm.notice.context"
+          class="editor"
+          :options="editorOption"
+        >
+        </quill-editor>
+
         <el-form-item label="绑定课程">
           <el-switch v-model="addNoticeForm.bindCourse"></el-switch>
         </el-form-item>
@@ -134,8 +143,10 @@
 </template>
 
 <script>
-import Tinymce from "@/components/Tinymce";
 import { mapGetters } from "vuex";
+
+import { quillEditor } from "vue-quill-editor"; //调用编辑器
+
 import {
   getNotice,
   FindNoticeById,
@@ -145,16 +156,21 @@ import {
 } from "@/api/notice";
 export default {
   name: "Index",
-  components: { Tinymce },
+  components: { quillEditor },
   data() {
     return {
-      content_garbage: '',
+      editorOption: {
+        // 配置项
+        theme: "snow", // or 'bubble'
+        placeholder: "请输入文章内容",
+      },
+      content_garbage: "",
       item_id: 0,
       noticeData: [],
       cid: 0,
       editNoticedialogVisible: false,
       editNotice: {
-        context: ''
+        context: "",
       },
       looNoticedialogVisible: false,
       addNoticeDialogVisiable: false,
@@ -174,6 +190,7 @@ export default {
   created() {
     this.getNoticeList();
   },
+
   computed: {
     ...mapGetters(["name"]),
   },
@@ -187,10 +204,10 @@ export default {
         background: "rgba(0, 0, 0, 0.7)",
       });
       this.cid = this.$route.params.cid;
-      const data = await getNotice(this.cid);
+      const { data } = await getNotice(this.cid);
       console.log(data);
-      if (data.data.content.length > 0) {
-        this.noticeData = data.data.content;
+      if (data.content.length > 0) {
+        this.noticeData = data.content;
         // console.log(this.noticeData);
         loading.close();
       }
@@ -253,4 +270,11 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.editor {
+  line-height: normal !important;
+  height: 300px;
+  width: 80%;
+  margin: 1px auto;
+  margin-bottom: 120px;
+}
 </style>
