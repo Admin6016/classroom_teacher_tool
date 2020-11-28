@@ -17,7 +17,7 @@
             { text: '操作日志', value: '1' },
           ]"
         />
-        <el-table-column prop="description" label="内容" width="1000"/>
+        <el-table-column prop="description" label="内容" width="600"/>
         <el-table-column label="更多">
           <template slot-scope="scope">
             <el-button
@@ -87,9 +87,6 @@ export default {
   },
   methods: {
     async getLogList() {
-      // if (this.spinning1) {
-      //   return
-      // }
       clearTimeout(this.lock)
       this.spinning1 = true
       const data = await getLogByParams({ page: this.currentPage - 1, size: this.pageSize })
