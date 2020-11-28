@@ -25,14 +25,14 @@
               type="primary"
               size="small"
               @click="showUserDialogVisiable(scope.row.seid)"
-              >成员导入
+            >成员导入
             </el-button>
             <el-button
               type="info"
               size="mini"
               @click="showUserDrawer(scope.row.seid)"
-              >成员详情</el-button
-            >
+            >成员详情
+            </el-button>
             <el-popconfirm
               confirm-button-text="好的"
               cancel-button-text="不用了"
@@ -46,7 +46,7 @@
                 style="margin-left: 10px"
                 type="danger"
                 size="mini"
-                >删除群组
+              >删除群组
               </el-button>
             </el-popconfirm>
           </template>
@@ -55,6 +55,7 @@
               v-model="searchForm"
               placeholder="....."
               style="width: 200px; margin-right: 10px"
+              @focus="showBox"
               @clear="getGroupList"
             >
               <el-button
@@ -124,9 +125,10 @@
         </el-tab-pane>
       </el-tabs>
       <span slot="footer" class="dialog-footer">
-        <el-button type="primary" @click="userdialogVisible = false"
-          >关闭</el-button
-        >
+        <el-button
+          type="primary"
+          @click="userdialogVisible = false"
+        >关闭</el-button>
       </span>
     </el-dialog>
 
@@ -148,9 +150,7 @@
             <el-table-column prop="number" label="学号" sortable width="120" />
             <el-table-column label="姓名" sortable width="100">
               <template slot-scope="scope">
-                <el-tag
-                  ><span>{{ scope.row.name }}</span></el-tag
-                >
+                <el-tag><span>{{ scope.row.name }}</span></el-tag>
               </template>
             </el-table-column>
             <el-table-column prop="sex" label="性别" width="60" />
@@ -161,8 +161,8 @@
                   type="text"
                   size="small"
                   @click="console.log(scope.row)"
-                  >踢出</el-button
-                >
+                >踢出
+                </el-button>
               </template>
             </el-table-column>
           </el-table>
@@ -192,18 +192,18 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { getGroup, addGroup, deleteGroup } from "@/api/group";
+import { mapGetters } from 'vuex'
+import { getGroup, addGroup, deleteGroup } from '@/api/group'
 
-import addoneuser from "@/views/group/addoneuser";
-import addmanyuser from "@/views/group/addmanyuser";
-import { getGroupMember } from "@/api/groupdata";
+import addoneuser from '@/views/group/addoneuser'
+import addmanyuser from '@/views/group/addmanyuser'
+import { getGroupMember } from '@/api/groupdata'
 
 export default {
-  name: "Group",
+  name: 'Group',
   components: {
     addmanyuser,
-    addoneuser,
+    addoneuser
   },
 
   data() {
@@ -216,85 +216,88 @@ export default {
       spinning: false,
       groupList: [],
       DialogVisible: false,
-      searchForm: "",
+      searchForm: '',
       addGroupForm: {
-        name: "",
-        description: "",
-        uid: 0,
+        name: '',
+        description: '',
+        uid: 0
       },
 
-      userdialogVisible: false,
-    };
+      userdialogVisible: false
+    }
   },
   created() {
-    this.getGroupList();
+    this.getGroupList()
   },
   methods: {
+    showBox() {
+      this.searchForm = prompt('请输入搜索内容')
+    },
     handleCommand(command) {
-      if (command === "a") {
-        this.addGroupFormVisable();
+      if (command === 'a') {
+        this.addGroupFormVisable()
       }
     },
     handleSizeChange(val) {
-      console.log(`每页 ${val} 条`);
+      console.log(`每页 ${val} 条`)
     },
     handleCurrentChange(val) {
-      console.log(`当前页: ${val}`);
+      console.log(`当前页: ${val}`)
     },
     // 搜索群组
     async searchGroup() {
-      const data = await getGroup(this.searchForm);
-      console.log(data);
-      this.groupList = data.data.content;
+      const data = await getGroup(this.searchForm)
+      console.log(data)
+      this.groupList = data.data.content
     },
     async getGroupList() {
-      this.spinning = true;
-      const { data } = await getGroup();
+      this.spinning = true
+      const { data } = await getGroup()
       // console.log(data);
-      this.groupList = data.content;
-      this.spinning = false;
+      this.groupList = data.content
+      this.spinning = false
       // console.log(this.groupList);
     },
 
     addGroupFormVisable() {
-      this.DialogVisible = true;
+      this.DialogVisible = true
     },
 
     async addGroupTrue() {
-      this.addGroupForm.uid = this.uid;
-      const { data } = await addGroup(this.addGroupForm);
-      console.log(data);
-      this.DialogVisible = false;
-      this.getGroupList();
+      this.addGroupForm.uid = this.uid
+      const { data } = await addGroup(this.addGroupForm)
+      console.log(data)
+      this.DialogVisible = false
+      this.getGroupList()
     },
     async removeById(id) {
-      await deleteGroup(id);
-      await this.getGroupList();
+      await deleteGroup(id)
+      await this.getGroupList()
     },
     addDialogClosed() {
-      this.$refs.addGroupRef.resetFields();
+      this.$refs.addGroupRef.resetFields()
     },
     showUserDrawer(seid) {
-      this.draw_show = true;
-      this.spin1 = true;
+      this.draw_show = true
+      this.spin1 = true
       getGroupMember(seid).then((res) => {
-        this.draw_user_data = res.data.content;
-        this.spin1 = false;
-      });
+        this.draw_user_data = res.data.content
+        this.spin1 = false
+      })
       setTimeout(() => {
-        this.spin1 = false;
-      }, 10000);
+        this.spin1 = false
+      }, 10000)
     },
     // 控制用户管理dialog的显示与隐藏
     showUserDialogVisiable(seid) {
-      this.seid_selected = seid;
-      this.userdialogVisible = true;
-    },
+      this.seid_selected = seid
+      this.userdialogVisible = true
+    }
   },
   computed: {
-    ...mapGetters(["uid"]),
-  },
-};
+    ...mapGetters(['uid'])
+  }
+}
 </script>
 
 <style  lang="scss" scoped>
