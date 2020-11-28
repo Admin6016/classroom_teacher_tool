@@ -1,5 +1,8 @@
 <template>
   <div class="login-container">
+    <!--  background: url("https://v1.alapi.cn/api/bing");
+  background-size: cover;  -->
+    <div class="div_blur"/>
     <el-form
       ref="loginForm"
       :model="loginForm"
@@ -9,7 +12,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">{{ defaultSettings.title }}</h3>
+        <h3 class="title" style="color:gainsboro">{{ defaultSettings.title }}</h3>
       </div>
 
       <el-form-item prop="uid">
@@ -17,6 +20,7 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
+
           ref="uid"
           v-model="loginForm.uid"
           placeholder="用户ID"
@@ -50,12 +54,13 @@
       </el-form-item>
 
       <el-button
+
         :loading="loading"
         type="primary"
-        style="width: 100%; margin-bottom: 30px"
+        style="width: 100%; margin-bottom: 30px;"
         @click.native.prevent="handleLogin"
-        >登录</el-button
-      >
+      >登录
+      </el-button>
 
       <!--      <div class="tips">-->
       <!--        <span style="margin-right:20px;">用户ID</span>-->
@@ -66,82 +71,86 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
-const defaultSettings = require("@/settings");
+import { validUsername } from '@/utils/validate'
+
+const defaultSettings = require('@/settings')
 export default {
-  name: "Login",
+  name: 'Login',
+  mounted() {
+    //ready
+  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
-        callback(new Error("请输入合适的ID"));
+        callback(new Error('请输入合适的ID'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error("密码应该至少为6位"));
+        callback(new Error('密码应该至少为6位'))
       } else {
-        callback();
+        callback()
       }
-    };
+    }
     return {
       defaultSettings,
       loginForm: {
-        uid: "",
-        password: "",
+        uid: '',
+        password: ''
       },
       loginRules: {
-        uid: [{ required: true, trigger: "blur", validator: validateUsername }],
+        uid: [{ required: true, trigger: 'blur', validator: validateUsername }],
         password: [
-          { required: true, trigger: "blur", validator: validatePassword },
-        ],
+          { required: true, trigger: 'blur', validator: validatePassword }
+        ]
       },
       loading: false,
-      passwordType: "password",
-      redirect: undefined,
-    };
+      passwordType: 'password',
+      redirect: undefined
+    }
   },
   watch: {
     $route: {
-      handler: function (route) {
-        this.redirect = route.query && route.query.redirect;
+      handler: function(route) {
+        this.redirect = route.query && route.query.redirect
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   methods: {
     showPwd() {
-      if (this.passwordType === "password") {
-        this.passwordType = "";
+      if (this.passwordType === 'password') {
+        this.passwordType = ''
       } else {
-        this.passwordType = "password";
+        this.passwordType = 'password'
       }
       this.$nextTick(() => {
-        this.$refs.password.focus();
-      });
+        this.$refs.password.focus()
+      })
     },
     handleLogin() {
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
-          this.loading = true;
+          this.loading = true
           this.$store
-            .dispatch("user/login", this.loginForm)
+            .dispatch('user/login', this.loginForm)
             .then(() => {
-              this.$router.push({ path: this.redirect || "/" });
-              this.loading = false;
+              this.$router.push({ path: this.redirect || '/' })
+              this.loading = false
             })
             .catch(() => {
-              this.loading = false;
-            });
+              this.loading = false
+            })
         } else {
-          console.log("error submit!!");
-          return false;
+          console.log('error submit!!')
+          return false
         }
-      });
-    },
-  },
-};
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -183,6 +192,7 @@ $cursor: #fff;
   }
 
   .el-form-item {
+
     border: 1px solid rgba(255, 255, 255, 0.1);
     background: rgba(0, 0, 0, 0.1);
     border-radius: 5px;
@@ -196,25 +206,44 @@ $bg: #2d3a4b;
 $dark_gray: #889aa4;
 $light_gray: #eee;
 
+.div_blur {
+
+  border-radius: 50px;
+  border: 1px solid rgba(183, 183, 183, 0.47);
+  filter: blur(5px) brightness(70%);
+  //left: 30%;
+  //top: 13%;
+  width: 100%;
+  height: 100%;
+  background-size: 150% 150%;
+  position: absolute;
+  background: url("https://v1.alapi.cn/api/bing") center;
+}
+
 .login-container {
+
   min-height: 100%;
   width: 100%;
-  //background-color: $bg;
+  background-size: 150% 150%;
+  position: absolute;
+  //background: url("https://v1.alapi.cn/api/bing") center;
+  //background-color: white;
   //background: url("https://vkceyugu.cdn.bspapp.com/VKCEYUGU-student-data/b8a3b770-2a41-11eb-b680-7980c8a877b8.jpg");
-  background: url("https://v1.alapi.cn/api/bing");
-  background-size: cover;
+
   overflow: hidden;
 
   .login-form {
-    // 模糊效果
-    filter: blur(10px);
-
+    overflow: hidden;
+    border-radius: 20px;
     position: relative;
     width: 520px;
-    max-width: 100%;
-    padding: 160px 35px 0;
-    margin: 0 auto;
-    overflow: hidden;
+    max-width: 60%;
+    padding: 40px 35px 10px;
+    margin: 240px auto;
+    //background-color: white;
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0px 0px 15px gray;
+    //background: url("https://v1.alapi.cn/api/bing") center;
   }
 
   .tips {
