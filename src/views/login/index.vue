@@ -8,54 +8,56 @@
       auto-complete="on"
       label-position="left"
     >
-      <div class="title-container">
-        <h3 class="title">{{ defaultSettings.title }}</h3>
-      </div>
+      <div class="bg-login">
+        <div class="title-container">
+          <h3 class="title">{{ defaultSettings.title }}</h3>
+        </div>
 
-      <el-form-item prop="uid">
-        <span class="svg-container">
-          <svg-icon icon-class="user" />
-        </span>
-        <el-input
-          ref="uid"
-          v-model="loginForm.uid"
-          placeholder="用户ID"
-          name="uid"
-          type="number"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
-
-      <el-form-item prop="password">
-        <span class="svg-container">
-          <svg-icon icon-class="password" />
-        </span>
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          placeholder="Password"
-          name="password"
-          tabindex="2"
-          auto-complete="on"
-          @keyup.enter.native="handleLogin"
-        />
-        <span class="show-pwd" @click="showPwd">
-          <svg-icon
-            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+        <el-form-item prop="uid">
+          <span class="svg-container">
+            <svg-icon icon-class="user" />
+          </span>
+          <el-input
+            ref="uid"
+            v-model="loginForm.uid"
+            placeholder="用户ID"
+            name="uid"
+            type="number"
+            tabindex="1"
+            auto-complete="on"
           />
-        </span>
-      </el-form-item>
+        </el-form-item>
 
-      <el-button
-        :loading="loading"
-        type="primary"
-        style="width: 100%; margin-bottom: 30px"
-        @click.native.prevent="handleLogin"
-        >登录</el-button
-      >
+        <el-form-item prop="password">
+          <span class="svg-container">
+            <svg-icon icon-class="password" />
+          </span>
+          <el-input
+            :key="passwordType"
+            ref="password"
+            v-model="loginForm.password"
+            :type="passwordType"
+            placeholder="Password"
+            name="password"
+            tabindex="2"
+            auto-complete="on"
+            @keyup.enter.native="handleLogin"
+          />
+          <span class="show-pwd" @click="showPwd">
+            <svg-icon
+              :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
+            />
+          </span>
+        </el-form-item>
+
+        <el-button
+          :loading="loading"
+          type="primary"
+          style="width: 100%; margin-bottom: 30px"
+          @click.native.prevent="handleLogin"
+          >登录</el-button
+        >
+      </div>
 
       <!--      <div class="tips">-->
       <!--        <span style="margin-right:20px;">用户ID</span>-->
@@ -206,9 +208,6 @@ $light_gray: #eee;
   overflow: hidden;
 
   .login-form {
-    // 模糊效果
-    filter: blur(10px);
-
     position: relative;
     width: 520px;
     max-width: 100%;
