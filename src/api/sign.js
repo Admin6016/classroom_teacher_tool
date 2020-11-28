@@ -12,9 +12,10 @@ export const postSign = (data) => {
 
 // 获取签到列表
 
-export const getSignList = () => {
+export const getSignList = (data) => {
     return request({
         url: '/sign',
-        method: 'GET'
+        method: 'GET',
+        params: { data }
     })
 }

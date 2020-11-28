@@ -68,16 +68,15 @@
       >
         <el-table :data="signList">
           <el-table-column
-            property="date"
+            property="deadline"
             label="日期"
             width="150"
           ></el-table-column>
           <el-table-column
             property="name"
-            label="姓名"
+            label="签到名称"
             width="200"
           ></el-table-column>
-          <el-table-column property="address" label="地址"></el-table-column>
         </el-table>
       </el-drawer>
     </a-spin>
@@ -87,7 +86,7 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { postSign } from "@/api/sign";
+import { postSign, getSignList } from "@/api/sign";
 export default {
   data() {
     return {
@@ -99,8 +98,13 @@ export default {
         cid: 0,
         uid: 0,
       },
+      getSign: {
+        cid: 0,
+        uid: 0,
+      },
       drawer: false,
       spinning: false,
+      signList: [],
     };
   },
   methods: {
@@ -125,7 +129,14 @@ export default {
       this.$message.success("发起成功");
     },
     // 展示签到
-    getSignListTrue() {},
+    async getSignListTrue() {
+      this.drawer = true;
+      this.getSign.uid = this.uid;
+      this.getSign.cid = this.$route.params.cid;
+      const data = await getSignList(this.getSign);
+      console.log(data);
+      this.signList = data.data.content;
+    },
   },
   computed: {
     ...mapGetters(["uid"]),
