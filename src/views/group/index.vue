@@ -53,9 +53,8 @@
           <template slot="header">
             <el-input
               v-model="searchForm"
-              placeholder="请输入群组名称"
+              placeholder="....."
               style="width: 200px; margin-right: 10px"
-              clearable
               @clear="getGroupList"
             >
               <el-button
@@ -64,6 +63,7 @@
                 @click="searchGroup"
               />
             </el-input>
+
             <el-dropdown @command="handleCommand">
               <el-button type="primary">
                 更多操作<i class="el-icon-arrow-down el-icon--right" />
@@ -222,6 +222,7 @@ export default {
         description: "",
         uid: 0,
       },
+
       userdialogVisible: false,
     };
   },
