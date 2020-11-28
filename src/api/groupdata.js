@@ -14,7 +14,7 @@ export const addMember = (data) => {
 export const getGroupMember = (data) => {
   return request({
     method: 'GET',
-    url: '/section/data',
+    url: '/section/data?size=90000',
     params: {
       seid: data,
       cid: null
