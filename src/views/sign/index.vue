@@ -10,74 +10,101 @@
       </el-steps>
 
       <el-form
-        :model="signForm"
+        :model="sign"
         label-width="80px"
-        style="margin-top: 100px; margin-bottom: 100px; width: 500px"
+        style="margin-top: 50px; margin-bottom: 60px; width: 100%"
       >
         <div v-if="active == 0">
-          <el-form-item label="签到类型">
-            <el-radio-group v-model="signForm.type" border>
+          <el-form-item>
+            <el-radio-group
+              v-model="sign.kind"
+              border
+              style="width: 44%; margin-left: 28%; margin-right: 28%"
+            >
               <el-radio-button label="1">密码签到</el-radio-button>
-              <el-radio-button label="2">二维码签到</el-radio-button>
-              <el-radio-button label="3">收拾签到</el-radio-button>
-              <el-radio-button label="4">位置签到</el-radio-button>
-              <el-radio-button label="5">拍照签到</el-radio-button>
+              <el-radio-button label="5">二维码签到</el-radio-button>
+              <el-radio-button label="4">手势签到</el-radio-button>
+              <el-radio-button label="3">位置签到</el-radio-button>
+              <el-radio-button label="2">拍照签到</el-radio-button>
             </el-radio-group>
           </el-form-item>
+          <div v-if="sign.kind == 1" style="margin-top: 60px; width: 20%">
+            <el-form-item label="签到密码">
+              <el-input
+                placeholder="请输入签到密码"
+                v-model="sign.data"
+                maxlength="4"
+                show-word-limit
+                clearable
+              ></el-input>
+            </el-form-item>
+            <el-form-item label="签到名称">
+              <el-input v-model="sign.name"></el-input>
+            </el-form-item>
+            <el-form-item label="截止日期">
+              <el-time-picker v-model="sign.deadline" placeholder="截止日期">
+              </el-time-picker>
+            </el-form-item>
+          </div>
         </div>
-        <div v-if="active == 1">
-          <el-form-item label="签到名称">
-            <el-input v-model="signForm.name"></el-input>
-          </el-form-item>
-          <el-form-item label="截止日期">
-            <el-time-picker v-model="signForm.deadline" placeholder="截止日期">
-            </el-time-picker>
-          </el-form-item>
+        <div
+          v-if="active == 1"
+          style="width: 44%; margin-left: 28%; margin-right: 28%"
+        >
+          <el-select v-model="value1" multiple placeholder="请选择">
+            <el-option
+              v-for="item in options"
+              :key="item.seid"
+              :label="item.name"
+              :value="item.seid"
+            >
+            </el-option>
+          </el-select>
         </div>
         <div v-if="active == 2">
           <span>确定要提交吗？</span>
         </div>
       </el-form>
       <footer>
-        <el-button
-          style="margin-top: 12px"
-          @click="prev"
-          v-if="active == 1 || active == 2"
+        <el-button @click="prev" v-if="active == 1 || active == 2"
           >上一步</el-button
         >
         <el-button
-          style="margin-top: 12px"
+          style="margin-top: 5%"
           @click="next"
           v-if="active == 0 || active == 1"
           >下一步</el-button
         >
         <el-button
-          style="margin-top: 12px"
-          @click="postSignTrue"
+          style="margin-top: 5%"
+          @click="postSignFormTrue"
           v-if="active == 2"
           >提交</el-button
         >
       </footer>
 
       <!-- 抽屉 -->
+
       <el-drawer
         title="签到列表"
         :visible.sync="drawer"
         :with-header="false"
         size="50%"
       >
-        <el-table :data="signList">
-          <el-table-column
-            property="deadline"
-            label="日期"
-            width="150"
-          ></el-table-column>
-          <el-table-column
-            property="name"
-            label="签到名称"
-            width="200"
-          ></el-table-column>
-        </el-table>
+        <a-spin :spinning="spinning1" tip="加载中...">
+          <el-table :data="signList">
+            <el-table-column
+              property="deadline"
+              label="日期"
+              width="150"
+            ></el-table-column>
+            <el-table-column
+              property="name"
+              label="签到名称"
+              width="200"
+            ></el-table-column>
+          </el-table>
+        </a-spin>
       </el-drawer>
     </a-spin>
   </div>
@@ -86,17 +113,22 @@
 
 <script>
 import { mapGetters } from "vuex";
-import { postSign, getSignList } from "@/api/sign";
+import { postSign, getSignList, addPeopleForSign } from "@/api/sign";
+import { getGroup } from "@/api/group";
 export default {
+  created() {
+    this.getAllGroup();
+  },
   data() {
     return {
       active: 0,
-      signForm: {
-        type: 1,
+      sign: {
+        kind: 1,
         name: "",
         deadline: new Date(2020, 1, 1, 0, 0),
         cid: 0,
         uid: 0,
+        data: "",
       },
       getSign: {
         cid: 0,
@@ -104,38 +136,68 @@ export default {
       },
       drawer: false,
       spinning: false,
+      spinning1: false,
       signList: [],
+      //返回的当前签到条目id
+      signInfo: {},
+      //选到的群组id
+      value1: [],
+      //全部的群组信xi
+      options: [],
+      signForm: {
+        cid: 0,
+        seid: 0,
+        siid: 0,
+      },
     };
   },
   methods: {
+    async getAllGroup() {
+      const data = await getGroup();
+      // console.log(data);
+      this.options = data.data.content;
+    },
     next() {
+      if (this.active == 0) {
+        this.postSignTrue();
+      }
       if (this.active++ > 2) this.active = 0;
     },
     prev() {
       this.active--;
       if (this.active < 0) this.active = 0;
     },
-    // 发起签到
+    // 发起签到条目
     async postSignTrue() {
       this.spinning = true;
-      this.signForm.uid = this.uid;
-      this.signForm.cid = this.$route.params.cid;
-      const data = await postSign(this.signForm);
+      this.sign.uid = this.uid;
+      this.sign.cid = parseInt(this.$route.params.cid);
+      const data = await postSign(this.sign);
       this.spinning = false;
       console.log(data);
-      if (data.code < 0) {
-        return this.$message.error("发起失败，请重试");
+      this.signInfo = data.data;
+    },
+    //发起签到
+    async postSignFormTrue() {
+      for (let key of this.value1) {
+        this.signForm.cid = parseInt(this.$route.params.cid);
+        this.signForm.siid = this.signInfo.siid;
+        this.signForm.seid = key;
+        const data = await addPeopleForSign(this.signForm);
+        console.log(data);
       }
-      this.$message.success("发起成功");
     },
     // 展示签到
     async getSignListTrue() {
+      this.spinning1 = true;
       this.drawer = true;
       this.getSign.uid = this.uid;
       this.getSign.cid = this.$route.params.cid;
       const data = await getSignList(this.getSign);
+
       console.log(data);
       this.signList = data.data.content;
+      this.spinning1 = false;
     },
   },
   computed: {

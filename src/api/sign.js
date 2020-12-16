@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-// 发起签到
+// 发起签到条目
 export const postSign = (data) => {
     return request({
         url: '/sign',
@@ -14,8 +14,18 @@ export const postSign = (data) => {
 
 export const getSignList = (data) => {
     return request({
-        url: '/sign',
+        url: '/sign?uid=' + data.uid + '&cid=' + data.cid,
         method: 'GET',
-        params: { data }
+
+    })
+}
+
+
+// 给签到添加群组
+export const addPeopleForSign = (data) => {
+    return request({
+        url: '/sign/data/add/section?cid=' + data.cid + '&seid=' + data.seid + '&siid=' + data.siid,
+        method: 'POST',
+
     })
 }
