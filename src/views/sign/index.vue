@@ -19,7 +19,7 @@
             <el-radio-group
               v-model="sign.kind"
               border
-              style="width: 44%; margin-left: 28%; margin-right: 28%"
+              style="width: 48%; margin-left: 26%; margin-right: 26%"
             >
               <el-radio-button label="1">密码签到</el-radio-button>
               <el-radio-button label="5">二维码签到</el-radio-button>
@@ -38,6 +38,26 @@
                 clearable
               ></el-input>
             </el-form-item>
+            <el-form-item label="签到名称">
+              <el-input v-model="sign.name"></el-input>
+            </el-form-item>
+            <el-form-item label="截止日期">
+              <el-time-picker v-model="sign.deadline" placeholder="截止日期">
+              </el-time-picker>
+            </el-form-item>
+          </div>
+          <div
+            v-if="sign.kind == 4"
+            style="margin-top: 60px; width: 20%; margin: auto"
+          >
+            <el-alert title="请输入手势密码" type="warning" center show-icon>
+            </el-alert>
+
+            <canvas-lock
+              ref="canvas"
+              @drawEnd="drawEnd($event)"
+              :disbaled="false"
+            ></canvas-lock>
             <el-form-item label="签到名称">
               <el-input v-model="sign.name"></el-input>
             </el-form-item>
@@ -113,9 +133,14 @@
 
 <script>
 import { mapGetters } from "vuex";
+import { CanvasLock } from "vue-lock";
 import { postSign, getSignList, addPeopleForSign } from "@/api/sign";
 import { getGroup } from "@/api/group";
 export default {
+  components: {
+    CanvasLock,
+  },
+
   created() {
     this.getAllGroup();
   },
@@ -198,6 +223,10 @@ export default {
       console.log(data);
       this.signList = data.data.content;
       this.spinning1 = false;
+    },
+    // 手势输入完成后
+    drawEnd(e) {
+      console.log(e);
     },
   },
   computed: {
