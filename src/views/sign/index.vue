@@ -2,11 +2,11 @@
   <div>
     <a-spin :spinning="spinning">
       <el-button type="success" @click="getSignListTrue">查看签到</el-button>
-      <el-divider></el-divider>
+      <el-divider />
       <el-steps :active="active" finish-status="success">
-        <el-step title="签到类型"></el-step>
-        <el-step title="签到内容"></el-step>
-        <el-step title="发起签到"></el-step>
+        <el-step title="签到类型" />
+        <el-step title="签到内容" />
+        <el-step title="发起签到" />
       </el-steps>
 
       <el-form
@@ -28,60 +28,56 @@
               <el-radio-button label="2">拍照签到</el-radio-button>
             </el-radio-group>
           </el-form-item>
-           </el-form-item>
-           <div style="margin-top: 100px; width: 20%; margin: auto">
-             <el-form-item label="签到名称">
-              <el-input v-model="sign.name"></el-input>
+        </el-form-item>
+
+          <div style="margin-top: 100px; width: 20%; margin: auto">
+            <el-form-item label="签到名称">
+              <el-input v-model="sign.name" />
             </el-form-item>
             <el-form-item label="截止日期">
-              <el-time-picker v-model="sign.deadline" placeholder="截止日期">
-              </el-time-picker>
+              <el-time-picker v-model="sign.deadline" placeholder="截止日期" />
             </el-form-item>
-           </div>
-            
+          </div>
+
           <div
             v-if="sign.kind == 1"
             style="margin-top: 60px; width: 20%; margin: auto"
           >
             <el-form-item label="签到密码">
               <el-input
-                placeholder="请输入签到密码"
                 v-model="sign.data"
+                placeholder="请输入签到密码"
                 maxlength="4"
                 show-word-limit
                 clearable
-              ></el-input>
+              />
             </el-form-item>
-           
+
           </div>
           <div
             v-if="sign.kind == 4"
             style="margin-top: 60px; width: 20%; margin: auto"
           >
-            <el-alert title="请输入手势密码" type="warning" center show-icon>
-            </el-alert>
+            <el-alert title="请输入手势密码" type="warning" center show-icon />
 
-
-            <canvas-lock  
+            <canvas-lock
               ref="canvas"
-              @drawEnd="drawEnd($event)"
               :disbaled="false"
-            ></canvas-lock>
+              @drawEnd="drawEnd($event)"
+            />
           </div>
-         
-          <div v-if="sign.kind==5" >
-             <el-form-item label="签到周期" style="width:20%;margin:auto">
-            <el-select v-model="value" placeholder="请选择">
-    <el-option
-      v-for="item in options5"
-      :key="item.value"
-      :label="item.label"
-      :value="item.value">
-    </el-option>
-  </el-select>
-   </el-form-item>
+          <div v-if="sign.kind==5">
+            <el-form-item label="签到周期" style="width:20%;margin:auto">
+              <el-select v-model="value" placeholder="请选择">
+                <el-option
+                  v-for="item in options5"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"
+                />
+              </el-select>
+            </el-form-item>
           </div>
-         
         </div>
         <div
           v-if="active == 1"
@@ -93,8 +89,7 @@
               :key="item.seid"
               :label="item.name"
               :value="item.seid"
-            >
-            </el-option>
+            />
           </el-select>
         </div>
         <div v-if="active == 2">
@@ -102,21 +97,20 @@
         </div>
       </el-form>
       <footer>
-        <el-button @click="prev" v-if="active == 1 || active == 2"
-          >上一步</el-button
-        >
         <el-button
+          v-if="active == 1 || active == 2"
+          @click="prev"
+        >上一步</el-button>
+        <el-button
+          v-if="active == 0 || active == 1"
           style="margin-top: 5%"
           @click="next"
-          v-if="active == 0 || active == 1"
-          >下一步</el-button
-        >
+        >下一步</el-button>
         <el-button
+          v-if="active == 2"
           style="margin-top: 5%"
           @click="postSignFormTrue"
-          v-if="active == 2"
-          >提交</el-button
-        >
+        >提交</el-button>
       </footer>
 
       <!-- 抽屉 -->
@@ -133,19 +127,18 @@
               property="deadline"
               label="日期"
               width="150"
-            ></el-table-column>
+            />
             <el-table-column
               property="name"
               label="签到名称"
               width="200"
-            ></el-table-column>
+            />
           </el-table>
         </a-spin>
       </el-drawer>
     </a-spin>
   </div>
 </template>
-
 
 <script>
 import { mapGetters } from "vuex";
@@ -155,10 +148,6 @@ import { getGroup } from "@/api/group";
 export default {
   components: {
     CanvasLock,
-  },
-
-  created() {
-    this.getAllGroup();
   },
   data() {
     return {
@@ -179,11 +168,11 @@ export default {
       spinning: false,
       spinning1: false,
       signList: [],
-      //返回的当前签到条目id
+      // 返回的当前签到条目id
       signInfo: {},
-      //选到的群组id
+      // 选到的群组id
       value1: [],
-      //全部的群组信xi
+      // 全部的群组信xi
       options: [],
       signForm: {
         cid: 0,
@@ -220,6 +209,10 @@ export default {
       value: "",
     };
   },
+
+  created() {
+    this.getAllGroup();
+  },
   methods: {
     async getAllGroup() {
       const data = await getGroup();
@@ -227,7 +220,7 @@ export default {
       this.options = data.data.content;
     },
     next() {
-      if (this.active == 0) {
+      if (this.active === 0) {
         this.postSignTrue();
       }
       if (this.active++ > 2) this.active = 0;
@@ -246,9 +239,9 @@ export default {
       console.log(data);
       this.signInfo = data.data;
     },
-    //发起签到
+    // 发起签到
     async postSignFormTrue() {
-      for (let key of this.value1) {
+      for (const key of this.value1) {
         this.signForm.cid = parseInt(this.$route.params.cid);
         this.signForm.siid = this.signInfo.siid;
         this.signForm.seid = key;
