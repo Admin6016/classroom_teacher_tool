@@ -19,7 +19,7 @@
             <el-radio-group
               v-model="sign.kind"
               border
-              style="width: 48%; margin-left: 26%; margin-right: 26%"
+              style="width: 48%; margin-left: 26%; margin-right: 26%;margin-bottom:50px"
             >
               <el-radio-button label="1">密码签到</el-radio-button>
               <el-radio-button label="5">二维码签到</el-radio-button>
@@ -28,7 +28,21 @@
               <el-radio-button label="2">拍照签到</el-radio-button>
             </el-radio-group>
           </el-form-item>
-          <div v-if="sign.kind == 1" style="margin-top: 60px; width: 20%">
+           </el-form-item>
+           <div style="margin-top: 100px; width: 20%; margin: auto">
+             <el-form-item label="签到名称">
+              <el-input v-model="sign.name"></el-input>
+            </el-form-item>
+            <el-form-item label="截止日期">
+              <el-time-picker v-model="sign.deadline" placeholder="截止日期">
+              </el-time-picker>
+            </el-form-item>
+           </div>
+            
+          <div
+            v-if="sign.kind == 1"
+            style="margin-top: 60px; width: 20%; margin: auto"
+          >
             <el-form-item label="签到密码">
               <el-input
                 placeholder="请输入签到密码"
@@ -38,13 +52,7 @@
                 clearable
               ></el-input>
             </el-form-item>
-            <el-form-item label="签到名称">
-              <el-input v-model="sign.name"></el-input>
-            </el-form-item>
-            <el-form-item label="截止日期">
-              <el-time-picker v-model="sign.deadline" placeholder="截止日期">
-              </el-time-picker>
-            </el-form-item>
+           
           </div>
           <div
             v-if="sign.kind == 4"
@@ -53,19 +61,27 @@
             <el-alert title="请输入手势密码" type="warning" center show-icon>
             </el-alert>
 
-            <canvas-lock
+
+            <canvas-lock  
               ref="canvas"
               @drawEnd="drawEnd($event)"
               :disbaled="false"
             ></canvas-lock>
-            <el-form-item label="签到名称">
-              <el-input v-model="sign.name"></el-input>
-            </el-form-item>
-            <el-form-item label="截止日期">
-              <el-time-picker v-model="sign.deadline" placeholder="截止日期">
-              </el-time-picker>
-            </el-form-item>
           </div>
+         
+          <div v-if="sign.kind==5" >
+             <el-form-item label="签到周期" style="width:20%;margin:auto">
+            <el-select v-model="value" placeholder="请选择">
+    <el-option
+      v-for="item in options5"
+      :key="item.value"
+      :label="item.label"
+      :value="item.value">
+    </el-option>
+  </el-select>
+   </el-form-item>
+          </div>
+         
         </div>
         <div
           v-if="active == 1"
@@ -174,6 +190,34 @@ export default {
         seid: 0,
         siid: 0,
       },
+      shoushi: [],
+      options5: [
+        {
+          value: "10",
+          label: "10秒",
+        },
+        {
+          value: "30",
+          label: "30秒",
+        },
+        {
+          value: "60",
+          label: "60秒",
+        },
+        {
+          value: "90",
+          label: "90秒",
+        },
+        {
+          value: "180",
+          label: "180秒",
+        },
+        {
+          value: "300",
+          label: "长期",
+        },
+      ],
+      value: "",
     };
   },
   methods: {
@@ -226,7 +270,15 @@ export default {
     },
     // 手势输入完成后
     drawEnd(e) {
-      console.log(e);
+      // console.log(e);
+      for (var item of e) {
+        console.log(item.index);
+
+        this.shoushi.push(item.index);
+      }
+      // console.log(this.shoushi.toString());
+      this.shoushi = this.shoushi.toString();
+      this.sign.data = this.shoushi;
     },
   },
   computed: {
