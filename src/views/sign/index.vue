@@ -32,10 +32,10 @@
 
           <div style="margin-top: 100px; width: 20%; margin: auto">
             <el-form-item label="签到名称">
-              <el-input v-model="sign.name" />
+              <el-input v-model="sign.name" :style="item_style"/>
             </el-form-item>
             <el-form-item label="截止日期">
-              <el-time-picker v-model="sign.deadline" placeholder="截止日期" />
+              <el-time-picker v-model="sign.deadline" :style="item_style" placeholder="截止日期"/>
             </el-form-item>
           </div>
 
@@ -45,8 +45,10 @@
           >
             <el-form-item label="签到密码">
               <el-input
+                type="password"
                 v-model="sign.data"
                 placeholder="请输入签到密码"
+                :style="item_style"
                 maxlength="4"
                 show-word-limit
                 clearable
@@ -56,9 +58,9 @@
           </div>
           <div
             v-if="sign.kind == 4"
-            style="margin-top: 60px; width: 20%; margin: auto"
+            style="margin-top: 60px; width: 200px; margin: auto"
           >
-            <el-alert title="请输入手势密码" type="warning" center show-icon />
+            <el-alert :style="item_style" title="请输入手势密码" type="warning" center show-icon/>
 
             <canvas-lock
               ref="canvas"
@@ -68,7 +70,7 @@
           </div>
           <div v-if="sign.kind==5">
             <el-form-item label="签到周期" style="width:20%;margin:auto">
-              <el-select v-model="value" placeholder="请选择">
+              <el-select :style="item_style" v-model="value" placeholder="请选择">
                 <el-option
                   v-for="item in options5"
                   :key="item.value"
@@ -96,19 +98,22 @@
           <span>确定要提交吗？</span>
         </div>
       </el-form>
-      <footer>
+      <footer style="width: 50%;margin-left: 25%;margin-right: 25%">
         <el-button
           v-if="active == 1 || active == 2"
           @click="prev"
-        >上一步</el-button>
+          style="width: 50%"
+        >上一步
+        </el-button>
         <el-button
+          type="info"
           v-if="active == 0 || active == 1"
-          style="margin-top: 5%"
+          style="margin-top: 5%;width: 50%"
           @click="next"
         >下一步</el-button>
         <el-button
           v-if="active == 2"
-          style="margin-top: 5%"
+          style="margin-top: 5%;"
           @click="postSignFormTrue"
         >提交</el-button>
       </footer>
@@ -151,14 +156,15 @@ export default {
   },
   data() {
     return {
+      item_style: 'width: 200px',
       active: 0,
       sign: {
         kind: 1,
-        name: "",
+        name: '',
         deadline: new Date(2020, 1, 1, 0, 0),
         cid: 0,
         uid: 0,
-        data: "",
+        data: ''
       },
       getSign: {
         cid: 0,
