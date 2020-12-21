@@ -161,7 +161,7 @@
         >下一步</el-button>
         <el-button
           v-if="active == 2"
-          style="margin-top: 5%;"
+          style="margin-top: 5%;width:50%"
           @click="postSignFormTrue"
         >提交</el-button>
       </footer>
@@ -189,6 +189,19 @@
           </el-table>
         </a-spin>
       </el-drawer>
+      <!-- 对话框 -->
+      <el-dialog
+  title="提示"
+  :visible.sync="dialogVisible"
+  width="30%"
+  top="15%"
+  >
+  <span>添加签到成功，请选择下一步</span>
+  <span slot="footer" class="dialog-footer">
+    <el-button @click="backToIndex" style="margin-right:40%">回到主页</el-button>
+    <el-button type="primary" @click="ToBigScreen">进入签到大屏</el-button>
+  </span>
+</el-dialog>
     </a-spin>
   </div>
 </template>
@@ -205,6 +218,7 @@ import {
   addSinglePeopleForSign,
 } from "@/api/sign";
 import { getGroup } from "@/api/group";
+import screenfull from "screenfull";
 export default {
   components: {
     CanvasLock,
@@ -229,10 +243,13 @@ export default {
         cid: 0,
         uid: 0,
       },
+      // 默认不全屏
+      isFullscreen: false,
       checked: false,
       drawer: false,
       spinning: false,
       spinning1: false,
+      // spinning2: false,
       signList: [],
       // 返回的当前签到条目id
       signInfo: {},
@@ -240,7 +257,8 @@ export default {
       value1: [],
       // 全部的群组信xi
       options: [],
-
+      // 添加签到成功的对话框
+      dialogVisible: false,
       // 添加簽到學生（個人）
       multipleSelection: [],
       addsingleStuForm: {
@@ -319,6 +337,7 @@ export default {
     },
     // 发起签到
     async postSignFormTrue() {
+      this.spinning = true;
       for (const key of this.value1) {
         this.signForm.cid = parseInt(this.$route.params.cid);
         this.signForm.siid = this.signInfo.siid;
@@ -333,6 +352,8 @@ export default {
         const data1 = await addSinglePeopleForSign(this.addsingleStuForm);
         console.log(data1);
       }
+      this.spinning = false;
+      this.dialogVisible = true;
     },
     // 展示签到
     async getSignListTrue() {
@@ -378,6 +399,18 @@ export default {
       // console.log(val);
       this.multipleSelection = val;
       console.log(this.multipleSelection);
+    },
+    // 回到主页
+    backToIndex() {
+      this.dialogVisible = false;
+      this.$router.push("/dashboard");
+    },
+    // 进入大屏
+    ToBigScreen() {
+      this.dialogVisible = false;
+      this.$router.push("/bigscreen");
+
+      screenfull.toggle();
     },
   },
   computed: {
