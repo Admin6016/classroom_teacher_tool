@@ -60,7 +60,8 @@
             v-if="sign.kind == 4"
             style="margin-top: 60px; width: 200px; margin: auto"
           >
-            <el-alert :style="item_style" title="请输入手势密码" type="warning" center show-icon/>
+            <el-alert :style="item_style" title="请输入手势密码" type="warning" center show-icon v-if="this.shoushi.length==0"/>
+            <el-alert :style="item_style" title="已輸入手勢密碼"  type="success" center show-icon v-if="this.shoushi>0"/>
 
             <canvas-lock
               ref="canvas"
@@ -83,9 +84,9 @@
         </div>
         <div
           v-if="active == 1"
-          style="width: 44%; margin-left: 28%; margin-right: 28%"
+          style="width: 100% ;"
         >
-          <el-select v-model="value1" multiple placeholder="请选择">
+          <el-select v-model="value1" multiple placeholder="请选择簽到群組" style="width:30%">
             <el-option
               v-for="item in options"
               :key="item.seid"
@@ -93,16 +94,63 @@
               :value="item.seid"
             />
           </el-select>
+
+<el-form  :model="findStuForm" label-width="100px" style="float:right;margin-left:20%;margin-right:5%">
+  <el-form-item label="輸入學生姓名">
+    <el-input v-model="findStuForm.name" clearable @clear='resetInput'> <el-button slot="append" icon="el-icon-search" @click="getStuListByName"></el-button></el-input>
+  </el-form-item>
+</el-form>
+          <div style="margin-top:80px;width:100%;margin-right:5%">
+             <el-table
+    :data="studentList"
+    stripe
+    border
+    style="width: 100%"
+    @selection-change="handleSelectionChange"
+    >
+    <el-table-column
+      type="selection"
+      label="選擇"
+      width="80">
+    </el-table-column>
+    <el-table-column
+      prop="name"
+      label="姓名"
+      width="260">
+    </el-table-column>
+    <el-table-column
+      prop="number"
+      label="學號"
+      width="260">
+    </el-table-column>
+    <el-table-column
+      prop="telephone"
+      label="電話"
+      width="260">
+    </el-table-column>
+    <el-table-column
+      prop="location"
+      label="地址"
+      width="260">
+    </el-table-column>
+     <el-table-column
+      prop="role"
+      label="角色"
+      width="170">
+    </el-table-column>
+  </el-table>
+          </div>
+         
         </div>
         <div v-if="active == 2">
           <span>确定要提交吗？</span>
         </div>
       </el-form>
-      <footer style="width: 50%;margin-left: 25%;margin-right: 25%">
+      <footer style="width: 50%;margin-left: 25%;margin-right: 25%; display:flex">
         <el-button
           v-if="active == 1 || active == 2"
           @click="prev"
-          style="width: 50%"
+          style="width: 50% ;margin-top:5%"
         >上一步
         </el-button>
         <el-button
@@ -148,7 +196,14 @@
 <script>
 import { mapGetters } from "vuex";
 import { CanvasLock } from "vue-lock";
-import { postSign, getSignList, addPeopleForSign } from "@/api/sign";
+import {
+  postSign,
+  getSignList,
+  addPeopleForSign,
+  getStudent,
+  getStudentByName,
+  addSinglePeopleForSign,
+} from "@/api/sign";
 import { getGroup } from "@/api/group";
 export default {
   components: {
@@ -156,20 +211,25 @@ export default {
   },
   data() {
     return {
-      item_style: 'width: 200px',
+      item_style: "width: 200px",
       active: 0,
+      // 按需查詢學生信息的表單
+      findStuForm: {
+        name: "",
+      },
       sign: {
         kind: 1,
-        name: '',
+        name: "",
         deadline: new Date(2020, 1, 1, 0, 0),
         cid: 0,
         uid: 0,
-        data: ''
+        data: "",
       },
       getSign: {
         cid: 0,
         uid: 0,
       },
+      checked: false,
       drawer: false,
       spinning: false,
       spinning1: false,
@@ -180,9 +240,17 @@ export default {
       value1: [],
       // 全部的群组信xi
       options: [],
+
+      // 添加簽到學生（個人）
+      multipleSelection: [],
+      addsingleStuForm: {
+        cid: 0,
+        siid: 0,
+        uid: 0,
+      },
       signForm: {
         cid: 0,
-        seid: 0,
+        uid: 0,
         siid: 0,
       },
       shoushi: [],
@@ -213,11 +281,13 @@ export default {
         },
       ],
       value: "",
+      studentList: [],
     };
   },
 
   created() {
     this.getAllGroup();
+    this.getStudentList();
   },
   methods: {
     async getAllGroup() {
@@ -227,6 +297,8 @@ export default {
     },
     next() {
       if (this.active === 0) {
+        this.shoushi = this.shoushi.toString();
+        this.sign.data = this.shoushi;
         this.postSignTrue();
       }
       if (this.active++ > 2) this.active = 0;
@@ -254,6 +326,13 @@ export default {
         const data = await addPeopleForSign(this.signForm);
         console.log(data);
       }
+      for (const key1 of this.multipleSelection) {
+        this.addsingleStuForm.cid = parseInt(this.$route.params.cid);
+        this.addsingleStuForm.siid = this.signInfo.siid;
+        this.addsingleStuForm.uid = key1.uid;
+        const data1 = await addSinglePeopleForSign(this.addsingleStuForm);
+        console.log(data1);
+      }
     },
     // 展示签到
     async getSignListTrue() {
@@ -269,6 +348,7 @@ export default {
     },
     // 手势输入完成后
     drawEnd(e) {
+      this.shoushi = [];
       // console.log(e);
       for (var item of e) {
         console.log(item.index);
@@ -276,8 +356,28 @@ export default {
         this.shoushi.push(item.index);
       }
       // console.log(this.shoushi.toString());
-      this.shoushi = this.shoushi.toString();
-      this.sign.data = this.shoushi;
+    },
+    // 獲取學生列表
+    async getStudentList() {
+      const data = await getStudent();
+      console.log(data);
+      this.studentList = data.data.content;
+    },
+
+    // 按需查找學生
+    async getStuListByName() {
+      const data = await getStudentByName(this.findStuForm);
+      console.log(data);
+      this.studentList = data.data.content;
+    },
+    // 清空輸入框
+    resetInput() {
+      this.getStudentList();
+    },
+    handleSelectionChange(val) {
+      // console.log(val);
+      this.multipleSelection = val;
+      console.log(this.multipleSelection);
     },
   },
   computed: {
