@@ -28,7 +28,7 @@
               <el-radio-button label="2">拍照签到</el-radio-button>
             </el-radio-group>
           </el-form-item>
-        </el-form-item>
+          </el-form-item>
 
           <div style="margin-top: 100px; width: 20%; margin: auto">
             <el-form-item label="签到名称">
@@ -45,8 +45,8 @@
           >
             <el-form-item label="签到密码">
               <el-input
-                type="password"
                 v-model="sign.data"
+                type="password"
                 placeholder="请输入签到密码"
                 :style="item_style"
                 maxlength="4"
@@ -60,8 +60,9 @@
             v-if="sign.kind == 4"
             style="margin-top: 60px; width: 200px; margin: auto"
           >
-            <el-alert :style="item_style" title="请输入手势密码" type="warning" center show-icon v-if="this.shoushi.length==0"/>
-            <el-alert :style="item_style" title="已輸入手勢密碼"  type="success" center show-icon v-if="this.shoushi>0"/>
+            <el-alert v-if="this.shoushi.length==0" :style="item_style" title="请输入手势密码" type="warning" center
+                      show-icon/>
+            <el-alert v-if="this.shoushi>0" :style="item_style" title="已輸入手勢密碼" type="success" center show-icon/>
 
             <canvas-lock
               ref="canvas"
@@ -71,7 +72,7 @@
           </div>
           <div v-if="sign.kind==5">
             <el-form-item label="签到周期" style="width:20%;margin:auto">
-              <el-select :style="item_style" v-model="value" placeholder="请选择">
+              <el-select v-model="value" :style="item_style" placeholder="请选择">
                 <el-option
                   v-for="item in options5"
                   :key="item.value"
@@ -95,52 +96,54 @@
             />
           </el-select>
 
-<el-form  :model="findStuForm" label-width="100px" style="float:right;margin-left:20%;margin-right:5%">
-  <el-form-item label="輸入學生姓名">
-    <el-input v-model="findStuForm.name" clearable @clear='resetInput'> <el-button slot="append" icon="el-icon-search" @click="getStuListByName"></el-button></el-input>
-  </el-form-item>
-</el-form>
+          <el-form :model="findStuForm" label-width="100px" style="float:right;margin-left:20%;margin-right:5%">
+            <el-form-item label="輸入學生姓名">
+              <el-input v-model="findStuForm.name" clearable @clear="resetInput">
+                <el-button slot="append" icon="el-icon-search" @click="getStuListByName"/>
+              </el-input>
+            </el-form-item>
+          </el-form>
           <div style="margin-top:80px;width:100%;margin-right:5%">
-             <el-table
-    :data="studentList"
-    stripe
-    border
-    style="width: 100%"
-    @selection-change="handleSelectionChange"
-    >
-    <el-table-column
-      type="selection"
-      label="選擇"
-      width="80">
-    </el-table-column>
-    <el-table-column
-      prop="name"
-      label="姓名"
-      width="260">
-    </el-table-column>
-    <el-table-column
-      prop="number"
-      label="學號"
-      width="260">
-    </el-table-column>
-    <el-table-column
-      prop="telephone"
-      label="電話"
-      width="260">
-    </el-table-column>
-    <el-table-column
-      prop="location"
-      label="地址"
-      width="260">
-    </el-table-column>
-     <el-table-column
-      prop="role"
-      label="角色"
-      width="170">
-    </el-table-column>
-  </el-table>
+            <el-table
+              :data="studentList"
+              stripe
+              border
+              style="width: 100%"
+              @selection-change="handleSelectionChange"
+            >
+              <el-table-column
+                type="selection"
+                label="選擇"
+                width="80"
+              />
+              <el-table-column
+                prop="name"
+                label="姓名"
+                width="260"
+              />
+              <el-table-column
+                prop="number"
+                label="學號"
+                width="260"
+              />
+              <el-table-column
+                prop="telephone"
+                label="電話"
+                width="260"
+              />
+              <el-table-column
+                prop="location"
+                label="地址"
+                width="260"
+              />
+              <el-table-column
+                prop="role"
+                label="角色"
+                width="170"
+              />
+            </el-table>
           </div>
-         
+
         </div>
         <div v-if="active == 2">
           <span>确定要提交吗？</span>
@@ -149,13 +152,13 @@
       <footer style="width: 50%;margin-left: 25%;margin-right: 25%; display:flex">
         <el-button
           v-if="active == 1 || active == 2"
-          @click="prev"
           style="width: 50% ;margin-top:5%"
+          @click="prev"
         >上一步
         </el-button>
         <el-button
-          type="info"
           v-if="active == 0 || active == 1"
+          type="info"
           style="margin-top: 5%;width: 50%"
           @click="next"
         >下一步</el-button>
@@ -191,57 +194,58 @@
       </el-drawer>
       <!-- 对话框 -->
       <el-dialog
-  title="提示"
-  :visible.sync="dialogVisible"
-  width="30%"
-  top="15%"
-  >
-  <span>添加签到成功，请选择下一步</span>
-  <span slot="footer" class="dialog-footer">
-    <el-button @click="backToIndex">回到主页</el-button>
-    <el-button type="primary" @click="ToBigScreen">进入签到大屏</el-button>
-  </span>
-</el-dialog>
+        title="提示"
+        :visible.sync="dialogVisible"
+        width="30%"
+        top="15%"
+      >
+        <span>添加签到成功，请选择下一步</span>
+        <span slot="footer" class="dialog-footer">
+          <el-button @click="backToIndex">回到主页</el-button>
+          <el-button type="primary" @click="ToBigScreen">进入签到大屏</el-button>
+        </span>
+      </el-dialog>
     </a-spin>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { CanvasLock } from "vue-lock";
+import { mapGetters } from 'vuex'
+import { CanvasLock } from 'vue-lock'
 import {
   postSign,
   getSignList,
   addPeopleForSign,
   getStudent,
   getStudentByName,
-  addSinglePeopleForSign,
-} from "@/api/sign";
-import { getGroup } from "@/api/group";
-import screenfull from "screenfull";
+  addSinglePeopleForSign
+} from '@/api/sign'
+import { getGroup } from '@/api/group'
+import screenfull from 'screenfull'
+
 export default {
   components: {
-    CanvasLock,
+    CanvasLock
   },
   data() {
     return {
-      item_style: "width: 200px",
+      item_style: 'width: 200px',
       active: 0,
       // 按需查詢學生信息的表單
       findStuForm: {
-        name: "",
+        name: ''
       },
       sign: {
         kind: 1,
-        name: "",
+        name: '',
         deadline: new Date(2020, 1, 1, 0, 0),
         cid: 0,
         uid: 0,
-        data: "",
+        data: ''
       },
       getSign: {
         cid: 0,
-        uid: 0,
+        uid: 0
       },
       // 默认不全屏
       isFullscreen: false,
@@ -264,159 +268,159 @@ export default {
       addsingleStuForm: {
         cid: 0,
         siid: 0,
-        uid: 0,
+        uid: 0
       },
       signForm: {
         cid: 0,
         uid: 0,
-        siid: 0,
+        siid: 0
       },
       shoushi: [],
       options5: [
         {
-          value: "10",
-          label: "10秒",
+          value: '10',
+          label: '10秒'
         },
         {
-          value: "30",
-          label: "30秒",
+          value: '30',
+          label: '30秒'
         },
         {
-          value: "60",
-          label: "60秒",
+          value: '60',
+          label: '60秒'
         },
         {
-          value: "90",
-          label: "90秒",
+          value: '90',
+          label: '90秒'
         },
         {
-          value: "180",
-          label: "180秒",
+          value: '180',
+          label: '180秒'
         },
         {
-          value: "300",
-          label: "长期",
-        },
+          value: '300',
+          label: '长期'
+        }
       ],
-      value: "",
-      studentList: [],
-    };
+      value: '',
+      studentList: []
+    }
   },
 
   created() {
-    this.getAllGroup();
-    this.getStudentList();
+    this.getAllGroup()
+    this.getStudentList()
   },
   methods: {
     async getAllGroup() {
-      const data = await getGroup();
+      const data = await getGroup()
       // console.log(data);
-      this.options = data.data.content;
+      this.options = data.data.content
     },
     next() {
       if (this.active === 0) {
-        this.shoushi = this.shoushi.toString();
-        this.sign.data = this.shoushi;
-        this.postSignTrue();
+        this.shoushi = this.shoushi.toString()
+        this.sign.data = this.shoushi
+        this.postSignTrue()
       }
-      if (this.active++ > 2) this.active = 0;
+      if (this.active++ > 2) this.active = 0
     },
     prev() {
-      this.active--;
-      if (this.active < 0) this.active = 0;
+      this.active--
+      if (this.active < 0) this.active = 0
     },
     // 发起签到条目
     async postSignTrue() {
-      this.spinning = true;
-      this.sign.uid = this.uid;
-      this.sign.cid = parseInt(this.$route.params.cid);
-      const data = await postSign(this.sign);
-      this.spinning = false;
-      console.log(data);
-      this.signInfo = data.data;
+      this.spinning = true
+      this.sign.uid = this.uid
+      this.sign.cid = parseInt(this.$route.params.cid)
+      const data = await postSign(this.sign)
+      this.spinning = false
+      console.log(data)
+      this.signInfo = data.data
     },
     // 发起签到
     async postSignFormTrue() {
-      this.spinning = true;
+      this.spinning = true
       for (const key of this.value1) {
-        this.signForm.cid = parseInt(this.$route.params.cid);
-        this.signForm.siid = this.signInfo.siid;
-        this.signForm.seid = key;
-        const data = await addPeopleForSign(this.signForm);
-        console.log(data);
+        this.signForm.cid = parseInt(this.$route.params.cid)
+        this.signForm.siid = this.signInfo.siid
+        this.signForm.seid = key
+        const data = await addPeopleForSign(this.signForm)
+        console.log(data)
       }
       for (const key1 of this.multipleSelection) {
-        this.addsingleStuForm.cid = parseInt(this.$route.params.cid);
-        this.addsingleStuForm.siid = this.signInfo.siid;
-        this.addsingleStuForm.uid = key1.uid;
-        const data1 = await addSinglePeopleForSign(this.addsingleStuForm);
-        console.log(data1);
+        this.addsingleStuForm.cid = parseInt(this.$route.params.cid)
+        this.addsingleStuForm.siid = this.signInfo.siid
+        this.addsingleStuForm.uid = key1.uid
+        const data1 = await addSinglePeopleForSign(this.addsingleStuForm)
+        console.log(data1)
       }
-      this.spinning = false;
-      this.dialogVisible = true;
+      this.spinning = false
+      this.dialogVisible = true
     },
     // 展示签到
     async getSignListTrue() {
-      this.spinning1 = true;
-      this.drawer = true;
-      this.getSign.uid = this.uid;
-      this.getSign.cid = this.$route.params.cid;
-      const data = await getSignList(this.getSign);
+      this.spinning1 = true
+      this.drawer = true
+      this.getSign.uid = this.uid
+      this.getSign.cid = this.$route.params.cid
+      const data = await getSignList(this.getSign)
 
-      console.log(data);
-      this.signList = data.data.content;
-      this.spinning1 = false;
+      console.log(data)
+      this.signList = data.data.content
+      this.spinning1 = false
     },
     // 手势输入完成后
     drawEnd(e) {
-      this.shoushi = [];
+      this.shoushi = []
       // console.log(e);
       for (var item of e) {
-        console.log(item.index);
+        console.log(item.index)
 
-        this.shoushi.push(item.index);
+        this.shoushi.push(item.index)
       }
       // console.log(this.shoushi.toString());
     },
     // 獲取學生列表
     async getStudentList() {
-      const data = await getStudent();
-      console.log(data);
-      this.studentList = data.data.content;
+      const data = await getStudent()
+      console.log(data)
+      this.studentList = data.data.content
     },
 
     // 按需查找學生
     async getStuListByName() {
-      const data = await getStudentByName(this.findStuForm);
-      console.log(data);
-      this.studentList = data.data.content;
+      const data = await getStudentByName(this.findStuForm)
+      console.log(data)
+      this.studentList = data.data.content
     },
     // 清空輸入框
     resetInput() {
-      this.getStudentList();
+      this.getStudentList()
     },
     handleSelectionChange(val) {
       // console.log(val);
-      this.multipleSelection = val;
-      console.log(this.multipleSelection);
+      this.multipleSelection = val
+      console.log(this.multipleSelection)
     },
     // 回到主页
     backToIndex() {
-      this.dialogVisible = false;
-      this.$router.push("/dashboard");
+      this.dialogVisible = false
+      this.$router.push('/dashboard')
     },
     // 进入大屏
     ToBigScreen() {
-      this.dialogVisible = false;
-      this.$router.push("/bigscreen");
+      this.dialogVisible = false
+      this.$router.push('/bigscreen')
 
-      screenfull.toggle();
-    },
+      screenfull.toggle()
+    }
   },
   computed: {
-    ...mapGetters(["uid"]),
-  },
-};
+    ...mapGetters(['uid'])
+  }
+}
 </script>
 
 <style lang="scss" scoped>
