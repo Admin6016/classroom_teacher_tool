@@ -53,6 +53,30 @@
                 margin-bottom: 20px;
               "
             />
+            <dv-decoration-7
+              style="
+                width: 150px;
+                height: 10%;
+                color: #7ec699;
+                font-weight: 700;
+                margin: 0 auto;
+              "
+              ><span style="margin-left: 15px; margin-right: 15px"
+                >签到二维码</span
+              ></dv-decoration-7
+            >
+            <vue-qr
+              :bgSrc="src"
+              :logoSrc="src2"
+              text="Hello world!"
+              :size="200"
+              style="
+                margin-left: 25%;
+                margin-right: 30%;
+                margin-top: 20px;
+                margin-bottom: 20px;
+              "
+            ></vue-qr>
           </dv-border-box-10>
 
           <dv-border-box-10 style="width: 30%; height: 80%; margin-top: 5%">
@@ -81,7 +105,11 @@
 
 <script>
 import { getFinshSign, getUnFinshSign } from "@/api/signdata";
+import VueQr from "vue-qr";
 export default {
+  components: {
+    VueQr,
+  },
   data() {
     return {
       config: {
@@ -142,14 +170,15 @@ export default {
       this.finshSignForm.cid = this.$route.query.cid;
       this.finshSignForm.siid = this.$route.query.siid;
       const data = await getUnFinshSign(this.finshSignForm);
-
       for (const item of data.data.content) {
         this.unfinshSign.push([item.name, item.role]);
       }
-
       let newData = this.config;
       newData.data = this.unfinshSign;
       this.config = { ...newData };
+    },
+    test(dataUrl, id) {
+      console.log(url, id);
     },
   },
 };
