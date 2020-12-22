@@ -3,31 +3,33 @@
     <el-card class="box-card">
       <el-form :model="addCourseForm" label-width="80px">
         <el-form-item label="课程名称" required>
-          <el-input clearable v-model="addCourseForm.name"></el-input>
+          <el-input v-model="addCourseForm.name" clearable/>
         </el-form-item>
         <el-form-item label="课程容量" required>
-          <el-input clearable type="number" v-model="addCourseForm.capacity">
+          <el-input v-model="addCourseForm.capacity" clearable type="number">
             <template slot="append">人</template>
           </el-input>
         </el-form-item>
         <el-form-item label="学分" required>
-          <el-input clearable type="number" v-model="addCourseForm.point">
+          <el-input v-model="addCourseForm.point" clearable type="number">
             <template slot="append">分</template>
           </el-input>
         </el-form-item>
         <el-form-item label="课程描述" required>
           <el-input
+            v-model="addCourseForm.description"
             type="textarea"
             rows="3"
             clearable
-            v-model="addCourseForm.description"
-          ></el-input>
+          />
         </el-form-item>
         <div class="btn-form">
-          <el-button type="primary" @click="addCourseSubmit"
-                     :loading="load11"
-            >立即创建</el-button
-          >
+          <el-button
+            type="primary"
+            :loading="load11"
+            @click="addCourseSubmit"
+          >立即创建
+          </el-button>
           <el-button>取消</el-button>
         </div>
       </el-form>
@@ -36,11 +38,11 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
-import { addCourse } from "@/api/course";
+import { mapGetters } from 'vuex'
+import { addCourse } from '@/api/course'
 
 export default {
-  name: "add",
+  name: 'Add',
   data() {
     return {
       load11: false,
@@ -51,23 +53,23 @@ export default {
         point: '',
         uid: 0
       }
-    };
+    }
   },
   computed: {
-    ...mapGetters(["uid"]),
+    ...mapGetters(['uid'])
   },
   methods: {
     async addCourseSubmit() {
       this.load11 = true
       this.addCourseForm.uid = this.uid
-      const { data } = await addCourse(this.addCourseForm);
-      console.log(data);
+      const { data } = await addCourse(this.addCourseForm)
+      console.log(data)
       this.$message.success('添加成功')
       this.load11 = false
       this.$router.push('/course/index')
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">

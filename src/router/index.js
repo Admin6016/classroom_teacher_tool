@@ -41,9 +41,7 @@ export const constantRoutes = [
   {
     path: '/bigscreen',
     component: () => import('@/views/bigscreen/index'),
-    hidden: true,
-
-
+    hidden: true
   },
   {
     path: '/404',
@@ -118,7 +116,7 @@ export const constantRoutes = [
         path: 'index',
         name: 'Course',
         component: () => import('@/views/course/index'),
-        meta: { title: '课程主页', icon: 'el-icon-reading' },
+        meta: { title: '课程主页', icon: 'el-icon-reading' }
       },
       {
         path: 'add',
