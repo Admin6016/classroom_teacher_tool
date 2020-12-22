@@ -16,6 +16,7 @@
   "dependencies": {
     "@antv/g2": "^4.0.15",
     "@d2-projects/vue-table-import": "^1.0.1",
+    "@jiaminghi/data-view": "^2.10.0",
     "ant-design-vue": "^1.7.2",
     "axios": "0.18.1",
     "core-js": "3.6.5",

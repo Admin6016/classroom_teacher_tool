@@ -198,7 +198,7 @@
   >
   <span>添加签到成功，请选择下一步</span>
   <span slot="footer" class="dialog-footer">
-    <el-button @click="backToIndex" style="margin-right:40%">回到主页</el-button>
+    <el-button @click="backToIndex">回到主页</el-button>
     <el-button type="primary" @click="ToBigScreen">进入签到大屏</el-button>
   </span>
 </el-dialog>

@@ -1,5 +1,5 @@
 <template>
-  <div>大屏展示</div>
+  <div></div>
 </template>
 
 <script>
