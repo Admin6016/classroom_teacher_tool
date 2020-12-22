@@ -6,9 +6,9 @@
           type="primary"
           class="btn-top"
           @click="showaddNoticeDialogVisiable"
-          >+添加公告</el-button
-        ></el-col
-      >
+        >+添加公告
+        </el-button>
+      </el-col>
     </el-row>
 
     <div style="margin-left: 11%; margin-right: 11%; padding-top: 30px">
@@ -47,15 +47,36 @@
                 key="setting"
                 type="edit"
                 @click="showEditNoticeVisiable(item)"
-              ></a-icon>
-              <el-popconfirm title="这是一段内容确定删除吗？">
+              />
+              <el-popover
+                v-model="visible2"
+                placement="top"
+                width="200"
+              >
+                <p style="text-align: center"><i class="el-icon-warning" style="color: red;margin-right: 5px"></i>确定删除该公告吗？
+                </p>
+                <div style="text-align: right; margin: 0">
+                  <el-button size="mini" type="text" @click="visible2 = false">取消</el-button>
+                  <el-button type="primary" size="mini" @click="visible2 = false;removeNoticeTrue(item.nid)">确定
+                  </el-button>
+                </div>
                 <a-icon
                   slot="reference"
                   key="edit"
                   type="delete"
-                  @click="removeNoticeTrue(item.nid)"
+                  @confirm="removeNoticeTrue(item.nid)"
                 />
-              </el-popconfirm>
+                <!--                <el-button slot="reference">删除</el-button>-->
+              </el-popover>
+              <!--              <el-popconfirm title="确定删除该公告吗？">-->
+              <!--                <a-icon-->
+              <!--                  slot="reference"-->
+              <!--                  key="edit"-->
+              <!--                  type="delete"-->
+
+              <!--                  @confirm="removeNoticeTrue(item.nid)"-->
+              <!--                />-->
+              <!--              </el-popconfirm>-->
             </template>
           </a-card>
         </a-list-item>
@@ -96,15 +117,16 @@
       <div
         v-if="noticeData[item_id]"
         v-html="`${noticeData[item_id].context}`"
-      ></div>
+      />
       <!--        <div>创建时间：{{ noticeData[0].createTime }}</div>-->
       <!--        <div>修改时间：{{ noticeData[0].updateTime }}</div>-->
       <!--      </el-card>-->
       <span slot="footer" class="dialog-footer">
         <el-button @click="looNoticedialogVisible = false">取 消</el-button>
-        <el-button type="primary" @click="looNoticedialogVisible = false"
-          >确 定</el-button
-        >
+        <el-button
+          type="primary"
+          @click="looNoticedialogVisible = false"
+        >确 定</el-button>
       </span>
     </el-dialog>
     <!-- 展示添加公告的页面 -->
@@ -116,10 +138,10 @@
       <el-form ref="form" :model="addNoticeForm" label-width="80px">
         <div style="margin-left: 15%; margin-right: 20%">
           <el-form-item label="作者">
-            <el-input v-model="addNoticeForm.notice.author"></el-input>
+            <el-input v-model="addNoticeForm.notice.author"/>
           </el-form-item>
           <el-form-item label="标题">
-            <el-input v-model="addNoticeForm.notice.title"></el-input>
+            <el-input v-model="addNoticeForm.notice.title"/>
           </el-form-item>
         </div>
 
@@ -127,11 +149,10 @@
           v-model="addNoticeForm.notice.context"
           class="editor"
           :options="editorOption"
-        >
-        </quill-editor>
+        />
 
         <el-form-item label="绑定课程">
-          <el-switch v-model="addNoticeForm.bindCourse"></el-switch>
+          <el-switch v-model="addNoticeForm.bindCourse"/>
         </el-form-item>
       </el-form>
       <span slot="footer" class="dialog-footer">
@@ -143,130 +164,132 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters } from 'vuex'
 
-import { quillEditor } from "vue-quill-editor"; //调用编辑器
+import { quillEditor } from 'vue-quill-editor' // 调用编辑器
 
 import {
   getNotice,
   FindNoticeById,
   editNotice,
   addNotice,
-  removeNotice,
-} from "@/api/notice";
+  removeNotice
+} from '@/api/notice'
+
 export default {
-  name: "Index",
+  name: 'Index',
   components: { quillEditor },
   data() {
     return {
+      visible2: false,
       editorOption: {
         // 配置项
-        theme: "snow", // or 'bubble'
-        placeholder: "请输入文章内容",
+        theme: 'snow', // or 'bubble'
+        placeholder: '请输入文章内容'
       },
-      content_garbage: "",
+      content_garbage: '',
       item_id: 0,
       noticeData: [],
       cid: 0,
       editNoticedialogVisible: false,
       editNotice: {
-        context: "",
+        context: ''
       },
       looNoticedialogVisible: false,
       addNoticeDialogVisiable: false,
       addNoticeForm: {
         notice: {
-          author: "",
-          context: "",
-          isSystem: false,
+          author: '',
+          context: '',
+          isSystem: false
         },
 
         bindCourse: true,
 
-        cid: 0,
-      },
-    };
+        cid: 0
+      }
+    }
   },
   created() {
-    this.getNoticeList();
+    this.getNoticeList()
   },
 
   computed: {
-    ...mapGetters(["name"]),
+    ...mapGetters(['name'])
   },
   methods: {
     // 获取所有公告列表 生成一个数组  给列表
     async getNoticeList() {
       const loading = this.$loading({
         lock: true,
-        text: "公告加载中",
-        spinner: "el-icon-loading",
-        background: "rgba(0, 0, 0, 0.7)",
-      });
-      this.cid = this.$route.params.cid;
-      const { data } = await getNotice(this.cid);
-      console.log(data);
+        text: '公告加载中',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+      this.cid = this.$route.params.cid
+      const { data } = await getNotice(this.cid)
+      console.log(data)
       if (data.content.length > 0) {
-        this.noticeData = data.content;
+        this.noticeData = data.content
         // console.log(this.noticeData);
-        loading.close();
+        loading.close()
       }
       setTimeout(() => {
-        loading.close();
-      }, 10000);
+        loading.close()
+      }, 10000)
     },
     // 按需查询公告 并且生成一个对象 赋值给form
     showEditNoticeVisiable(item) {
       // this.editNotice = {};
       // console.log(item);
 
-      this.editNotice = item;
-      console.log(this.editNotice);
-      this.editNoticedialogVisible = true;
+      this.editNotice = item
+      console.log(this.editNotice)
+      this.editNoticedialogVisible = true
     },
-    //删除公告
+    // 删除公告
     async removeNoticeTrue(id) {
-      console.log(id);
-      const data = await removeNotice(id);
-      console.log(data);
+      console.log(id)
+      const data = await removeNotice(id)
+      console.log(data)
       if (data.code < 0) {
-        return this.$message.error("删除失败，请稍后重试");
+        return this.$message.error('删除失败，请稍后重试')
       }
-      this.$message.success("删除成功");
-      this.getNoticeList();
+      this.$message.success('删除成功')
+      this.getNoticeList()
     },
     // 修改公告
     async editNoticeTrue() {
-      const data = await editNotice(this.editNotice);
-      console.log(data);
+      const data = await editNotice(this.editNotice)
+      console.log(data)
       if (data.code < 0) {
-        return this.$message.error("修改失败，请重试");
+        return this.$message.error('修改失败，请重试')
       }
-      this.$message.success("修改成功");
-      this.editNoticedialogVisible = false;
-      this.getNoticeList();
+      this.$message.success('修改成功')
+      this.editNoticedialogVisible = false
+      this.getNoticeList()
     },
     // 查看详情
     lookNotice(id) {
-      this.item_id = id;
-      this.looNoticedialogVisible = true;
+      this.item_id = id
+      this.looNoticedialogVisible = true
     },
     // 添加公告对话框的显示与隐藏
     showaddNoticeDialogVisiable() {
-      this.addNoticeForm.notice.author = this.name;
-      this.addNoticeDialogVisiable = true;
+      this.addNoticeForm.notice.author = this.name
+      this.addNoticeDialogVisiable = true
       // console.log(this.$route.params.cid);
     },
-    //添加公告
+    // 添加公告
     async addNoticeTrue() {
-      this.addNoticeForm.cid = this.$route.params.cid;
-      const data = await addNotice(this.addNoticeForm);
-      console.log(data);
-      this.addNoticeDialogVisiable = false;
-      this.getNoticeList();
-    },
-  },
-};
+      this.addNoticeForm.cid = this.$route.params.cid
+      const data = await addNotice(this.addNoticeForm)
+      console.log(data)
+      this.addNoticeDialogVisiable = false
+      this.getNoticeList()
+    }
+  }
+}
 </script>
 
 <style scoped lang="scss">
