@@ -199,12 +199,12 @@
       <el-col :span="12">
         <div style="padding: 30px">
           <a-card title="消息" :bordered="true" style="width: 100%">
-            <a-list item-layout="horizontal" :data-source="this.data_title">
+            <a-list item-layout="horizontal" :data-source="this.data_">
               <a-list-item slot="renderItem" slot-scope="item, index">
                 <a-list-item-meta
-                  description="language for background applications, is refined by Ant UED Team"
+                  :description="item.desc"
                 >
-                  <a slot="title" href="https://www.baidu.com/">{{
+                  <a slot="title" href="#">{{
                       item.title
                     }}</a>
                   <a-avatar
@@ -237,6 +237,7 @@ import { Chart, getTheme } from '@antv/g2'
 import { mapGetters } from 'vuex'
 import { getUserById, editUser } from '@/api/user'
 import { getCourse } from '@/api/course'
+import { getPublicNotice } from '@/api/notice'
 
 export default {
   name: 'Dashboard',
@@ -273,12 +274,10 @@ export default {
       visible3: false,
       input: '',
       course_data: [],
-      data_title: [
+      data_: [
         {
-          title: 'title1'
-        },
-        {
-          title: 'title2'
+          title: '无标题',
+          desc: '无描述'
         }
       ],
       user: {},
@@ -287,6 +286,13 @@ export default {
     }
   },
   mounted() {
+    getPublicNotice().then((res) => {
+      this.data_ = res.data.content
+      for (let i in this.data_) {
+        this.data_[i].desc = this.data_[i].context
+      }
+      console.log(this.data_)
+    })
     this.renderUser()
 
     getCourse().then((res) => {
@@ -297,7 +303,6 @@ export default {
   },
   methods: {
     renderPic() {
-
       const chart = new Chart({
         container: 'container',
         autoFit: true,

@@ -155,7 +155,7 @@ export default {
           type: 'warning'
         }
       ).catch((err) => err)
-      // console.log(data);
+      console.log(data)
       if (data !== 'confirm') {
         return this.$message.info('已取消删除')
       }
