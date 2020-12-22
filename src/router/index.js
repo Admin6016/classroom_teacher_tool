@@ -41,7 +41,8 @@ export const constantRoutes = [
   {
     path: '/bigscreen',
     component: () => import('@/views/bigscreen/index'),
-    hidden: true
+    hidden: true,
+    name: 'SignBigScreen'
   },
   {
     path: '/404',

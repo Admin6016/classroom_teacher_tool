@@ -1,7 +1,7 @@
 import Vue from 'vue'
-import dataV from '@jiaminghi/data-view'
 
-Vue.use(dataV)
+
+
 import 'normalize.css/normalize.css' // A modern alternative to CSS resets
 
 import pluginImport from '@d2-projects/vue-table-import'
