@@ -30,6 +30,12 @@ export function getUserByNumber(number) {
   })
 }
 
+export const getUserByName = (data) => {
+  return request({
+    url: '/user?name=' + data
+  })
+}
+
 export function getInfo(token) {
   return request({
     url: '/user/info',
