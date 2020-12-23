@@ -66,10 +66,10 @@
               ></dv-decoration-7
             >
             <vue-qr
-              :bgSrc="src"
-              :logoSrc="src2"
-              text="Hello world!"
+              :logoSrc="downloadData.icon"
+              :text="downloadData.url"
               :size="200"
+              :margin="2"
               style="
                 margin-left: 25%;
                 margin-right: 30%;
@@ -112,6 +112,13 @@ export default {
   },
   data() {
     return {
+      downloadData: {
+        url: "http://www.baidu.com",
+
+        icon:
+          "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2212207577,3515555468&fm=26&gp=0.jpg",
+      },
+
       config: {
         header: ["姓名", "角色"],
         rowNum: 10,
@@ -176,9 +183,6 @@ export default {
       let newData = this.config;
       newData.data = this.unfinshSign;
       this.config = { ...newData };
-    },
-    test(dataUrl, id) {
-      console.log(url, id);
     },
   },
 };
