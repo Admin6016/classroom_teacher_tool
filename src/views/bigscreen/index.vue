@@ -45,7 +45,7 @@
               style="margin-left: 15px; margin-right: 15px"
             >签到进度</span></dv-decoration-7>
             <dv-percent-pond
-              :config="config1"
+              :config.sync="config1"
               style="
                 width: 80%;
                 height: 20%;
@@ -126,7 +126,7 @@ export default {
         data: []
       },
       config1: {
-        value: 66,
+        value: this.val1,
         localGradient: true
       },
       config2: {
@@ -134,12 +134,22 @@ export default {
         rowNum: 10,
         data: []
       },
+
       finshSignForm: {
         cid: 0,
         siid: 0
       },
+
       finshSign: [],
-      unfinshSign: []
+      unfinshSign: [],
+
+      finish: 0,
+      unfinish: 100
+    }
+  },
+  computed: {
+    val1() {
+      return Math.ceil((this.unfinish / (this.unfinish + this.finish)) * 100)
     }
   },
   created() {
@@ -151,6 +161,7 @@ export default {
       this.finshSignForm.cid = this.$route.query.cid
       this.finshSignForm.siid = this.$route.query.siid
       const data = await getFinshSign(this.finshSignForm)
+      this.finish = data.data.totalElements
       for (const item of data.data.content) {
         this.finshSign.push([item.user_name_cache, item.user_number_cache])
       }
@@ -163,6 +174,7 @@ export default {
       this.finshSignForm.cid = this.$route.query.cid
       this.finshSignForm.siid = this.$route.query.siid
       const data = await getUnFinshSign(this.finshSignForm)
+      this.unfinish = data.data.totalElements
       for (const item of data.data.content) {
         this.unfinshSign.push([item.user_name_cache, item.user_number_cache])
       }
