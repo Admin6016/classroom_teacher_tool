@@ -2,7 +2,7 @@ import request from '@/utils/request'
 
 export const getPublicNotice = () => {
   return request({
-    url: '/notice?notice.isSystem=true',
+    url: '/notice?notice.isSystem=true&sort=nid,desc',
     method: 'GET'
   })
 }

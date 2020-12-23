@@ -53,7 +53,7 @@
                 placement="top"
                 width="200"
               >
-                <p style="text-align: center"><i class="el-icon-warning" style="color: red;margin-right: 5px"></i>确定删除该公告吗？
+                <p style="text-align: center"><i class="el-icon-warning" style="color: red;margin-right: 5px"/>确定删除该公告吗？
                 </p>
                 <div style="text-align: right; margin: 0">
                   <el-button size="mini" type="text" @click="visible2 = false">取消</el-button>
@@ -233,10 +233,12 @@ export default {
         this.noticeData = data.content
         // console.log(this.noticeData);
         loading.close()
-      }
-      setTimeout(() => {
+      } else {
         loading.close()
-      }, 10000)
+      }
+      // setTimeout(() => {
+      //
+      // }, 10000)
     },
     // 按需查询公告 并且生成一个对象 赋值给form
     showEditNoticeVisiable(item) {
