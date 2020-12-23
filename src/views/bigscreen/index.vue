@@ -45,6 +45,7 @@
               style="margin-left: 15px; margin-right: 15px"
             >签到进度</span></dv-decoration-7>
             <dv-percent-pond
+              ref="pond"
               :config.sync="config1"
               style="
                 width: 80%;
@@ -126,7 +127,7 @@ export default {
         data: []
       },
       config1: {
-        value: this.val1,
+        value: 0,
         localGradient: true
       },
       config2: {
@@ -152,9 +153,11 @@ export default {
       return Math.ceil((this.unfinish / (this.unfinish + this.finish)) * 100)
     }
   },
-  created() {
-    this.getFinshSignList()
-    this.getUnFinshSignList()
+  async created() {
+    await this.getFinshSignList()
+    await this.getUnFinshSignList()
+    this.config1.value = Math.ceil((this.unfinish / (this.unfinish + this.finish)) * 100)
+    this.$refs.pond.mergeConfig()
   },
   methods: {
     async getFinshSignList() {
