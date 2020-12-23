@@ -46,11 +46,10 @@
             <el-form-item label="签到密码">
               <el-input
                 v-model="sign.data"
-                type="password"
+
                 placeholder="请输入签到密码"
                 :style="item_style"
-                maxlength="4"
-                show-word-limit
+               
                 clearable
               />
             </el-form-item>
@@ -318,9 +317,11 @@ export default {
       this.options = data.data.content;
     },
     next() {
-      if (this.active === 0) {
-        this.shoushi = this.shoushi.toString();
-        this.sign.data = this.shoushi;
+      if (this.active == 0) {
+        if (this.sign.kind == 4) {
+          this.shoushi = this.shoushi.join(",");
+          this.sign.data = this.shoushi;
+        }
         this.postSignTrue();
       }
       if (this.active++ > 2) this.active = 0;
@@ -380,7 +381,7 @@ export default {
 
         this.shoushi.push(item.index);
       }
-      // console.log(this.shoushi.toString());
+      console.log(this.shoushi);
     },
     // 獲取學生列表
     async getStudentList() {

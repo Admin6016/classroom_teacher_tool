@@ -1,6 +1,10 @@
 <template>
   <div style="margin: 0">
-    <dv-full-screen-container style="background-color: #000244">
+    <dv-full-screen-container
+      style="
+        background-image: linear-gradient(to top, #09203f 0%, #537895 100%);
+      "
+    >
       <dv-border-box-11 title="签到情况">
         <div
           style="
@@ -20,7 +24,7 @@
                 margin: 0 auto;
               "
               ><span style="margin-left: 15px; margin-right: 15px"
-                >签到进度</span
+                >已签到</span
               ></dv-decoration-7
             >
             <dv-scroll-board
@@ -89,7 +93,7 @@
                 margin: 0 auto;
               "
               ><span style="margin-left: 15px; margin-right: 15px"
-                >签到进度</span
+                >未签到</span
               ></dv-decoration-7
             >
             <dv-scroll-board
@@ -129,29 +133,9 @@ export default {
         localGradient: true,
       },
       config2: {
-        header: ["姓名", "角色"],
+        header: ["姓名", "学号"],
         rowNum: 10,
-        data: [
-          ["行1列1", "行1列2", "行1列3"],
-          ["行2列1", "行2列2", "行2列3"],
-          ["行3列1", "行3列2", "行3列3"],
-          ["行4列1", "行4列2", "行4列3"],
-          ["行5列1", "行5列2", "行5列3"],
-          ["行6列1", "行6列2", "行6列3"],
-          ["行7列1", "行7列2", "行7列3"],
-          ["行8列1", "行8列2", "行8列3"],
-          ["行9列1", "行9列2", "行9列3"],
-          ["行10列1", "行10列2", "行10列3"],
-          ["行2列1", "行2列2", "行2列3"],
-          ["行3列1", "行3列2", "行3列3"],
-          ["行4列1", "行4列2", "行4列3"],
-          ["行5列1", "行5列2", "行5列3"],
-          ["行6列1", "行6列2", "行6列3"],
-          ["行7列1", "行7列2", "行7列3"],
-          ["行8列1", "行8列2", "行8列3"],
-          ["行9列1", "行9列2", "行9列3"],
-          ["行10列1", "行10列2", "行10列3"],
-        ],
+        data: [],
       },
       finshSignForm: {
         cid: 0,
@@ -170,7 +154,12 @@ export default {
       this.finshSignForm.cid = this.$route.query.cid;
       this.finshSignForm.siid = this.$route.query.siid;
       const data = await getFinshSign(this.finshSignForm);
-      console.log(data);
+      for (const item of data.data.content) {
+        this.finshSign.push([item.name, item.number]);
+      }
+      let newData = this.config2;
+      newData.data = this.finshSign;
+      this.config2 = { ...newData };
       this.finshSign = data.data.content;
     },
     async getUnFinshSignList() {
@@ -178,7 +167,7 @@ export default {
       this.finshSignForm.siid = this.$route.query.siid;
       const data = await getUnFinshSign(this.finshSignForm);
       for (const item of data.data.content) {
-        this.unfinshSign.push([item.name, item.role]);
+        this.unfinshSign.push([item.name, item.number]);
       }
       let newData = this.config;
       newData.data = this.unfinshSign;
