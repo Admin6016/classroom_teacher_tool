@@ -23,9 +23,10 @@
                 font-weight: 700;
                 margin: 0 auto;
               "
-            ><span
-              style="margin-left: 15px; margin-right: 15px"
-            >已签到</span></dv-decoration-7>
+              ><span style="margin-left: 15px; margin-right: 15px"
+                >已签到</span
+              ></dv-decoration-7
+            >
             <dv-scroll-board
               :config="config2"
               style="width: 100%; height: 90%"
@@ -41,9 +42,10 @@
                 font-weight: 700;
                 margin: 0 auto;
               "
-            ><span
-              style="margin-left: 15px; margin-right: 15px"
-            >签到进度</span></dv-decoration-7>
+              ><span style="margin-left: 15px; margin-right: 15px"
+                >签到进度</span
+              ></dv-decoration-7
+            >
             <dv-percent-pond
               ref="pond"
               :config.sync="config1"
@@ -64,9 +66,10 @@
                 font-weight: 700;
                 margin: 0 auto;
               "
-            ><span
-              style="margin-left: 15px; margin-right: 15px"
-            >签到二维码</span></dv-decoration-7>
+              ><span style="margin-left: 15px; margin-right: 15px"
+                >签到二维码</span
+              ></dv-decoration-7
+            >
             <vue-qr
               :logo-src="downloadData.icon"
               :text="downloadData.url"
@@ -90,9 +93,10 @@
                 font-weight: 700;
                 margin: 0 auto;
               "
-            ><span
-              style="margin-left: 15px; margin-right: 15px"
-            >未签到</span></dv-decoration-7>
+              ><span style="margin-left: 15px; margin-right: 15px"
+                >未签到</span
+              ></dv-decoration-7
+            >
             <dv-scroll-board
               :config="config"
               style="width: 100%; height: 90%"
@@ -105,88 +109,98 @@
 </template>
 
 <script>
-import { getFinshSign, getUnFinshSign } from '@/api/signdata'
-import VueQr from 'vue-qr'
+import { getFinshSign, getUnFinshSign } from "@/api/signdata";
+import VueQr from "vue-qr";
 
 export default {
   components: {
-    VueQr
+    VueQr,
   },
   data() {
     return {
       downloadData: {
-        url: 'http://www.baidu.com',
+        url: "http://www.baidu.com",
 
         icon:
-          'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2212207577,3515555468&fm=26&gp=0.jpg'
+          "https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=2212207577,3515555468&fm=26&gp=0.jpg",
       },
 
       config: {
-        header: ['姓名', '角色'],
+        header: ["姓名", "角色"],
         rowNum: 10,
-        data: []
+        data: [],
       },
       config1: {
         value: 0,
-        localGradient: true
+        localGradient: true,
       },
       config2: {
-        header: ['姓名', '学号'],
+        header: ["姓名", "学号"],
         rowNum: 10,
-        data: []
+        data: [],
       },
 
       finshSignForm: {
         cid: 0,
-        siid: 0
+        siid: 0,
       },
 
       finshSign: [],
       unfinshSign: [],
 
       finish: 0,
-      unfinish: 100
-    }
+      unfinish: 100,
+    };
   },
   computed: {
     val1() {
-      return Math.ceil((this.unfinish / (this.unfinish + this.finish)) * 100)
-    }
+      return Math.ceil((this.unfinish / (this.unfinish + this.finish)) * 100);
+    },
   },
-  async created() {
-    await this.getFinshSignList()
-    await this.getUnFinshSignList()
-    this.config1.value = Math.ceil((this.unfinish / (this.unfinish + this.finish)) * 100)
-    this.$refs.pond.mergeConfig()
+  created() {
+    this.renderData();
   },
   methods: {
+    async renderData() {
+      console.log("renderData-start");
+      await this.getFinshSignList();
+      await this.getUnFinshSignList();
+      this.config1.value = Math.ceil(
+        (this.finish / (this.unfinish + this.finish)) * 100
+      );
+      this.$refs.pond.mergeConfig();
+      console.log("renderData-end");
+      setTimeout(this.renderData, 10000);
+    },
     async getFinshSignList() {
-      this.finshSignForm.cid = this.$route.query.cid
-      this.finshSignForm.siid = this.$route.query.siid
-      const data = await getFinshSign(this.finshSignForm)
-      this.finish = data.data.totalElements
+      this.finshSignForm.cid = this.$route.query.cid;
+      this.finshSignForm.siid = this.$route.query.siid;
+      const data = await getFinshSign(this.finshSignForm);
+      this.finish = data.data.totalElements;
+      this.finshSign = [];
       for (const item of data.data.content) {
-        this.finshSign.push([item.user_name_cache, item.user_number_cache])
+        this.finshSign.push([item.user_name_cache, item.user_number_cache]);
       }
-      const newData = this.config2
-      newData.data = this.finshSign
-      this.config2 = { ...newData }
-      this.finshSign = data.data.content
+      const newData = this.config2;
+      newData.data = this.finshSign;
+      this.config2 = { ...newData };
+      this.finshSign = data.data.content;
     },
     async getUnFinshSignList() {
-      this.finshSignForm.cid = this.$route.query.cid
-      this.finshSignForm.siid = this.$route.query.siid
-      const data = await getUnFinshSign(this.finshSignForm)
-      this.unfinish = data.data.totalElements
+      this.finshSignForm.cid = this.$route.query.cid;
+      this.finshSignForm.siid = this.$route.query.siid;
+      const data = await getUnFinshSign(this.finshSignForm);
+      this.unfinish = data.data.totalElements;
+      this.unfinshSign = [];
       for (const item of data.data.content) {
-        this.unfinshSign.push([item.user_name_cache, item.user_number_cache])
+        this.unfinshSign.push([item.user_name_cache, item.user_number_cache]);
       }
-      const newData = this.config
-      newData.data = this.unfinshSign
-      this.config = { ...newData }
-    }
-  }
-}
+      const newData = this.config;
+      newData.data = this.unfinshSign;
+      this.config = { ...newData };
+    },
+  },
+};
 </script>
 
 <style scoped>
