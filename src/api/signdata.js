@@ -10,8 +10,17 @@ export const getFinshSign = (data) => {
 
 //获取未签到的学生
 export const getUnFinshSign = (data) => {
-    return request({
-        url: '/sign/data/get/nonsign?size=999' + '&siid=' + data.siid + '&cid=' + data.cid,
-        method: 'GET'
-    })
+  return request({
+    url: '/sign/data/get/nonsign?size=999' + '&siid=' + data.siid + '&cid=' + data.cid,
+    method: 'GET'
+  })
+}
+
+//用户提交签到
+export const finishSign = (data) => {
+  return request({
+    url: '/sign/data/do',
+    method: 'POST',
+    data
+  })
 }

@@ -42,7 +42,14 @@ export const constantRoutes = [
     path: '/bigscreen',
     component: () => import('@/views/bigscreen/index'),
     hidden: true,
-    name: 'SignBigScreen'
+    name: 'SignBigScreen',
+    meta: { title: '签到大屏展示' }
+  },
+  {
+    path: '/qr',
+    component: () => import('@/views/qr/index'),
+    hidden: true,
+    meta: { title: '签到提交页面' }
   },
   {
     path: '/404',
@@ -236,7 +243,7 @@ export const constantRoutes = [
 ]
 
 const createRouter = () => new Router({
-  // mode: 'history', // require service support
+  mode: 'history', // require service support
   scrollBehavior: () => ({ y: 0 }),
   routes: constantRoutes
 })
