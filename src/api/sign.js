@@ -10,6 +10,13 @@ export const postSign = (data) => {
     })
 }
 
+export const getOneSign = (data) => {
+  return request({
+    url: '/sign?siid=' + data.siid,
+    method: 'GET'
+
+  })
+}
 
 // 获取签到列表
 
@@ -31,8 +38,7 @@ export const addPeopleForSign = (data) => {
     })
 }
 
-
-//簽到時 獲取學生列表 
+//簽到時 獲取學生列表
 export const getStudent = () => {
     return request({
         url: '/user?role=' + 'student',
