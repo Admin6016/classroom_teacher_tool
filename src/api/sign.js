@@ -11,11 +11,11 @@ export const postSign = (data) => {
 }
 
 export const getOneSign = (data) => {
-  return request({
-    url: '/sign?siid=' + data.siid,
-    method: 'GET'
+    return request({
+        url: '/sign?siid=' + data.siid,
+        method: 'GET'
 
-  })
+    })
 }
 
 // 获取签到列表
@@ -42,8 +42,21 @@ export const addPeopleForSign = (data) => {
 export const getStudent = () => {
     return request({
         url: '/user?role=' + 'student',
+        method: 'GET',
+    })
+}
+// 分页页码值改变
+export const getStudentByNum = (data) => {
+    return request({
+        url: '/user?role=' + 'student' + '&page=' + data,
         method: 'GET'
-
+    })
+}
+// 分页 页面容量改变
+export const getStudentBySize = (data) => {
+    return request({
+        url: '/user?role=' + 'student' + '&size=' + data,
+        method: 'GET'
     })
 }
 

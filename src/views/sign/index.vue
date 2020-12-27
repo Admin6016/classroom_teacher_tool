@@ -233,9 +233,12 @@ import {
   getStudent,
   getStudentByName,
   addSinglePeopleForSign,
+  getStudentByNum,
+  getStudentBySize,
 } from "@/api/sign";
 import { getGroup } from "@/api/group";
 import screenfull from "screenfull";
+import { data } from "autoprefixer";
 
 export default {
   components: {
@@ -324,6 +327,10 @@ export default {
       currentSize: 0,
       // 总个数
       totalElemnt: 0,
+      // 分页
+
+      size: 0,
+      page: 0,
     };
   },
 
@@ -333,12 +340,19 @@ export default {
   },
   methods: {
     // 页面容量改变
-    handleSizeChange(val) {
-      console.log(val);
+    async handleSizeChange(val) {
+      this.size = val;
+      const data = await getStudentBySize(this.size);
+      console.log(data);
+      this.studentList = data.data.content;
     },
     // 页码值改变
-    handleCurrentChange(val) {
-      console.log(val);
+    async handleCurrentChange(val) {
+      // console.log(val);
+      this.page = val;
+      const data = await getStudentByNum(this.page - 1);
+      console.log(data);
+      this.studentList = data.data.content;
     },
     async getAllGroup() {
       const data = await getGroup();
