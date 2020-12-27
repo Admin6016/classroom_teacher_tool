@@ -147,6 +147,15 @@
                 width="170"
               />
             </el-table>
+             <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="currentPage"
+      :page-sizes="[20, 40, 60, 100]"
+      :page-size="currentSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="totalElemnt">
+    </el-pagination>
           </div>
 
         </div>
@@ -309,6 +318,12 @@ export default {
       ],
       value: "",
       studentList: [],
+      // 当前页数
+      currentPage: 0,
+      // 当前页面容量
+      currentSize: 0,
+      // 总个数
+      totalElemnt: 0,
     };
   },
 
@@ -317,9 +332,17 @@ export default {
     this.getStudentList();
   },
   methods: {
+    // 页面容量改变
+    handleSizeChange(val) {
+      console.log(val);
+    },
+    // 页码值改变
+    handleCurrentChange(val) {
+      console.log(val);
+    },
     async getAllGroup() {
       const data = await getGroup();
-      // console.log(data);
+      console.log(data);
       this.options = data.data.content;
     },
     next() {
@@ -397,6 +420,9 @@ export default {
       const data = await getStudent();
       console.log(data);
       this.studentList = data.data.content;
+      this.currentPage = data.data.number + 1;
+      this.currentSize = data.data.size;
+      this.totalElemnt = data.data.totalElements;
     },
 
     // 按需查找學生
