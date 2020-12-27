@@ -160,7 +160,8 @@
                 <el-button
                   type="text"
                   size="small"
-                  @click="console.log(scope.row)"
+
+                  @click="deleteOne(scope.row)"
                 >踢出
                 </el-button>
               </template>
@@ -197,7 +198,7 @@ import { getGroup, addGroup, deleteGroup } from '@/api/group'
 
 import addoneuser from '@/views/group/addoneuser'
 import addmanyuser from '@/views/group/addmanyuser'
-import { getGroupMember } from '@/api/groupdata'
+import { getGroupMember, deleteGroupMember } from '@/api/groupdata'
 
 export default {
   name: 'Group',
@@ -208,6 +209,7 @@ export default {
 
   data() {
     return {
+      draw_seid: '',
       spin1: false,
       draw_user_data: [],
       draw_show: false,
@@ -230,6 +232,14 @@ export default {
     this.getGroupList()
   },
   methods: {
+    deleteOne(data) {
+      const r = confirm('您确定要删除该成员吗？')
+      if (r) {
+        deleteGroupMember({ uid: data.uid, seid: this.draw_seid })
+      }
+      console.log(data)
+      this.draw_show = false
+    },
     showBox() {
       this.searchForm = prompt('请输入搜索内容')
     },
@@ -278,6 +288,7 @@ export default {
       this.$refs.addGroupRef.resetFields()
     },
     showUserDrawer(seid) {
+      this.draw_seid = seid
       this.draw_show = true
       this.spin1 = true
       getGroupMember(seid).then((res) => {

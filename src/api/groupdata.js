@@ -21,3 +21,17 @@ export const getGroupMember = (data) => {
     }
   })
 }
+
+/*
+删除某成员
+ */
+export const deleteGroupMember = (data) => {
+  return request({
+    method: 'DELETE',
+    url: '/section/data/del/single',
+    params: {
+      uid: data.uid,
+      seid: data.seid
+    }
+  })
+}
