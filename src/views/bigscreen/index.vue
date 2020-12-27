@@ -164,8 +164,14 @@ export default {
   methods: {
     async renderData() {
       console.log('renderData-start')
+
       await this.getFinshSignList()
       await this.getUnFinshSignList()
+
+      // 解决数据重复问题
+      this.finshSign = []
+      this.unfinshSign = []
+
       this.config1.value = Math.ceil(
         (this.finish / (this.unfinish + this.finish)) * 100
       )
