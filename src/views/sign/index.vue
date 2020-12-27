@@ -215,42 +215,42 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import { CanvasLock } from 'vue-lock'
+import { mapGetters } from "vuex";
+import { CanvasLock } from "vue-lock";
 import {
   postSign,
   getSignList,
   addPeopleForSign,
   getStudent,
   getStudentByName,
-  addSinglePeopleForSign
-} from '@/api/sign'
-import { getGroup } from '@/api/group'
-import screenfull from 'screenfull'
+  addSinglePeopleForSign,
+} from "@/api/sign";
+import { getGroup } from "@/api/group";
+import screenfull from "screenfull";
 
 export default {
   components: {
-    CanvasLock
+    CanvasLock,
   },
   data() {
     return {
-      item_style: 'width: 200px',
+      item_style: "width: 200px",
       active: 0,
       // 按需查詢學生信息的表單
       findStuForm: {
-        name: ''
+        name: "",
       },
       sign: {
         kind: 1,
-        name: '',
+        name: "",
         deadline: new Date(),
         cid: 0,
         uid: 0,
-        data: ''
+        data: "",
       },
       getSign: {
         cid: 0,
-        uid: 0
+        uid: 0,
       },
       // 默认不全屏
       isFullscreen: false,
@@ -273,164 +273,171 @@ export default {
       addsingleStuForm: {
         cid: 0,
         siid: 0,
-        uid: 0
+        uid: 0,
       },
       signForm: {
         cid: 0,
         uid: 0,
-        siid: 0
+        siid: 0,
       },
       shoushi: [],
       options5: [
         {
-          value: '10',
-          label: '10秒'
+          value: "10000",
+          label: "10秒",
         },
         {
-          value: '30',
-          label: '30秒'
+          value: "30000",
+          label: "30秒",
         },
         {
-          value: '60',
-          label: '60秒'
+          value: "60000",
+          label: "60秒",
         },
         {
-          value: '90',
-          label: '90秒'
+          value: "90000",
+          label: "90秒",
         },
         {
-          value: '180',
-          label: '180秒'
+          value: "180000",
+          label: "180秒",
         },
         {
-          value: '300',
-          label: '长期'
-        }
+          value: "300000",
+          label: "长期",
+        },
       ],
-      value: '',
-      studentList: []
-    }
+      value: "",
+      studentList: [],
+    };
   },
 
   created() {
-    this.getAllGroup()
-    this.getStudentList()
+    this.getAllGroup();
+    this.getStudentList();
   },
   methods: {
     async getAllGroup() {
-      const data = await getGroup()
+      const data = await getGroup();
       // console.log(data);
-      this.options = data.data.content
+      this.options = data.data.content;
     },
     next() {
       if (this.active == 0) {
         if (this.sign.kind == 4) {
-          this.shoushi = this.shoushi.join(',')
-          this.sign.data = this.shoushi
+          this.shoushi = this.shoushi.join(",");
+          this.sign.data = this.shoushi;
+        } else if (this.sign.kind == 5) {
+          this.value = parseInt(this.value);
+          this.sign.data = this.value;
         }
-        this.postSignTrue()
+        this.postSignTrue();
       }
-      if (this.active++ > 2) this.active = 0
+      if (this.active++ > 2) this.active = 0;
     },
     prev() {
-      this.active--
-      if (this.active < 0) this.active = 0
+      this.active--;
+      if (this.active < 0) this.active = 0;
     },
     // 发起签到条目
     async postSignTrue() {
-      this.spinning = true
-      this.sign.uid = this.uid
-      this.sign.cid = parseInt(this.$route.params.cid)
-      const data = await postSign(this.sign)
-      this.spinning = false
-      console.log(data)
-      this.signInfo = data.data
+      this.spinning = true;
+      this.sign.uid = this.uid;
+      this.sign.cid = parseInt(this.$route.params.cid);
+      const data = await postSign(this.sign);
+      this.spinning = false;
+      console.log(data);
+      this.signInfo = data.data;
     },
     // 发起签到
     async postSignFormTrue() {
-      this.spinning = true
+      this.spinning = true;
       for (const key of this.value1) {
-        this.signForm.cid = parseInt(this.$route.params.cid)
-        this.signForm.siid = this.signInfo.siid
-        this.signForm.seid = key
-        const data = await addPeopleForSign(this.signForm)
-        console.log(data)
+        this.signForm.cid = parseInt(this.$route.params.cid);
+        this.signForm.siid = this.signInfo.siid;
+        this.signForm.seid = key;
+        const data = await addPeopleForSign(this.signForm);
+        console.log(data);
       }
       for (const key1 of this.multipleSelection) {
-        this.addsingleStuForm.cid = parseInt(this.$route.params.cid)
-        this.addsingleStuForm.siid = this.signInfo.siid
-        this.addsingleStuForm.uid = key1.uid
-        const data1 = await addSinglePeopleForSign(this.addsingleStuForm)
-        console.log(data1)
+        this.addsingleStuForm.cid = parseInt(this.$route.params.cid);
+        this.addsingleStuForm.siid = this.signInfo.siid;
+        this.addsingleStuForm.uid = key1.uid;
+        const data1 = await addSinglePeopleForSign(this.addsingleStuForm);
+        console.log(data1);
       }
-      this.spinning = false
-      this.dialogVisible = true
+      this.spinning = false;
+      this.dialogVisible = true;
     },
     // 展示签到
     async getSignListTrue() {
-      this.spinning1 = true
-      this.drawer = true
-      this.getSign.uid = this.uid
-      this.getSign.cid = this.$route.params.cid
-      const data = await getSignList(this.getSign)
+      this.spinning1 = true;
+      this.drawer = true;
+      this.getSign.uid = this.uid;
+      this.getSign.cid = this.$route.params.cid;
+      const data = await getSignList(this.getSign);
 
-      console.log(data)
-      this.signList = data.data.content
-      this.spinning1 = false
+      console.log(data);
+      this.signList = data.data.content;
+      this.spinning1 = false;
     },
     // 手势输入完成后
     drawEnd(e) {
-      this.shoushi = []
+      this.shoushi = [];
       // console.log(e);
       for (var item of e) {
-        console.log(item.index)
+        console.log(item.index);
 
-        this.shoushi.push(item.index)
+        this.shoushi.push(item.index);
       }
-      console.log(this.shoushi)
+      console.log(this.shoushi);
     },
     // 獲取學生列表
     async getStudentList() {
-      const data = await getStudent()
-      console.log(data)
-      this.studentList = data.data.content
+      const data = await getStudent();
+      console.log(data);
+      this.studentList = data.data.content;
     },
 
     // 按需查找學生
     async getStuListByName() {
-      const data = await getStudentByName(this.findStuForm)
-      console.log(data)
-      this.studentList = data.data.content
+      const data = await getStudentByName(this.findStuForm);
+      console.log(data);
+      this.studentList = data.data.content;
     },
     // 清空輸入框
     resetInput() {
-      this.getStudentList()
+      this.getStudentList();
     },
     handleSelectionChange(val) {
       // console.log(val);
-      this.multipleSelection = val
-      console.log(this.multipleSelection)
+      this.multipleSelection = val;
+      console.log(this.multipleSelection);
     },
     // 回到主页
     backToIndex() {
-      this.dialogVisible = false
-      this.$router.push('/dashboard')
+      this.dialogVisible = false;
+      this.$router.push("/dashboard");
     },
     // 进入大屏
     ToBigScreen() {
-      this.dialogVisible = false
+      this.dialogVisible = false;
       this.$router.push({
-        path: '/bigscreen',
-        query: { cid: this.$route.params.cid, siid: this.signInfo.siid, name: this.sign.name }
-      })
+        path: "/bigscreen",
+        query: {
+          cid: this.$route.params.cid,
+          siid: this.signInfo.siid,
+          name: this.sign.name,
+        },
+      });
 
-      screenfull.toggle()
-    }
+      screenfull.toggle();
+    },
   },
   computed: {
-    ...mapGetters(['uid'])
-  }
-}
+    ...mapGetters(["uid"]),
+  },
+};
 </script>
 
 <style lang="scss" scoped>
