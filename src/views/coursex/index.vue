@@ -6,7 +6,7 @@
           type="primary"
           class="btn-top"
           @click="showaddNoticeDialogVisiable"
-        >+添加公告
+        > + 添加公告
         </el-button>
       </el-col>
     </el-row>

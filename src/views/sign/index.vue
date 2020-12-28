@@ -1,12 +1,12 @@
 <template>
-  <div>
+  <div style="padding: 20px">
     <a-spin :spinning="spinning">
       <el-button type="success" @click="getSignListTrue">查看签到</el-button>
-      <el-divider />
+      <el-divider/>
       <el-steps :active="active" finish-status="success">
-        <el-step title="签到类型" />
-        <el-step title="签到内容" />
-        <el-step title="发起签到" />
+        <el-step title="签到类型"/>
+        <el-step title="签到内容"/>
+        <el-step title="发起签到"/>
       </el-steps>
 
       <el-form

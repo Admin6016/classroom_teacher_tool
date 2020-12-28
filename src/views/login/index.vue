@@ -20,10 +20,9 @@
           <svg-icon icon-class="user" />
         </span>
         <el-input
-
           ref="uid"
-          v-model="loginForm.uid"
-          placeholder="用户ID"
+          v-model="info_user"
+          placeholder="用户账号"
           name="uid"
           type="number"
           tabindex="1"
@@ -52,7 +51,14 @@
           />
         </span>
       </el-form-item>
-
+      <div style="margin-top: 10px;margin-bottom: 20px;color:white;">
+        <center>
+          <el-radio v-model="loginmode" border text-color="#FFFFFF" label="1"><span
+            style="color: whitesmoke">ID登录</span></el-radio>
+          <el-radio v-model="loginmode" border text-color="#FFFFFF" label="2"><span
+            style="color: whitesmoke">工号登录</span></el-radio>
+        </center>
+      </div>
       <el-button
 
         :loading="loading"
@@ -76,9 +82,6 @@ import { validUsername } from '@/utils/validate'
 const defaultSettings = require('@/settings')
 export default {
   name: 'Login',
-  mounted() {
-    //ready
-  },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
@@ -95,13 +98,14 @@ export default {
       }
     }
     return {
+      loginmode: '1',
+      info_user: '',
       defaultSettings,
       loginForm: {
-        uid: '',
         password: ''
       },
       loginRules: {
-        uid: [{ required: true, trigger: 'blur', validator: validateUsername }],
+
         password: [
           { required: true, trigger: 'blur', validator: validatePassword }
         ]
@@ -119,6 +123,9 @@ export default {
       immediate: true
     }
   },
+  mounted() {
+    // ready
+  },
   methods: {
     showPwd() {
       if (this.passwordType === 'password') {
@@ -131,6 +138,17 @@ export default {
       })
     },
     handleLogin() {
+      console.log(this.loginmode)
+
+      delete this.loginForm.uid
+      delete this.loginForm.number
+      if (this.loginmode === '1') {
+        this.loginForm.uid = this.info_user * 1
+        // Object.defineProperty(this.loginForm, 'uid', this.info_user)
+      } else {
+        this.loginForm.number = this.info_user * 1
+        // Object.defineProperty(this.loginForm, 'number', this.info_user)
+      }
       this.$refs.loginForm.validate((valid) => {
         if (valid) {
           this.loading = true

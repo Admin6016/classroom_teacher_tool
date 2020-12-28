@@ -168,6 +168,26 @@ export const constantRoutes = [
       // }
     ]
   },
+  {
+    path: '/settings',
+    component: Layout,
+    redirect: '/settings/index',
+    meta: { title: '全局配置', icon: 'el-icon-s-tools' },
+    children: [
+      {
+        path: 'index',
+        name: 'LogIndex',
+        component: () => import('@/views/settings/index'),
+        meta: { title: '系统设置', icon: 'el-icon-s-tools' }
+      }
+      // {
+      //   path: 'record',
+      //   name: 'Record',
+      //   component: () => import('@/views/log/record'),
+      //   meta: { title: '日志记录', icon: 'el-icon-circle-plus-outline' }
+      // }
+    ]
+  },
   // {
   //   path: '/nested',
   //   component: Layout,
