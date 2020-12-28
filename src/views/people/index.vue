@@ -1,7 +1,7 @@
 <template>
   <div>
     <a-spin :spinning="spinning">
-      <el-button icon="el-icon-plus" circle></el-button>
+      <el-button icon="el-icon-plus" circle @click="addStuToCourse"></el-button>
       <el-table :data="userlist" stripe style="width: 100%; margin-top: 2%">
         <el-table-column prop="name" label="姓名" width="280">
         </el-table-column>

@@ -1,20 +1,18 @@
 import request from '@/utils/request'
 
-
-
-// 获取课程所有人
-export const getCourseStu = (data) => {
-    return request({
-        url: '/section/data?cid=' + data + '&size=' + '999',
-        method: 'GET'
-    })
+// 根据id查找课程人员
+export const findMumberById = (id) => {
+  return request({
+    url: '/course/data?cid=' + id,
+    method: 'GET'
+  })
 }
 
+export const deleteMumberById = (data) => {
+  return request({
+    method: 'DELETE',
+    url: '/course/data/del?cid=' + data.cid + '&uid=' + data.uid
 
-// 从课程中删人
-export const removeFromCourseTrue = (data) => {
-    return request({
-        url: '/course/data/del?cid=' + data.cid + '&uid=' + data.uid,
-        method: 'DELETE'
-    })
+  })
 }
+

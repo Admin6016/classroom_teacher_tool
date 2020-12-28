@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getCourse() {
+export const getCourse = () => {
   return request({
     url: '/teacher/course',
     method: 'get'
