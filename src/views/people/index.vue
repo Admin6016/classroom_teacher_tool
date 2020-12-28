@@ -1,7 +1,8 @@
 <template>
   <div>
     <a-spin :spinning="spinning">
-      <el-table :data="userlist" stripe style="width: 100%">
+      <el-button icon="el-icon-plus" circle></el-button>
+      <el-table :data="userlist" stripe style="width: 100%; margin-top: 2%">
         <el-table-column prop="name" label="姓名" width="280">
         </el-table-column>
         <el-table-column prop="number" label="学号" width="280">
