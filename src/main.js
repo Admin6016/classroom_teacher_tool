@@ -12,6 +12,10 @@ import 'element-ui/lib/theme-chalk/index.css'
 import '@/styles/index.scss' // global css
 import VueQuillEditor from 'vue-quill-editor'
 
+import MuseUI from 'muse-ui'
+import 'muse-ui/dist/muse-ui.css'
+//import 'muse-ui/dist/theme-light.min.css'
+Vue.use(MuseUI)
 // require styles
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'

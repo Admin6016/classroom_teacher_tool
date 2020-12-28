@@ -1,6 +1,6 @@
 <template>
   <div style="padding: 50px">
-    <h2>课程权限（允许操作）
+    <h2>系统开关（允许使用）
       <el-switch
         v-model="value"
         style="margin-left: 100px"
@@ -8,7 +8,7 @@
         inactive-color="#ff4949"
       />
     </h2>
-    <p>该配置可以决定，系统是否允许读取和操作课程模块</p>
+    <p>该配置可以决定，系统是否允许任何用户使用该系统，可用于维护处理</p>
 
     <h2 style="margin-top: 50px">是否只读（保护模式）
       <el-switch

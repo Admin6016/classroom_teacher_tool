@@ -115,6 +115,18 @@ export const constantRoutes = [
     ]
   },
   {
+    path: '/draw',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Draw',
+        component: () => import('@/views/draw/index'),
+        meta: { title: '教学演示', icon: 'el-icon-s-marketing' }
+      }
+    ]
+  },
+  {
     path: '/course',
     redirect: '/course/index',
     component: Layout,
