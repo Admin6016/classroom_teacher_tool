@@ -17,10 +17,6 @@
               title="确定要删出这位学生吗?"
               @onConfirm="removeTrue"
             >
-              >
-              <el-button type="primary" size="mini" @click="visible = false"
-                >确定ddd</el-button
-              >
               <el-button
                 slot="reference"
                 type="danger"
@@ -33,24 +29,74 @@
         </el-table-column>
       </el-table>
     </a-spin>
+    <el-dialog title="添加学生" :visible.sync="dialogVisible" width="50%">
+      <el-alert title="通过学号添加学生" type="info"> </el-alert>
+      <div style="margin-top: 15px; margin-bottom: 15px">
+        <el-input
+          placeholder="请输入学生学号"
+          v-model="input"
+          clearable
+          style="width: 50%"
+        >
+          <el-button
+            slot="append"
+            icon="el-icon-plus"
+            @click="addStuForCourseTrue"
+          ></el-button>
+        </el-input>
+      </div>
+
+      <el-alert title="通过群组添加学生" type="success"> </el-alert>
+      <el-select
+        v-model="value1"
+        multiple
+        placeholder="请选择要添加德群组"
+        style="width: 30%"
+      >
+        <el-option
+          v-for="item in options"
+          :key="item.seid"
+          :label="item.name"
+          :value="item.seid"
+        /> </el-select
+      ><el-button
+        icon="el-icon-plus"
+        @click="addGroupForCourseTrue"
+      ></el-button>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">取 消</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 <script>
-import { getCourseStu, removeFromCourseTrue } from "@/api/coursedata";
+import {
+  getCourseStu,
+  removeFromCourseTrue,
+  addStuForCourse,
+} from "@/api/coursedata";
+import { getGroup } from "@/api/group";
+
 export default {
   data() {
     return {
+      // 全部的群组信xi
+      options: [],
       userlist: [],
       cid: 0,
       uid: 0,
       spinning: false,
+      dialogVisible: false,
+      input: "",
       removeForm: {
         cid: 0,
         uid: 0,
       },
+      value1: 0,
     };
   },
   created() {
+    this.getAllGroup();
     this.getStuList();
   },
   methods: {
@@ -72,6 +118,24 @@ export default {
       console.log(data);
       this.getStuList();
       this.spinning = false;
+    },
+    addStuToCourse() {
+      this.dialogVisible = true;
+      console.log("455");
+    },
+    // 得到所有群组
+    async getAllGroup() {
+      const data = await getGroup();
+      console.log(data);
+      this.options = data.data.content;
+    },
+    // 通过添加群组增加学生
+    addGroupForCourseTrue() {
+      console.log(this.value1);
+    },
+    //通过学号添加单个学生
+    addStuForCourseTrue() {
+      console.log(this.input);
     },
   },
 };
